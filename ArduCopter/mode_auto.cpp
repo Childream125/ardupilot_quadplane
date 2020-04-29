@@ -358,6 +358,22 @@ bool ModeAuto::is_landing() const
 bool ModeAuto::is_taking_off() const
 {
     return ((_mode == Auto_TakeOff) && !wp_nav->reached_wp_destination());
+<<<<<<< HEAD
+=======
+}
+
+bool ModeAuto::landing_gear_should_be_deployed() const
+{
+    switch(_mode) {
+    case Auto_Land:
+        return true;
+    case Auto_RTL:
+        return copter.mode_rtl.landing_gear_should_be_deployed();
+    default:
+        return false;
+    }
+    return false;
+>>>>>>> myquadplane
 }
 
 // auto_payload_place_start - initialises controller to implement a placing

@@ -27,8 +27,11 @@ const char* AP_HAL::RCOutput::get_output_mode_string(enum output_mode out_mode) 
         return "DS1200";
     case MODE_NEOPIXEL:
         return "NeoP";
+<<<<<<< HEAD
     case MODE_PROFILED:
         return "ProfiLED";
+=======
+>>>>>>> myquadplane
     }
 
     // we should never reach here but just in case

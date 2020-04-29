@@ -7,7 +7,10 @@ import math
 import os
 import shutil
 import time
+<<<<<<< HEAD
 import numpy
+=======
+>>>>>>> myquadplane
 
 from pymavlink import mavutil
 from pymavlink import mavextra
@@ -188,14 +191,27 @@ class AutoTestCopter(AutoTest):
 
         self.progress("Fly eastbound away from home")
         self.set_rc(2, 1800)
+<<<<<<< HEAD
         self.delay_sim_time(10)
+=======
+        self.wait_seconds(10)
+>>>>>>> myquadplane
         self.set_rc(2, 1500)
         self.hover()
         self.progress("Cotper staging 50 meters east of home at 50 meters altitude In mode Alt Hold")
 
     # Start and stop the GCS heartbeat for GCS failsafe testing
+<<<<<<< HEAD
     def set_heartbeat_interval(self, interval):
         self.mavproxy.send('set heartbeat %u\n' % interval)
+=======
+    def setHearbeat(self, beating=True):
+        if beating == False:
+            self.mavproxy.send('set heartbeat 0\n')
+        else:
+            self.mavproxy.send('set heartbeat 1\n')
+        
+>>>>>>> myquadplane
 
     # loiter - fly south west, then loiter within 5m position and altitude
     def loiter(self, holdtime=10, maxaltchange=5, maxdistchange=5):
@@ -473,6 +489,7 @@ class AutoTestCopter(AutoTest):
 
     # Tests all actions and logic behind the radio failsafe
     def fly_throttle_failsafe(self, side=60, timeout=360):
+<<<<<<< HEAD
         self.start_subtest("If you haven't taken off yet RC failure should be instant disarm")
         self.change_mode("STABILIZE")
         self.set_parameter("DISARM_DELAY", 0)
@@ -483,15 +500,25 @@ class AutoTestCopter(AutoTest):
         self.set_parameter("DISARM_DELAY", 10)
 
         # Trigger an RC failure with the failsafe disabled. Verify no action taken.
+=======
+        # Trigger and RC failure with the failsafe disabled. Verify no action taken.
+>>>>>>> myquadplane
         self.start_subtest("Radio failsafe disabled test: FS_THR_ENABLE=0 should take no failsafe action")
         self.set_parameter('FS_THR_ENABLE', 0)
         self.set_parameter('FS_OPTIONS', 0)
         self.takeoffAndMoveAway()
         self.set_parameter("SIM_RC_FAIL", 1)
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.wait_mode("ALT_HOLD")
         self.set_parameter("SIM_RC_FAIL", 0)
         self.delay_sim_time(5)
+=======
+        self.wait_seconds(5)
+        self.wait_mode("ALT_HOLD")
+        self.set_parameter("SIM_RC_FAIL", 0)
+        self.wait_seconds(5)
+>>>>>>> myquadplane
         self.wait_mode("ALT_HOLD")
         self.end_subtest("Completed Radio failsafe disabled test")
 
@@ -500,9 +527,15 @@ class AutoTestCopter(AutoTest):
         self.set_parameter('FS_THR_ENABLE', 1)
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("RTL")
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.set_parameter("SIM_RC_FAIL", 0)
         self.delay_sim_time(5)
+=======
+        self.wait_seconds(5)
+        self.set_parameter("SIM_RC_FAIL", 0)
+        self.wait_seconds(5)
+>>>>>>> myquadplane
         self.set_rc(5, 1050)
         self.wait_mode("CIRCLE")
         self.set_rc(5, 1950)
@@ -513,7 +546,11 @@ class AutoTestCopter(AutoTest):
         self.start_subtest("Radio failsafe RTL with no options test: FS_THR_ENABLE=1 & FS_OPTIONS=0")
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("RTL")
+<<<<<<< HEAD
         self.wait_disarmed()
+=======
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter("SIM_RC_FAIL", 0)
         self.end_subtest("Completed Radio failsafe RTL with no options test")
 
@@ -523,7 +560,11 @@ class AutoTestCopter(AutoTest):
         self.takeoffAndMoveAway()
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("LAND")
+<<<<<<< HEAD
         self.wait_disarmed()
+=======
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter("SIM_RC_FAIL", 0)
         self.end_subtest("Completed Radio failsafe LAND with no options test")
 
@@ -533,7 +574,11 @@ class AutoTestCopter(AutoTest):
         self.takeoffAndMoveAway()
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("SMART_RTL")
+<<<<<<< HEAD
         self.wait_disarmed()
+=======
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter("SIM_RC_FAIL", 0)
         self.end_subtest("Completed Radio failsafe SmartRTL->RTL with no options test")
 
@@ -543,7 +588,11 @@ class AutoTestCopter(AutoTest):
         self.takeoffAndMoveAway()
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("SMART_RTL")
+<<<<<<< HEAD
         self.wait_disarmed()
+=======
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter("SIM_RC_FAIL", 0)
         self.end_subtest("Completed Radio failsafe SmartRTL_Land with no options test")
 
@@ -552,10 +601,17 @@ class AutoTestCopter(AutoTest):
         self.set_parameter('FS_THR_ENABLE', 1)
         self.takeoffAndMoveAway()
         self.set_parameter('SIM_GPS_DISABLE', 1)
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("LAND")
         self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.set_parameter("SIM_RC_FAIL", 1)
+        self.wait_mode("LAND")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter("SIM_RC_FAIL", 0)
         self.set_parameter('SIM_GPS_DISABLE', 0)
         self.wait_ekf_happy()
@@ -566,10 +622,17 @@ class AutoTestCopter(AutoTest):
         self.set_parameter('FS_THR_ENABLE', 4)
         self.takeoffAndMoveAway()
         self.set_parameter('SIM_GPS_DISABLE', 1)
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("LAND")
         self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.set_parameter("SIM_RC_FAIL", 1)
+        self.wait_mode("LAND")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter("SIM_RC_FAIL", 0)
         self.set_parameter('SIM_GPS_DISABLE', 0)
         self.wait_ekf_happy()
@@ -580,10 +643,17 @@ class AutoTestCopter(AutoTest):
         self.set_parameter('FS_THR_ENABLE', 5)
         self.takeoffAndMoveAway()
         self.set_parameter('SIM_GPS_DISABLE', 1)
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("LAND")
         self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.set_parameter("SIM_RC_FAIL", 1)
+        self.wait_mode("LAND")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter("SIM_RC_FAIL", 0)
         self.set_parameter('SIM_GPS_DISABLE', 0)
         self.wait_ekf_happy()
@@ -597,10 +667,17 @@ class AutoTestCopter(AutoTest):
         self.mavproxy.expect("SmartRTL deactivated: bad position")
         self.set_parameter('SIM_GPS_DISABLE', 0)
         self.wait_ekf_happy()
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("RTL")
         self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.set_parameter("SIM_RC_FAIL", 1)
+        self.wait_mode("RTL")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter("SIM_RC_FAIL", 0)
         self.end_subtest("Completed Radio failsafe SmartRTL->RTL fails into RTL mode due to no path.")
 
@@ -612,10 +689,17 @@ class AutoTestCopter(AutoTest):
         self.mavproxy.expect("SmartRTL deactivated: bad position")
         self.set_parameter('SIM_GPS_DISABLE', 0)
         self.wait_ekf_happy()
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("LAND")
         self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.set_parameter("SIM_RC_FAIL", 1)
+        self.wait_mode("LAND")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter("SIM_RC_FAIL", 0)
         self.end_subtest("Completed Radio failsafe SmartRTL->LAND fails into land mode due to no path.")
 
@@ -627,6 +711,7 @@ class AutoTestCopter(AutoTest):
         self.takeoffAndMoveAway()
         self.change_mode("GUIDED")
         self.set_parameter("SIM_RC_FAIL", 1)
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.wait_mode("GUIDED")
         self.set_parameter("SIM_RC_FAIL", 0)
@@ -635,6 +720,16 @@ class AutoTestCopter(AutoTest):
         self.setGCSfailsafe(0)
         # self.change_mode("RTL")
         # self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.wait_mode("GUIDED")
+        self.set_parameter("SIM_RC_FAIL", 0)
+        self.wait_seconds(5)
+        self.change_mode("ALT_HOLD")
+        self.setGCSfailsafe(0)
+        # self.change_mode("RTL")
+        # self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.end_subtest("Completed Radio failsafe with option to continue in guided mode")
 
         # Trigger an RC failure in AUTO mode with the option enabled to continue the mission. Verify no failsafe action takes place
@@ -647,6 +742,7 @@ class AutoTestCopter(AutoTest):
         self.takeoffAndMoveAway()
         self.change_mode("AUTO")
         self.set_parameter("SIM_RC_FAIL", 1)
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.wait_mode("AUTO")
         self.set_parameter("SIM_RC_FAIL", 0)
@@ -654,6 +750,15 @@ class AutoTestCopter(AutoTest):
         self.wait_mode("AUTO")
         # self.change_mode("RTL")
         # self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.wait_mode("AUTO")
+        self.set_parameter("SIM_RC_FAIL", 0)
+        self.wait_seconds(5)
+        self.wait_mode("AUTO")
+        # self.change_mode("RTL")
+        # self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.end_subtest("Completed Radio failsafe RTL with option to continue mission")
 
         # Trigger an RC failure in AUTO mode without the option enabled to continue. Verify failsafe triggers and RTL completes
@@ -661,7 +766,11 @@ class AutoTestCopter(AutoTest):
         self.set_parameter('FS_OPTIONS', 0)
         self.set_parameter("SIM_RC_FAIL", 1)
         self.wait_mode("RTL")
+<<<<<<< HEAD
         self.wait_disarmed()
+=======
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.clear_mission_using_mavproxy()
         self.set_parameter("SIM_RC_FAIL", 0)
         self.end_subtest("Completed Radio failsafe RTL in mission without option to continue")
@@ -676,30 +785,51 @@ class AutoTestCopter(AutoTest):
         self.start_subtest("GCS failsafe disabled test: FS_GCS_ENABLE=0 should take no failsafe action")
         self.setGCSfailsafe(0)
         self.takeoffAndMoveAway()
+<<<<<<< HEAD
         self.set_heartbeat_interval(0)
         self.delay_sim_time(5)
         self.wait_mode("ALT_HOLD")
         self.set_heartbeat_interval(self.speedup)
         self.delay_sim_time(5)
+=======
+        self.setHearbeat(False)
+        self.wait_seconds(5)
+        self.wait_mode("ALT_HOLD")
+        self.setHearbeat()
+        self.wait_seconds(5)
+>>>>>>> myquadplane
         self.wait_mode("ALT_HOLD")
         self.end_subtest("Completed GCS failsafe disabled test")
 
         # Trigger telemetry loss with failsafe enabled. Verify failsafe tirggers to RTL. Restory telemety, verify failsafe clears, and change modes.
         self.start_subtest("GCS failsafe recovery test")
         self.setGCSfailsafe(1)
+<<<<<<< HEAD
         self.set_heartbeat_interval(0)
         self.wait_mode("RTL")
         self.set_heartbeat_interval(self.speedup)
+=======
+        self.setHearbeat(False)
+        self.wait_mode("RTL")
+        self.setHearbeat()
+>>>>>>> myquadplane
         self.mavproxy.expect("GCS Failsafe Cleared")
         self.change_mode("LOITER")
         self.end_subtest("Completed GCS failsafe recovery test")
 
         # Trigger telemetry loss with failsafe enabled. Verify failsafe tirggers and RTL completes
         self.start_subtest("GCS failsafe RTL with no options test: FS_GCS_ENABLE=1 & FS_OPTIONS=0")
+<<<<<<< HEAD
         self.set_heartbeat_interval(0)
         self.wait_mode("RTL")
         self.wait_disarmed()
         self.set_heartbeat_interval(self.speedup)
+=======
+        self.setHearbeat(False)
+        self.wait_mode("RTL")
+        self.mav.motors_disarmed_wait()
+        self.setHearbeat()
+>>>>>>> myquadplane
         self.mavproxy.expect("GCS Failsafe Cleared")
         self.end_subtest("Completed GCS failsafe RTL with no options test")
 
@@ -707,10 +837,17 @@ class AutoTestCopter(AutoTest):
         self.start_subtest("GCS failsafe LAND with no options test: FS_GCS_ENABLE=5 & FS_OPTIONS=0")
         self.setGCSfailsafe(5)
         self.takeoffAndMoveAway()
+<<<<<<< HEAD
         self.set_heartbeat_interval(0)
         self.wait_mode("LAND")
         self.wait_disarmed()
         self.set_heartbeat_interval(self.speedup)
+=======
+        self.setHearbeat(False)
+        self.wait_mode("LAND")
+        self.mav.motors_disarmed_wait()
+        self.setHearbeat()
+>>>>>>> myquadplane
         self.mavproxy.expect("GCS Failsafe Cleared")
         self.end_subtest("Completed GCS failsafe land with no options test")
 
@@ -718,10 +855,17 @@ class AutoTestCopter(AutoTest):
         self.start_subtest("GCS failsafe SmartRTL->RTL with no options test: FS_GCS_ENABLE=3 & FS_OPTIONS=0")
         self.setGCSfailsafe(3)
         self.takeoffAndMoveAway()
+<<<<<<< HEAD
         self.set_heartbeat_interval(0)
         self.wait_mode("SMART_RTL")
         self.wait_disarmed()
         self.set_heartbeat_interval(self.speedup)
+=======
+        self.setHearbeat(False)
+        self.wait_mode("SMART_RTL")
+        self.mav.motors_disarmed_wait()
+        self.setHearbeat()
+>>>>>>> myquadplane
         self.mavproxy.expect("GCS Failsafe Cleared")
         self.end_subtest("Completed GCS failsafe SmartRTL->RTL with no options test")
 
@@ -729,10 +873,17 @@ class AutoTestCopter(AutoTest):
         self.start_subtest("GCS failsafe SmartRTL->Land with no options test: FS_GCS_ENABLE=4 & FS_OPTIONS=0")
         self.setGCSfailsafe(4)
         self.takeoffAndMoveAway()
+<<<<<<< HEAD
         self.set_heartbeat_interval(0)
         self.wait_mode("SMART_RTL")
         self.wait_disarmed()
         self.set_heartbeat_interval(self.speedup)
+=======
+        self.setHearbeat(False)
+        self.wait_mode("SMART_RTL")
+        self.mav.motors_disarmed_wait()
+        self.setHearbeat()
+>>>>>>> myquadplane
         self.mavproxy.expect("GCS Failsafe Cleared")
         self.end_subtest("Completed GCS failsafe SmartRTL->Land with no options test")
 
@@ -740,10 +891,17 @@ class AutoTestCopter(AutoTest):
         self.start_subtest("GCS failsafe invalid value with no options test: FS_GCS_ENABLE=99 & FS_OPTIONS=0")
         self.setGCSfailsafe(99)
         self.takeoffAndMoveAway()
+<<<<<<< HEAD
         self.set_heartbeat_interval(0)
         self.wait_mode("RTL")
         self.wait_disarmed()
         self.set_heartbeat_interval(self.speedup)
+=======
+        self.setHearbeat(False)
+        self.wait_mode("RTL")
+        self.mav.motors_disarmed_wait()
+        self.setHearbeat()
+>>>>>>> myquadplane
         self.mavproxy.expect("GCS Failsafe Cleared")
         self.end_subtest("Completed GCS failsafe invalid value with no options test")
 
@@ -756,27 +914,45 @@ class AutoTestCopter(AutoTest):
         self.set_parameter('FS_OPTIONS', 16)
         self.takeoffAndMoveAway()
         self.progress("Testing continue in pilot controlled modes")
+<<<<<<< HEAD
         self.set_heartbeat_interval(0)
         self.mavproxy.expect("GCS Failsafe - Continuing Pilot Control")
         self.delay_sim_time(5)
         self.wait_mode("ALT_HOLD")
         self.set_heartbeat_interval(self.speedup)
+=======
+        self.setHearbeat(False)
+        self.mavproxy.expect("GCS Failsafe - Continuing Pilot Control")
+        self.wait_seconds(5)
+        self.wait_mode("ALT_HOLD")
+        self.setHearbeat()
+>>>>>>> myquadplane
         self.mavproxy.expect("GCS Failsafe Cleared")
 
         self.progress("Testing continue in auto mission")
         self.set_parameter('FS_OPTIONS', 2)
         self.change_mode("AUTO")
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.set_heartbeat_interval(0)
         self.mavproxy.expect("GCS Failsafe - Continuing Auto Mode")
         self.delay_sim_time(5)
         self.wait_mode("AUTO")
         self.set_heartbeat_interval(self.speedup)
+=======
+        self.wait_seconds(5)
+        self.setHearbeat(False)
+        self.mavproxy.expect("GCS Failsafe - Continuing Auto Mode")
+        self.wait_seconds(5)
+        self.wait_mode("AUTO")
+        self.setHearbeat()
+>>>>>>> myquadplane
         self.mavproxy.expect("GCS Failsafe Cleared")
 
         self.progress("Testing continue landing in land mode")
         self.set_parameter('FS_OPTIONS', 8)
         self.change_mode("LAND")
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.set_heartbeat_interval(0)
         self.mavproxy.expect("GCS Failsafe - Continuing Landing")
@@ -784,6 +960,15 @@ class AutoTestCopter(AutoTest):
         self.wait_mode("LAND")
         self.wait_disarmed()
         self.set_heartbeat_interval(self.speedup)
+=======
+        self.wait_seconds(5)
+        self.setHearbeat(False)
+        self.mavproxy.expect("GCS Failsafe - Continuing Landing")
+        self.wait_seconds(5)
+        self.wait_mode("LAND")
+        self.mav.motors_disarmed_wait()
+        self.setHearbeat()
+>>>>>>> myquadplane
         self.mavproxy.expect("GCS Failsafe Cleared")
         self.end_subtest("Completed GCS failsafe with option bits")
 
@@ -808,6 +993,7 @@ class AutoTestCopter(AutoTest):
         self.takeoffAndMoveAway()
         self.set_parameter('SIM_BATT_VOLTAGE', 11.4)
         self.mavproxy.expect("Battery 1 is low")
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.wait_mode("ALT_HOLD")
         self.set_parameter('SIM_BATT_VOLTAGE', 10.0)
@@ -816,6 +1002,16 @@ class AutoTestCopter(AutoTest):
         self.wait_mode("ALT_HOLD")
         self.change_mode("RTL")
         self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.wait_mode("ALT_HOLD")
+        self.set_parameter('SIM_BATT_VOLTAGE', 10.0)
+        self.mavproxy.expect("Battery 1 is critical")
+        self.wait_seconds(5)
+        self.wait_mode("ALT_HOLD")
+        self.change_mode("RTL")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter('SIM_BATT_VOLTAGE', 12.5)
         self.mavproxy.send('reboot\n')
         self.end_subtest("Completed Batt failsafe disabled test")
@@ -823,11 +1019,16 @@ class AutoTestCopter(AutoTest):
         # TWO STAGE BATTERY FAILSAFE: Trigger low battery condition, then critical battery condition. Verify RTL and Land actions complete.
         self.start_subtest("Two stage battery failsafe test with RTL and Land")
         self.takeoffAndMoveAway()
+<<<<<<< HEAD
         self.delay_sim_time(3)
+=======
+        self.wait_seconds(3)
+>>>>>>> myquadplane
         self.set_parameter('BATT_FS_LOW_ACT', 2)
         self.set_parameter('BATT_FS_CRT_ACT', 1)
         self.set_parameter('SIM_BATT_VOLTAGE', 11.4)
         self.mavproxy.expect("Battery 1 is low")
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.wait_mode("RTL")
         self.delay_sim_time(10)
@@ -836,6 +1037,16 @@ class AutoTestCopter(AutoTest):
         self.delay_sim_time(5)
         self.wait_mode("LAND")
         self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.wait_mode("RTL")
+        self.wait_seconds(10)
+        self.set_parameter('SIM_BATT_VOLTAGE', 10.0)
+        self.mavproxy.expect("Battery 1 is critical")
+        self.wait_seconds(5)
+        self.wait_mode("LAND")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter('SIM_BATT_VOLTAGE', 12.5)
         self.mavproxy.send('reboot\n')
         self.end_subtest("Completed two stage battery failsafe test with RTL and Land")
@@ -845,6 +1056,7 @@ class AutoTestCopter(AutoTest):
         self.takeoffAndMoveAway()
         self.set_parameter('BATT_FS_LOW_ACT', 3)
         self.set_parameter('BATT_FS_CRT_ACT', 4)
+<<<<<<< HEAD
         self.delay_sim_time(10)
         self.set_parameter('SIM_BATT_VOLTAGE', 11.4)
         self.mavproxy.expect("Battery 1 is low")
@@ -857,6 +1069,20 @@ class AutoTestCopter(AutoTest):
         self.delay_sim_time(5)
         self.wait_mode("SMART_RTL")
         self.wait_disarmed()
+=======
+        self.wait_seconds(10)
+        self.set_parameter('SIM_BATT_VOLTAGE', 11.4)
+        self.mavproxy.expect("Battery 1 is low")
+        self.wait_seconds(5)
+        self.wait_mode("SMART_RTL")
+        self.change_mode("LOITER")
+        self.wait_seconds(10)
+        self.set_parameter('SIM_BATT_VOLTAGE', 10.0)
+        self.mavproxy.expect("Battery 1 is critical")
+        self.wait_seconds(5)
+        self.wait_mode("SMART_RTL")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter('SIM_BATT_VOLTAGE', 12.5)
         self.mavproxy.send('reboot\n')
         self.end_subtest("Completed two stage battery failsafe test with SmartRTL")
@@ -866,12 +1092,21 @@ class AutoTestCopter(AutoTest):
         self.takeoffAndMoveAway()
         self.set_parameter('FS_OPTIONS', 8)
         self.change_mode("LAND")
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.set_parameter('SIM_BATT_VOLTAGE', 11.4)
         self.mavproxy.expect("Battery 1 is low")
         self.delay_sim_time(5)
         self.wait_mode("LAND")
         self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.set_parameter('SIM_BATT_VOLTAGE', 11.4)
+        self.mavproxy.expect("Battery 1 is low")
+        self.wait_seconds(5)
+        self.wait_mode("LAND")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter('SIM_BATT_VOLTAGE', 12.5)
         self.mavproxy.send('reboot\n')
         self.end_subtest("Completed battery failsafe with FS_OPTIONS set to continue landing")
@@ -883,6 +1118,7 @@ class AutoTestCopter(AutoTest):
         self.set_parameter('BATT_FS_LOW_ACT', 1)
         self.set_parameter('BATT_FS_CRT_ACT', 1)
         self.set_parameter('FS_THR_ENABLE', 1)
+<<<<<<< HEAD
         self.delay_sim_time(5)
         self.set_parameter('SIM_BATT_VOLTAGE', 10.0)
         self.mavproxy.expect("Battery 1 is critical")
@@ -892,6 +1128,17 @@ class AutoTestCopter(AutoTest):
         self.delay_sim_time(10)
         self.wait_mode("LAND")
         self.wait_disarmed()
+=======
+        self.wait_seconds(5)
+        self.set_parameter('SIM_BATT_VOLTAGE', 10.0)
+        self.mavproxy.expect("Battery 1 is critical")
+        self.wait_mode("LAND")
+        self.wait_seconds(10)
+        self.set_parameter("SIM_RC_FAIL", 1)
+        self.wait_seconds(10)
+        self.wait_mode("LAND")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.set_parameter('SIM_BATT_VOLTAGE', 12.5)
         self.set_parameter("SIM_RC_FAIL", 0)
         self.mavproxy.send('reboot\n')
@@ -901,10 +1148,17 @@ class AutoTestCopter(AutoTest):
         self.start_subtest("Battery failsafe terminate")
         self.takeoffAndMoveAway()
         self.set_parameter('BATT_FS_LOW_ACT', 5)
+<<<<<<< HEAD
         self.delay_sim_time(10)
         self.set_parameter('SIM_BATT_VOLTAGE', 11.4)
         self.mavproxy.expect("Battery 1 is low")
         self.wait_disarmed()
+=======
+        self.wait_seconds(10)
+        self.set_parameter('SIM_BATT_VOLTAGE', 11.4)
+        self.mavproxy.expect("Battery 1 is low")
+        self.mav.motors_disarmed_wait()
+>>>>>>> myquadplane
         self.end_subtest("Completed terminate failsafe test")
 
         self.progress("All Battery failsafe tests complete")
@@ -984,6 +1238,20 @@ class AutoTestCopter(AutoTest):
                 self.progress("Armed")
                 return
 
+<<<<<<< HEAD
+=======
+    def wait_distance_from_home(self, distance_min, distance_max, timeout=10, use_cached_home=True):
+        tstart = self.get_sim_time()
+        while True:
+            if self.get_sim_time() - tstart > timeout:
+                raise NotAchievedException("Did not achieve distance from home")
+            distance = self.distance_to_home(use_cached_home)
+            self.progress("Distance from home: now=%f %f<want<%f" %
+                          (distance, distance_min, distance_max))
+            if distance >= distance_min and distance <= distance_max:
+                return
+
+>>>>>>> myquadplane
     # fly_fence_test - fly east until you hit the horizontal circular fence
     avoid_behave_slide = 0
     def fly_fence_avoid_test_radius_check(self, timeout=180, avoid_behave=avoid_behave_slide):
@@ -3145,6 +3413,28 @@ class AutoTestCopter(AutoTest):
         if ex is not None:
             raise ex
 
+    def test_spline_last_waypoint(self):
+        self.context_push()
+        ex = None
+        try:
+            self.load_mission("copter-spline-last-waypoint.txt")
+            self.mavproxy.send('mode loiter\n')
+            self.wait_ready_to_arm()
+            self.arm_vehicle()
+            self.mavproxy.send('mode auto\n')
+            self.wait_mode('AUTO')
+            self.set_rc(3, 1500)
+            self.wait_altitude(10, 3000, relative=True)
+        except Exception as e:
+            self.progress("Exception caught: %s" % (
+                self.get_exception_stacktrace(e)))
+            ex = e
+        self.context_pop()
+        self.do_RTL()
+        self.mav.motors_disarmed_wait()
+        if ex is not None:
+            raise ex
+
     def fly_manual_throttle_mode_change(self):
         self.set_parameter("FS_GCS_ENABLE", 0) # avoid GUIDED instant disarm
         self.change_mode("STABILIZE")
@@ -3657,6 +3947,7 @@ class AutoTestCopter(AutoTest):
                                        (tdelta, max_good_tdelta))
         self.progress("Vehicle returned")
 
+<<<<<<< HEAD
     def hover_and_check_matched_frequency_with_fft(self, dblevel=-15, minhz=200, maxhz=300, peakhz=None, reverse=None):
         # find a motor peak
         self.takeoff(10, mode="ALT_HOLD")
@@ -3992,6 +4283,33 @@ class AutoTestCopter(AutoTest):
             ("SIM_MAG_ODI_Y", "COMPASS_ODI_Y", 0.005),
             ("SIM_MAG_ODI_Z", "COMPASS_ODI_Z", 0.006),
         ]
+=======
+    def fly_dynamic_notches(self):
+        self.progress("Flying with dynamic notches")
+        self.set_parameter("INS_HNTCH_ENABLE", 1)
+        self.set_parameter("INS_HNTCH_FREQ", 80)
+        self.set_parameter("INS_HNTCH_REF", 0.35)
+        # first and third harmonic
+        self.set_parameter("INS_HNTCH_HMNCS", 5)
+        self.set_parameter("INS_NOTCH_ENABLE", 1)
+        self.set_parameter("INS_NOTCH_FREQ", 90)
+        self.reboot_sitl()
+
+        self.set_parameter("SIM_GYR_RND", 10)
+        self.takeoff(10, mode="LOITER")
+
+        self.change_mode("ALT_HOLD")
+        # fly fast forrest!
+        self.set_rc(3, 1900)
+        self.set_rc(2, 1200)
+        self.wait_groundspeed(5, 1000)
+        self.set_rc(3, 1500)
+        self.set_rc(2, 1500)
+
+        self.do_RTL()
+
+    def test_onboard_compass_calibration(self, timeout=240):
+>>>>>>> myquadplane
         twist_x = 2.1
         twist_y = 2.2
         twist_z = 2.3
@@ -4019,6 +4337,10 @@ class AutoTestCopter(AutoTest):
                          0,
                          0,
                          0,
+<<<<<<< HEAD
+=======
+                         0,
+>>>>>>> myquadplane
                          timeout=2)
             tstart = self.get_sim_time()
             last_twist_time = 0
@@ -4462,9 +4784,15 @@ class AutoTestCopter(AutoTest):
         if ex is not None:
             raise ex
 
+<<<<<<< HEAD
     def global_position_int_for_location(self, loc, time_boot, heading=0):
         return self.mav.mav.global_position_int_encode(
             int(time_boot * 1000), # time_boot_ms
+=======
+    def global_position_int_for_location(self, loc, time, heading=0):
+        return self.mav.mav.global_position_int_encode(
+            int(time * 1000), # time_boot_ms
+>>>>>>> myquadplane
             int(loc.lat * 1e7),
             int(loc.lng * 1e7),
             int(loc.alt * 1000), # alt in mm
@@ -4511,7 +4839,11 @@ class AutoTestCopter(AutoTest):
             self.mav.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
             pos = self.mav.location()
             delta = self.get_distance(expected_loc, pos)
+<<<<<<< HEAD
             max_delta = 3
+=======
+            max_delta = 2
+>>>>>>> myquadplane
             self.progress("position delta=%f (want <%f)" % (delta, max_delta))
             if delta < max_delta:
                 break
@@ -5009,6 +5341,7 @@ class AutoTestCopter(AutoTest):
              "Test onboard compass calibration",
              self.test_onboard_compass_calibration),
 
+<<<<<<< HEAD
             ("RangeFinderDrivers",
              "Test rangefinder drivers",
              self.fly_rangefinder_drivers),
@@ -5036,10 +5369,13 @@ class AutoTestCopter(AutoTest):
              "Fly motor vibration test",
              self.fly_motor_vibration),
 
+=======
+>>>>>>> myquadplane
             ("DynamicNotches",
              "Fly Dynamic Notches",
              self.fly_dynamic_notches),
 
+<<<<<<< HEAD
             ("GyroFFT",
              "Fly Gyro FFT",
              self.fly_gyro_fft),
@@ -5052,11 +5388,14 @@ class AutoTestCopter(AutoTest):
              "Fly Gyro FFT Harmonic Matching",
              self.fly_gyro_fft_harmonic),
 
+=======
+>>>>>>> myquadplane
             ("LogDownLoad",
              "Log download",
              lambda: self.log_download(
                  self.buildlogs_path("ArduCopter-log.bin"),
                  upload_logs=len(self.fail_list) > 0))
+
         ])
         return ret
 

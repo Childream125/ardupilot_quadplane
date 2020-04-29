@@ -20,11 +20,19 @@ CompassLearn::CompassLearn(Compass &_compass) :
     compass(_compass)
 {
     gcs().send_text(MAV_SEVERITY_INFO, "CompassLearn: Initialised");
+<<<<<<< HEAD
     for (Compass::Priority i(0); i<compass.get_count(); i++) {
         if (compass._use_for_yaw[Compass::Priority(i)]) {
             // reset scale factors, we can't learn scale factors in
             // flight
             compass.set_and_save_scale_factor(uint8_t(i), 0.0);
+=======
+    for (uint8_t i=0; i<compass.get_count(); i++) {
+        if (compass._state[i].use_for_yaw) {
+            // reset scale factors, we can't learn scale factors in
+            // flight
+            compass.set_and_save_scale_factor(i, 0.0);
+>>>>>>> myquadplane
         }
     }
 }
@@ -150,6 +158,10 @@ void CompassLearn::update(void)
                 if (compass._use_for_yaw[Compass::Priority(i)]) {
                     compass.save_offsets(i);
                     compass.set_and_save_scale_factor(i, 0.0);
+<<<<<<< HEAD
+=======
+                    compass.set_use_for_yaw(i, true);
+>>>>>>> myquadplane
                 }
             }
             compass.set_learn_type(Compass::LEARN_NONE, true);

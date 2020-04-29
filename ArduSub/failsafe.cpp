@@ -348,11 +348,19 @@ void Sub::failsafe_gcs_check()
         arming.disarm(AP_Arming::Method::GCSFAILSAFE);
     } else if (g.failsafe_gcs == FS_GCS_HOLD && motors.armed()) {
         if (!set_mode(ALT_HOLD, ModeReason::GCS_FAILSAFE)) {
+<<<<<<< HEAD
             arming.disarm(AP_Arming::Method::GCS_FAILSAFE_HOLDFAILED);
         }
     } else if (g.failsafe_gcs == FS_GCS_SURFACE && motors.armed()) {
         if (!set_mode(SURFACE, ModeReason::GCS_FAILSAFE)) {
             arming.disarm(AP_Arming::Method::GCS_FAILSAFE_SURFACEFAILED);
+=======
+            arming.disarm();
+        }
+    } else if (g.failsafe_gcs == FS_GCS_SURFACE && motors.armed()) {
+        if (!set_mode(SURFACE, ModeReason::GCS_FAILSAFE)) {
+            arming.disarm();
+>>>>>>> myquadplane
         }
     }
 }

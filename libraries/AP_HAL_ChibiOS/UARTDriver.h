@@ -232,9 +232,12 @@ private:
 
     void receive_timestamp_update(void);
 
+<<<<<<< HEAD
     // set SERIALn_OPTIONS for pullup/pulldown
     void set_pushpull(uint16_t options);
 
+=======
+>>>>>>> myquadplane
     void thread_init();
     static void uart_thread(void *);
 };

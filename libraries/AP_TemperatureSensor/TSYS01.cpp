@@ -15,9 +15,12 @@ static const uint8_t TSYS01_CMD_READ_ADC    = 0x00;
 
 bool TSYS01::init(uint8_t bus)
 {
+<<<<<<< HEAD
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
     return false;
 #endif
+=======
+>>>>>>> myquadplane
     _dev = std::move(hal.i2c_mgr->get_device(bus, TSYS01_ADDR));
     if (!_dev) {
         printf("TSYS01 device is null!");

@@ -97,8 +97,11 @@ imu_list = []
 compass_list = []
 baro_list = []
 
+<<<<<<< HEAD
 all_lines = []
 
+=======
+>>>>>>> myquadplane
 mcu_type = None
 dual_USB_enabled = False
 
@@ -237,6 +240,8 @@ class generic_pin(object):
                 elif label == 'I2C':
                     self.sig_dir = 'OUTPUT'
                 elif label == 'OTG':
+                    self.sig_dir = 'OUTPUT'
+                elif l == 'OTG':
                     self.sig_dir = 'OUTPUT'
                 else:
                     error("Unknown signal type %s:%s for %s!" % (self.portpin, self.label, mcu_type))
@@ -777,12 +782,15 @@ def write_mcu_config(f):
 ''')
     if env_vars.get('ROMFS_UNCOMPRESSED', False):
         f.write('#define HAL_ROMFS_UNCOMPRESSED\n')
+<<<<<<< HEAD
 
     if 'AP_PERIPH' in env_vars:
         f.write('''
 #define CH_DBG_ENABLE_STACK_CHECK FALSE
 ''')
 
+=======
+>>>>>>> myquadplane
 
 def write_ldscript(fname):
     '''write ldscript.ld for this board'''
@@ -828,7 +836,10 @@ MEMORY
 
 INCLUDE common.ld
 ''' % (flash_base, flash_length, ram0_start, ram0_len))
+<<<<<<< HEAD
 
+=======
+>>>>>>> myquadplane
 
 def copy_common_linkerscript(outdir, hwdef):
     dirpath = os.path.dirname(hwdef)
@@ -837,6 +848,19 @@ def copy_common_linkerscript(outdir, hwdef):
 
 def get_USB_IDs():
     '''return tuple of USB VID/PID'''
+<<<<<<< HEAD
+=======
+
+    global dual_USB_enabled
+    if dual_USB_enabled:
+        # use pidcodes allocated ID
+        default_vid = 0x1209
+        default_pid = 0x5740
+    else:
+        default_vid = 0x0483
+        default_pid = 0x5740
+    return (get_config('USB_VENDOR', type=int, default=default_vid), get_config('USB_PRODUCT', type=int, default=default_pid))
+>>>>>>> myquadplane
 
     global dual_USB_enabled
     if dual_USB_enabled:
@@ -856,7 +880,11 @@ def write_USB_config(f):
     (USB_VID, USB_PID) = get_USB_IDs()
     f.write('#define HAL_USB_VENDOR_ID 0x%04x\n' % int(USB_VID))
     f.write('#define HAL_USB_PRODUCT_ID 0x%04x\n' % int(USB_PID))
+<<<<<<< HEAD
     f.write('#define HAL_USB_STRING_MANUFACTURER %s\n' % get_config("USB_STRING_MANUFACTURER", default="\"ArduPilot\""))
+=======
+    f.write('#define HAL_USB_STRING_MANUFACTURER "%s"\n' % get_config("USB_STRING_MANUFACTURER", default="ArduPilot"))
+>>>>>>> myquadplane
     default_product = "%BOARD%"
     if args.bootloader:
         default_product += "-BL"
@@ -1100,8 +1128,12 @@ def get_UART_ORDER():
 def write_UART_config(f):
     '''write UART config defines'''
     global dual_USB_enabled
+<<<<<<< HEAD
     uart_list = get_UART_ORDER()
     if uart_list is None:
+=======
+    if get_config('UART_ORDER', required=False) is None:
+>>>>>>> myquadplane
         return
     f.write('\n// UART configuration\n')
 
@@ -1113,7 +1145,11 @@ def write_UART_config(f):
     for dev in uart_list:
         if dev == 'EMPTY':
             f.write('#define HAL_UART%s_DRIVER Empty::UARTDriver uart%sDriver\n' %
+<<<<<<< HEAD
                     (devnames[idx], devnames[idx]))
+=======
+                (devnames[idx], devnames[idx]))
+>>>>>>> myquadplane
             num_empty_uarts += 1
         else:
             f.write(
@@ -1156,11 +1192,20 @@ def write_UART_config(f):
         else:
             error("Invalid element %s in UART_ORDER" % dev)
         devlist.append('HAL_%s_CONFIG' % dev)
+<<<<<<< HEAD
         tx_line = make_line(dev + '_TX')
         rx_line = make_line(dev + '_RX')
         rts_line = make_line(dev + '_RTS')
         if rts_line != "0":
             have_rts_cts = True
+=======
+        if dev + "_RTS" in bylabel:
+            p = bylabel[dev + '_RTS']
+            rts_line = 'PAL_LINE(GPIO%s,%uU)' % (p.port, p.pin)
+            have_rts_cts = True
+        else:
+            rts_line = "0"
+>>>>>>> myquadplane
         if dev.startswith('OTG2'):
             f.write(
                 '#define HAL_%s_CONFIG {(BaseSequentialStream*) &SDU2, true, false, 0, 0, false, 0, 0}\n'
@@ -1212,10 +1257,14 @@ def write_UART_config(f):
     num_uarts = len(devlist)
     if 'IOMCU_UART' in config:
         num_uarts -= 1
+<<<<<<< HEAD
     if num_uarts > 8:
         error("Exceeded max num UARTs of 8 (%u)" % num_uarts)
     f.write('#define HAL_UART_NUM_SERIAL_PORTS %u\n' % (num_uarts+num_empty_uarts))
 
+=======
+    f.write('#define HAL_UART_NUM_SERIAL_PORTS %u\n' % (num_uarts+num_empty_uarts))
+>>>>>>> myquadplane
 
 def write_UART_config_bootloader(f):
     '''write UART config defines'''
@@ -1584,7 +1633,10 @@ def setup_apj_IDs():
     env_vars['APJ_BOARD_TYPE'] = get_config('APJ_BOARD_TYPE', default=mcu_type)
     (USB_VID, USB_PID) = get_USB_IDs()
     env_vars['USBID'] = '0x%04x/0x%04x' % (USB_VID, USB_PID)
+<<<<<<< HEAD
 
+=======
+>>>>>>> myquadplane
 
 def write_peripheral_enable(f):
     '''write peripheral enable lines'''

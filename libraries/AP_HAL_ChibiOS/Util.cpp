@@ -207,8 +207,12 @@ Util::FlashBootloader Util::flash_bootloader()
     // make sure size is multiple of 32
     fw_size = (fw_size + 31U) & ~31U;
 
+    // make sure size is multiple of 32
+    fw_size = (fw_size + 31U) & ~31U;
+
     const uint32_t addr = hal.flash->getpageaddr(0);
     if (!memcmp(fw, (const void*)addr, fw_size)) {
+<<<<<<< HEAD
         Debug("Bootloader up-to-date\n");
         AP_ROMFS::free(fw);
         return FlashBootloader::NO_CHANGE;
@@ -231,6 +235,18 @@ Util::FlashBootloader Util::flash_bootloader()
         }
         erased_size += page_size;
         erase_page++;
+=======
+        hal.console->printf("Bootloader up-to-date\n");
+        AP_ROMFS::free(fw);
+        return true;
+    }
+
+    hal.console->printf("Erasing\n");
+    if (!hal.flash->erasepage(0)) {
+        hal.console->printf("Erase failed\n");
+        AP_ROMFS::free(fw);
+        return false;
+>>>>>>> myquadplane
     }
 
     Debug("Flashing %s @%08x\n", fw_name, (unsigned int)addr);
@@ -246,6 +262,7 @@ Util::FlashBootloader Util::flash_bootloader()
             hal.scheduler->delay(100);
             continue;
         }
+<<<<<<< HEAD
         Debug("Flash OK\n");
         hal.flash->keep_unlocked(false);
         AP_ROMFS::free(fw);
@@ -256,6 +273,16 @@ Util::FlashBootloader Util::flash_bootloader()
     Debug("Flash failed after %u attempts\n", max_attempts);
     AP_ROMFS::free(fw);
     return FlashBootloader::FAIL;
+=======
+        hal.console->printf("Flash OK\n");
+        AP_ROMFS::free(fw);
+        return true;
+    }
+
+    hal.console->printf("Flash failed after %u attempts\n", max_attempts);
+    AP_ROMFS::free(fw);
+    return false;
+>>>>>>> myquadplane
 }
 #endif // !HAL_NO_FLASH_SUPPORT && !HAL_NO_ROMFS_SUPPORT
 

@@ -269,6 +269,7 @@ public:
     };
 
     void set_nav_info(NavInfo &nav_info);
+<<<<<<< HEAD
     // disable the display
     void disable() {
         _disable = true;
@@ -277,6 +278,9 @@ public:
     void enable() {
         _disable = false;
     }
+=======
+
+>>>>>>> myquadplane
 
 private:
     void osd_thread();
@@ -296,7 +300,10 @@ private:
     int8_t pre_fs_screen;
     bool was_armed;
     bool was_failsafe;
+<<<<<<< HEAD
     bool _disable;
+=======
+>>>>>>> myquadplane
 
     uint32_t last_update_ms;
     float last_distance_m;
@@ -305,6 +312,7 @@ private:
     float max_speed_mps;
     float max_current_a;
     float avg_current_a;
+<<<<<<< HEAD
 
     static AP_OSD *_singleton;
 };
@@ -312,4 +320,6 @@ private:
 namespace AP
 {
 AP_OSD *osd();
+=======
+>>>>>>> myquadplane
 };

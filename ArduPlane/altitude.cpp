@@ -135,7 +135,11 @@ float Plane::relative_ground_altitude(bool use_rangefinder_if_available)
    }
 
    if (use_rangefinder_if_available && quadplane.in_vtol_land_final() &&
+<<<<<<< HEAD
        rangefinder.status_orient(ROTATION_PITCH_270) == RangeFinder::Status::OutOfRangeLow) {
+=======
+       rangefinder.status_orient(ROTATION_PITCH_270) == RangeFinder::RangeFinder_OutOfRangeLow) {
+>>>>>>> myquadplane
        // a special case for quadplane landing when rangefinder goes
        // below minimum. Consider our height above ground to be zero
        return 0;

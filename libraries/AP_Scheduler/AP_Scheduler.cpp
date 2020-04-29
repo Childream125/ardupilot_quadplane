@@ -157,11 +157,16 @@ void AP_Scheduler::run(uint32_t time_available)
     }
     
     for (uint8_t i=0; i<_num_tasks; i++) {
+<<<<<<< HEAD
         const AP_Scheduler::Task& task = (i < _num_unshared_tasks) ? _tasks[i] : _common_tasks[i - _num_unshared_tasks];
 
         uint32_t dt = _tick_counter - _last_run[i];
         // we allow 0 to mean loop rate
         uint32_t interval_ticks = (is_zero(task.rate_hz) ? 1 : _loop_rate_hz / task.rate_hz);
+=======
+        uint32_t dt = _tick_counter - _last_run[i];
+        uint32_t interval_ticks = _loop_rate_hz / _tasks[i].rate_hz;
+>>>>>>> myquadplane
         if (interval_ticks < 1) {
             interval_ticks = 1;
         }
@@ -203,7 +208,11 @@ void AP_Scheduler::run(uint32_t time_available)
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
         fill_nanf_stack();
 #endif
+<<<<<<< HEAD
         task.function();
+=======
+        _tasks[i].function();
+>>>>>>> myquadplane
         if (_debug > 1 && _perf_counters && _perf_counters[i]) {
             hal.util->perf_end(_perf_counters[i]);
         }

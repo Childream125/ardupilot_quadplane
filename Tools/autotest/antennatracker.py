@@ -5,12 +5,18 @@ from __future__ import print_function
 import math
 import operator
 import os
+<<<<<<< HEAD
 
 from pymavlink import mavextra
 from pymavlink import mavutil
 
 from common import AutoTest
 from common import NotAchievedException
+=======
+from pymavlink import mavutil
+
+from common import AutoTest
+>>>>>>> myquadplane
 
 # get location of scripts
 testdir = os.path.dirname(os.path.realpath(__file__))

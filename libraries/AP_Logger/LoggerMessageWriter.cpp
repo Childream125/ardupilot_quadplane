@@ -104,22 +104,46 @@ void LoggerMessageWriter_DFLogStart::process()
             ap = AP_Param::next_scalar(&token, &type);
         }
 
+<<<<<<< HEAD
         stage = Stage::RUNNING_SUBWRITERS;
         FALLTHROUGH;
 
     case Stage::RUNNING_SUBWRITERS:
+=======
+        stage = Stage::SYSINFO;
+        FALLTHROUGH;
+
+    case Stage::SYSINFO:
+        _writesysinfo.process();
+>>>>>>> myquadplane
         if (!_writesysinfo.finished()) {
             _writesysinfo.process();
             if (!_writesysinfo.finished()) {
                 return;
             }
         }
+<<<<<<< HEAD
+=======
+        stage = Stage::WRITE_ENTIRE_MISSION;
+        FALLTHROUGH;
+
+    case Stage::WRITE_ENTIRE_MISSION:
+        _writeentiremission.process();
+>>>>>>> myquadplane
         if (!_writeentiremission.finished()) {
             _writeentiremission.process();
             if (!_writeentiremission.finished()) {
                 return;
             }
         }
+<<<<<<< HEAD
+=======
+        stage = Stage::WRITE_ALL_RALLY_POINTS;
+        FALLTHROUGH;
+
+    case Stage::WRITE_ALL_RALLY_POINTS:
+        _writeallrallypoints.process();
+>>>>>>> myquadplane
         if (!_writeallrallypoints.finished()) {
             _writeallrallypoints.process();
             if (!_writeallrallypoints.finished()) {
@@ -174,7 +198,11 @@ bool LoggerMessageWriter_DFLogStart::writeallrallypoints()
 void LoggerMessageWriter_WriteSysInfo::reset()
 {
     LoggerMessageWriter::reset();
+<<<<<<< HEAD
     stage = Stage::FIRMWARE_STRING;
+=======
+    stage = Stage::FORMATS;
+>>>>>>> myquadplane
 }
 
 void LoggerMessageWriter_WriteSysInfo::process() {
@@ -182,6 +210,13 @@ void LoggerMessageWriter_WriteSysInfo::process() {
 
     switch(stage) {
 
+<<<<<<< HEAD
+=======
+    case Stage::FORMATS:
+        stage = Stage::FIRMWARE_STRING;
+        FALLTHROUGH;
+
+>>>>>>> myquadplane
     case Stage::FIRMWARE_STRING:
         if (! _logger_backend->Write_Message(fwver.fw_string)) {
             return; // call me again

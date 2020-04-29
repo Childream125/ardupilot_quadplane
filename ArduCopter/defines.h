@@ -151,6 +151,17 @@ enum LoggingParameters {
      LOG_GUIDEDTARGET_MSG,
      LOG_SYSIDD_MSG,
      LOG_SYSIDS_MSG,
+<<<<<<< HEAD
+=======
+};
+
+// Harmonic notch update mode
+enum HarmonicNotchDynamicMode {
+    HarmonicNotch_Fixed,
+    HarmonicNotch_UpdateThrottle,
+    HarmonicNotch_UpdateRPM,
+    HarmonicNotch_UpdateBLHeli,
+>>>>>>> myquadplane
 };
 
 #define MASK_LOG_ATTITUDE_FAST          (1<<0)

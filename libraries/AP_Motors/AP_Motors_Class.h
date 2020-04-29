@@ -266,4 +266,8 @@ private:
 
 namespace AP {
     AP_Motors *motors();
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> myquadplane

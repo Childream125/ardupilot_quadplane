@@ -171,7 +171,11 @@ public:
     /*
       trigger send of serial LED data
      */
+<<<<<<< HEAD
     void serial_led_send(const uint16_t chan) override;
+=======
+    void neopixel_send(void) override;
+>>>>>>> myquadplane
 
 private:
     struct pwm_group {
@@ -201,10 +205,14 @@ private:
         bool in_serial_dma;
         uint64_t last_dmar_send_us;
         virtual_timer_t dma_timeout;
+<<<<<<< HEAD
         uint8_t serial_nleds;
         uint8_t clock_mask;
         bool serial_led_pending;
         bool prepared_send;
+=======
+        uint8_t neopixel_nleds;
+>>>>>>> myquadplane
 
         // serial output
         struct {

@@ -150,13 +150,24 @@ bool AP_Compass_RM3100::init()
     set_dev_id(compass_instance, dev->get_bus_id());
 
     hal.console->printf("RM3100: Found at address 0x%x as compass %u\n", dev->get_bus_address(), compass_instance);
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> myquadplane
     set_rotation(compass_instance, rotation);
 
     if (force_external) {
         set_external(compass_instance, true);
     }
+<<<<<<< HEAD
     
+=======
+
+    dev->set_device_type(DEVTYPE_RM3100);
+    set_dev_id(compass_instance, dev->get_bus_id());
+
+>>>>>>> myquadplane
     // call timer() at 80Hz
     dev->register_periodic_callback(1000000U/80U,
                                     FUNCTOR_BIND_MEMBER(&AP_Compass_RM3100::timer, void));

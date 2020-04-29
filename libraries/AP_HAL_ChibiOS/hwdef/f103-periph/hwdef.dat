@@ -95,6 +95,7 @@ PA12 CAN_TX CAN
 define HAL_USE_CAN TRUE
 define STM32_CAN_USE_CAN1 TRUE
 
+<<<<<<< HEAD
 # reduce memory overheads
 define HAL_CAN_POOL_SIZE 2500
 
@@ -102,6 +103,12 @@ define HAL_USE_I2C TRUE
 define STM32_I2C_USE_I2C1 TRUE
 
 define HAL_UART_MIN_TX_SIZE 128
+=======
+define HAL_USE_I2C TRUE
+define STM32_I2C_USE_I2C1 TRUE
+
+define HAL_UART_MIN_TX_SIZE 256
+>>>>>>> myquadplane
 define HAL_UART_MIN_RX_SIZE 128
 
 define HAL_UART_STACK_SIZE 256
@@ -131,13 +138,21 @@ define HAL_I2C_INTERNAL_MASK 0
 define GPS_MAX_RECEIVERS 1
 define GPS_MAX_INSTANCES 1
 define HAL_COMPASS_MAX_SENSORS 1
+<<<<<<< HEAD
 define HAL_WITH_DSP FALSE
+=======
+>>>>>>> myquadplane
 
 # use the app descriptor needed by MissionPlanner for CAN upload
 env APP_DESCRIPTOR MissionPlanner
 
 # reserve 256 bytes for comms between app and bootloader
 RAM_RESERVE_START 256
+<<<<<<< HEAD
+=======
+
+# define CH_DBG_ENABLE_STACK_CHECK TRUE
+>>>>>>> myquadplane
 
 # keep ROMFS uncompressed as we don't have enough RAM
 # to uncompress the bootloader at runtime

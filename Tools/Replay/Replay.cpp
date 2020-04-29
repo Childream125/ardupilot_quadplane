@@ -966,9 +966,12 @@ GCS_Dummy _gcs;
 // dummy methods to avoid linking with these libraries
 bool AP_AdvancedFailsafe::gcs_terminate(bool should_terminate, const char *reason) { return false; }
 AP_AdvancedFailsafe *AP::advancedfailsafe() { return nullptr; }
+<<<<<<< HEAD
 
 // dummy method to avoid linking AP_Avoidance
 AP_Avoidance *AP::ap_avoidance() { return nullptr; }
+=======
+>>>>>>> myquadplane
 
 // avoid building/linking LTM:
 void AP_LTM_Telem::init() {};

@@ -82,7 +82,11 @@ void Sub::motordetect_run()
         // Force all motors to stop
         for (uint8_t i=0; i <AP_MOTORS_MAX_NUM_MOTORS; i++) {
             if (motors.motor_is_enabled(i)) {
+<<<<<<< HEAD
                 motors.output_test_num(i, 1500);
+=======
+                !motors.output_test_num(i, 1500);
+>>>>>>> myquadplane
             }
         }
         // wait until gyro product is under a certain(experimental) threshold
@@ -168,7 +172,11 @@ void Sub::motordetect_run()
     }
     case DONE:
         control_mode = prev_control_mode;
+<<<<<<< HEAD
         arming.disarm(AP_Arming::Method::MOTORDETECTDONE);
+=======
+        arming.disarm();
+>>>>>>> myquadplane
         break;
     }
 }

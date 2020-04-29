@@ -2,6 +2,10 @@ include ../f103-periph/hwdef-bl.dat
 
 define CAN_APP_NODE_NAME "org.ardupilot.ap_periph_adsb"
 
+<<<<<<< HEAD
 # use DNA
 define HAL_CAN_DEFAULT_NODE_ID 0
+=======
+define HAL_CAN_DEFAULT_NODE_ID 116
+>>>>>>> myquadplane
 

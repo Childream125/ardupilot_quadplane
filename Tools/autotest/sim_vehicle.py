@@ -23,7 +23,7 @@ import time
 import shlex
 import binascii
 
-from pymavlink import mavextra
+#from pymavlink import mavextra
 from pysim import vehicleinfo
 
 # List of open terminal windows for macosx
@@ -528,7 +528,11 @@ def run_in_terminal_window(name, cmd, **kw):
         else:
             progress("Cannot find %s process terminal" % name)
     else:
+<<<<<<< HEAD
         subprocess.Popen(runme, **kw)
+=======
+        subprocess.Popen(runme)
+>>>>>>> myquadplane
 
 
 tracker_uarta = None  # blemish
@@ -1044,9 +1048,12 @@ group.add_option("", "--moddebug",
                  default=0,
                  type=int,
                  help="mavproxy module debug")
+<<<<<<< HEAD
 group.add_option("", "--no-rcin",
                  action='store_true',
                  help="disable mavproxy rcin")
+=======
+>>>>>>> myquadplane
 parser.add_option_group(group)
 
 cmd_opts, cmd_args = parser.parse_args()
@@ -1088,6 +1095,7 @@ if cmd_opts.strace and (cmd_opts.gdb or cmd_opts.gdb_stopped or cmd_opts.lldb or
 
 if (cmd_opts.gdb or cmd_opts.gdb_stopped) and (cmd_opts.lldb or cmd_opts.lldb_stopped):
     print("May not use lldb with gdb")
+<<<<<<< HEAD
     sys.exit(1)
 
 if cmd_opts.instance < 0:
@@ -1096,6 +1104,8 @@ if cmd_opts.instance < 0:
 
 if cmd_opts.count < 1:
     print("May not specify a count less than 1")
+=======
+>>>>>>> myquadplane
     sys.exit(1)
 
 if cmd_opts.strace and cmd_opts.valgrind:

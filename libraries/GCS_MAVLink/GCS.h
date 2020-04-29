@@ -17,8 +17,11 @@
 #include <AP_Devo_Telem/AP_Devo_Telem.h>
 #include <RC_Channel/RC_Channel.h>
 #include <AP_Filesystem/AP_Filesystem_Available.h>
+<<<<<<< HEAD
 #include <AP_GPS/AP_GPS.h>
 #include <AP_VisualOdom/AP_VisualOdom.h>
+=======
+>>>>>>> myquadplane
 
 #include "MissionItemProtocol_Waypoints.h"
 #include "MissionItemProtocol_Rally.h"
@@ -327,6 +330,8 @@ public:
 
     virtual uint64_t capabilities() const;
     uint16_t get_stream_slowdown_ms() const { return stream_slowdown_ms; }
+
+    MAV_RESULT set_message_interval(uint32_t msg_id, int32_t interval_us);
 
     MAV_RESULT set_message_interval(uint32_t msg_id, int32_t interval_us);
 
@@ -677,6 +682,11 @@ private:
 
     uint8_t send_parameter_async_replies();
 
+<<<<<<< HEAD
+=======
+#if HAVE_FILESYSTEM_SUPPORT
+
+>>>>>>> myquadplane
     enum class FTP_OP : uint8_t {
         None = 0,
         TerminateSession = 1,
@@ -739,7 +749,10 @@ private:
         int fd = -1;
         FTP_FILE_MODE mode; // work around AP_Filesystem not supporting file modes
         int16_t current_session;
+<<<<<<< HEAD
         uint32_t last_send_ms;
+=======
+>>>>>>> myquadplane
     };
     static struct ftp_state ftp;
 
@@ -752,6 +765,10 @@ private:
     void send_ftp_replies(void);
     void ftp_worker(void);
     void ftp_push_replies(pending_ftp &reply);
+<<<<<<< HEAD
+=======
+#endif // HAVE_FILESYSTEM_SUPPORT
+>>>>>>> myquadplane
 
     void send_distance_sensor(const class AP_RangeFinder_Backend *sensor, const uint8_t instance) const;
 
@@ -969,7 +986,10 @@ private:
 
     void update_sensor_status_flags();
 
+<<<<<<< HEAD
     void service_statustext(void);
+=======
+>>>>>>> myquadplane
 #if HAL_MEM_CLASS <= HAL_MEM_CLASS_192 || CONFIG_HAL_BOARD == HAL_BOARD_SITL
     static const uint8_t _status_capacity = 5;
 #else

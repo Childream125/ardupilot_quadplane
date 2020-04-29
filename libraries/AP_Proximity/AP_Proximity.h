@@ -54,7 +54,11 @@ public:
 #endif
     };
 
+<<<<<<< HEAD
     enum class Status {
+=======
+    enum Status {
+>>>>>>> myquadplane
         NotConnected = 0,
         NoData,
         Good

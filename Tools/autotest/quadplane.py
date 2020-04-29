@@ -3,9 +3,12 @@
 # Fly ArduPlane QuadPlane in SITL
 from __future__ import print_function
 import os
+<<<<<<< HEAD
 import numpy
 import math
 
+=======
+>>>>>>> myquadplane
 from pymavlink import mavutil
 
 from common import AutoTest

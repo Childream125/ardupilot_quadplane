@@ -118,12 +118,16 @@ bool Copter::ekf_over_threshold()
     if (mag_max >= g.fs_ekf_thresh) {
         over_thresh_count++;
     }
+<<<<<<< HEAD
 
     bool optflow_healthy = false;
 #if OPTFLOW == ENABLED
     optflow_healthy = optflow.healthy();
 #endif
     if (!optflow_healthy && (vel_variance >= (2.0f * g.fs_ekf_thresh))) {
+=======
+    if (!optflow.healthy() && (vel_variance >= (2.0f * g.fs_ekf_thresh))) {
+>>>>>>> myquadplane
         over_thresh_count += 2;
     } else if (vel_variance >= g.fs_ekf_thresh) {
         over_thresh_count++;
@@ -234,7 +238,11 @@ void Copter::check_vibration()
     }
     const bool innov_velD_posD_positive = is_positive(vel_innovation.z) && is_positive(pos_innovation.z);
 
+<<<<<<< HEAD
     // check if vertical velocity variance is at least 1 (NK4.SV >= 1.0)
+=======
+    // check if EKF's NKF4.SH and NK4.SV > 1.0
+>>>>>>> myquadplane
     float position_variance, vel_variance, height_variance, tas_variance;
     Vector3f mag_variance;
     Vector2f offset;

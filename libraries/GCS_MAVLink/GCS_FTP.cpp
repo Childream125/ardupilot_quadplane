@@ -20,13 +20,21 @@
 
 #include <AP_Filesystem/AP_Filesystem.h>
 
+<<<<<<< HEAD
+=======
+#if HAVE_FILESYSTEM_SUPPORT
+
+>>>>>>> myquadplane
 extern const AP_HAL::HAL& hal;
 
 struct GCS_MAVLINK::ftp_state GCS_MAVLINK::ftp;
 
+<<<<<<< HEAD
 // timeout for session inactivity
 #define FTP_SESSION_TIMEOUT 3000
 
+=======
+>>>>>>> myquadplane
 bool GCS_MAVLINK::ftp_init(void) {
     // we can simply check if we allocated everything we need
     if (ftp.requests != nullptr) {
@@ -86,7 +94,11 @@ void GCS_MAVLINK::handle_file_transfer_protocol(const mavlink_message_t &msg) {
 }
 
 void GCS_MAVLINK::send_ftp_replies(void) {
+<<<<<<< HEAD
     if (ftp.replies == nullptr || ftp.replies->empty()) {
+=======
+    if (ftp.replies == nullptr) {
+>>>>>>> myquadplane
         return;
     }
 
@@ -115,7 +127,10 @@ void GCS_MAVLINK::send_ftp_replies(void) {
                     0, reply.sysid, reply.compid,
                     payload);
                 ftp.replies->pop(reply);
+<<<<<<< HEAD
                 ftp.last_send_ms = AP_HAL::millis();
+=======
+>>>>>>> myquadplane
         } else {
             return;
         }
@@ -149,7 +164,11 @@ void GCS_MAVLINK::ftp_error(struct pending_ftp &response, FTP_ERROR error) {
 void GCS_MAVLINK::ftp_push_replies(pending_ftp &reply)
 {
     while (!ftp.replies->push(reply)) { // we must fit the response, keep shoving it in
+<<<<<<< HEAD
         hal.scheduler->delay(2);
+=======
+        hal.scheduler->delay(10);
+>>>>>>> myquadplane
     }
 }
 
@@ -161,7 +180,11 @@ void GCS_MAVLINK::ftp_worker(void) {
     while (true) {
         while (!ftp.requests->pop(request)) {
             // nothing to handle, delay ourselves a bit then check again. Ideally we'd use conditional waits here
+<<<<<<< HEAD
             hal.scheduler->delay(2);
+=======
+            hal.scheduler->delay(10);
+>>>>>>> myquadplane
         }
 
         // if it's a rerequest and we still have the last response then send it
@@ -187,19 +210,27 @@ void GCS_MAVLINK::ftp_worker(void) {
             continue;
         }
 
+<<<<<<< HEAD
         uint32_t now = AP_HAL::millis();
 
+=======
+>>>>>>> myquadplane
         // check for session termination
         if (request.session != ftp.current_session &&
             (request.opcode == FTP_OP::TerminateSession || request.opcode == FTP_OP::ResetSessions)) {
             // terminating a different session, just ack
             reply.opcode = FTP_OP::Ack;
+<<<<<<< HEAD
         } else if (ftp.fd != -1 && request.session != ftp.current_session &&
                    now - ftp.last_send_ms < FTP_SESSION_TIMEOUT) {
+=======
+        } else if (ftp.fd != -1 && request.session != ftp.current_session) {
+>>>>>>> myquadplane
             // if we have an open file and the session isn't right
             // then reject. This prevents IO on the wrong file
             ftp_error(reply, FTP_ERROR::InvalidSession);
         } else {
+<<<<<<< HEAD
             if (ftp.fd != -1 &&
                 request.session != ftp.current_session &&
                 now - ftp.last_send_ms >= FTP_SESSION_TIMEOUT) {
@@ -210,6 +241,8 @@ void GCS_MAVLINK::ftp_worker(void) {
                 ftp.fd = -1;
                 ftp.current_session = -1;
             }
+=======
+>>>>>>> myquadplane
             // dispatch the command as needed
             switch (request.opcode) {
                 case FTP_OP::None:
@@ -231,6 +264,7 @@ void GCS_MAVLINK::ftp_worker(void) {
                 case FTP_OP::OpenFileRO:
                     {
                         // only allow one file to be open per session
+<<<<<<< HEAD
                         if (ftp.fd != -1 && now - ftp.last_send_ms > FTP_SESSION_TIMEOUT) {
                             // no activity for 3s, assume client has
                             // timed out receiving open reply, close
@@ -239,6 +273,8 @@ void GCS_MAVLINK::ftp_worker(void) {
                             ftp.fd = -1;
                             ftp.current_session = -1;
                         }
+=======
+>>>>>>> myquadplane
                         if (ftp.fd != -1) {
                             ftp_error(reply, FTP_ERROR::Fail);
                             break;
@@ -459,7 +495,10 @@ void GCS_MAVLINK::ftp_worker(void) {
                     }
                 case FTP_OP::BurstReadFile:
                     {
+<<<<<<< HEAD
                         const uint16_t max_read = (request.size == 0?sizeof(reply.data):request.size);
+=======
+>>>>>>> myquadplane
                         // must actually be working on a file
                         if (ftp.fd == -1) {
                             ftp_error(reply, FTP_ERROR::FileNotFound);
@@ -478,12 +517,23 @@ void GCS_MAVLINK::ftp_worker(void) {
                             break;
                         }
 
+<<<<<<< HEAD
                         const uint32_t transfer_size = 100;
                         for (uint32_t i = 0; (i < transfer_size); i++) {
                             // fill the buffer
                             const ssize_t read_bytes = AP::FS().read(ftp.fd, reply.data, max_read);
                             if (read_bytes == -1) {
                                 ftp_error(reply, FTP_ERROR::FailErrno);
+=======
+                        bool more_pending = true;
+                        const uint32_t transfer_size = 100;
+                        for (uint32_t i = 0; (i < transfer_size) && more_pending; i++) {
+                            // fill the buffer
+                            const ssize_t read_bytes = AP::FS().read(ftp.fd, reply.data, sizeof(reply.data));
+                            if (read_bytes == -1) {
+                                ftp_error(reply, FTP_ERROR::FailErrno);
+                                more_pending = false;
+>>>>>>> myquadplane
                                 break;
                             }
 
@@ -494,21 +544,32 @@ void GCS_MAVLINK::ftp_worker(void) {
 
                             if (read_bytes == 0) {
                                 ftp_error(reply, FTP_ERROR::EndOfFile);
+<<<<<<< HEAD
+=======
+                                more_pending = false;
+>>>>>>> myquadplane
                                 break;
                             }
 
                             reply.opcode = FTP_OP::Ack;
+<<<<<<< HEAD
                             reply.offset = request.offset + i * max_read;
+=======
+                            reply.offset = request.offset + i * sizeof(reply.data);
+>>>>>>> myquadplane
                             reply.burst_complete = (i == (transfer_size - 1));
                             reply.size = (uint8_t)read_bytes;
 
                             ftp_push_replies(reply);
 
+<<<<<<< HEAD
                             if (read_bytes < max_read) {
                                 // ensure the NACK which we send next is at the right offset
                                 reply.offset += read_bytes;
                             }
 
+=======
+>>>>>>> myquadplane
                             // prep the reply to be used again
                             reply.seq_number++;
                         }
@@ -571,9 +632,16 @@ void GCS_MAVLINK::ftp_list_dir(struct pending_ftp &request, struct pending_ftp &
     request.data[sizeof(request.data) - 1] = 0; // ensure the path is null terminated
 
     // open the dir
+<<<<<<< HEAD
     auto *dir = AP::FS().opendir((char *)request.data);
     if (dir == nullptr) {
         ftp_error(response, FTP_ERROR::FailErrno);
+=======
+    DIR *dir = AP::FS().opendir((char *)request.data);
+    if (dir == nullptr) {
+        ftp_error(response, FTP_ERROR::FailErrno);
+        AP::FS().closedir(dir);
+>>>>>>> myquadplane
         return;
     }
 
@@ -633,3 +701,8 @@ void GCS_MAVLINK::ftp_list_dir(struct pending_ftp &request, struct pending_ftp &
 
     AP::FS().closedir(dir);
 }
+<<<<<<< HEAD
+=======
+
+#endif // HAVE_FILESYSTEM_SUPPORT
+>>>>>>> myquadplane

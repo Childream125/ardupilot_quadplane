@@ -1475,6 +1475,12 @@ void AP_OSD_Screen::draw_climbeff(uint8_t x, uint8_t y)
     if (vspd < 0.0) {
         vspd = 0.0;
     }
+<<<<<<< HEAD
+=======
+    if (vspd < 0.0) {
+        vspd = 0.0;
+    }
+>>>>>>> myquadplane
     AP_BattMonitor &battery = AP::battery();
     float amps;
     if (battery.current_amps(amps) && is_positive(amps)) {

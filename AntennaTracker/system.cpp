@@ -82,9 +82,29 @@ void Tracker::init_ardupilot()
     gcs().send_text(MAV_SEVERITY_INFO,"Ready to track");
     hal.scheduler->delay(1000); // Why????
 
+<<<<<<< HEAD
     Mode *newmode = mode_from_mode_num((Mode::Number)g.initial_mode.get());
     if (newmode == nullptr) {
         newmode = &mode_manual;
+=======
+    switch (g.initial_mode) {
+    case MANUAL:
+        set_mode(MANUAL, ModeReason::STARTUP);
+        break;
+
+    case SCAN:
+        set_mode(SCAN, ModeReason::STARTUP);
+        break;
+
+    case STOP:
+        set_mode(STOP, ModeReason::STARTUP);
+        break;
+
+    case AUTO:
+    default:
+        set_mode(AUTO, ModeReason::STARTUP);
+        break;
+>>>>>>> myquadplane
     }
     set_mode(*newmode, ModeReason::STARTUP);
 
@@ -175,7 +195,11 @@ void Tracker::prepare_servos()
     SRV_Channels::output_ch_all();
 }
 
+<<<<<<< HEAD
 void Tracker::set_mode(Mode &newmode, const ModeReason reason)
+=======
+void Tracker::set_mode(enum ControlMode mode, ModeReason reason)
+>>>>>>> myquadplane
 {
     if (mode == &newmode) {
         // don't switch modes if we are already in the correct mode.
@@ -198,6 +222,7 @@ void Tracker::set_mode(Mode &newmode, const ModeReason reason)
 
 bool Tracker::set_mode(const uint8_t new_mode, const ModeReason reason)
 {
+<<<<<<< HEAD
     Mode *fred = nullptr;
     switch ((Mode::Number)new_mode) {
     case Mode::Number::INITIALISING:
@@ -226,6 +251,18 @@ bool Tracker::set_mode(const uint8_t new_mode, const ModeReason reason)
     }
     set_mode(*fred, reason);
     return true;
+=======
+    switch (new_mode) {
+    case AUTO:
+    case MANUAL:
+    case SCAN:
+    case SERVO_TEST:
+    case STOP:
+        set_mode((enum ControlMode)new_mode, reason);
+        return true;
+    }
+    return false;
+>>>>>>> myquadplane
 }
 
 /*

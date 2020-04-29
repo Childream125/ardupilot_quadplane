@@ -31,12 +31,17 @@
 #include <GCS_MAVLink/GCS.h>
 #include <AP_Common/Location.h>
 #include <AP_GPS/AP_GPS.h>
+<<<<<<< HEAD
 #include <AP_Baro/AP_Baro.h>
+=======
+#include <AP_Logger/AP_Logger.h>
+>>>>>>> myquadplane
 #include <stdio.h>
 #include <math.h>
 
 extern const AP_HAL::HAL& hal;
 
+<<<<<<< HEAD
 AP_Frsky_Telem *AP_Frsky_Telem::singleton;
 
 AP_Frsky_Telem::AP_Frsky_Telem(bool _external_data) :
@@ -54,6 +59,9 @@ AP_Frsky_Telem::~AP_Frsky_Telem(void)
   setup ready for passthrough telem
  */
 void AP_Frsky_Telem::setup_passthrough(void)
+=======
+AP_Frsky_Telem::AP_Frsky_Telem(void)
+>>>>>>> myquadplane
 {
 #if !APM_BUILD_TYPE(APM_BUILD_UNKNOWN)
     // make frsky_telemetry available to GCS_MAVLINK (used to queue statustext messages from GCS_MAVLINK)
@@ -98,7 +106,35 @@ bool AP_Frsky_Telem::init()
         _protocol = AP_SerialManager::SerialProtocol_FrSky_SPort; // FrSky SPort protocol (X-receivers)
     } else if ((_port = serial_manager.find_serial(AP_SerialManager::SerialProtocol_FrSky_SPort_Passthrough, 0))) {
         _protocol = AP_SerialManager::SerialProtocol_FrSky_SPort_Passthrough; // FrSky SPort and SPort Passthrough (OpenTX) protocols (X-receivers)
+<<<<<<< HEAD
         setup_passthrough();
+=======
+        // make frsky_telemetry available to GCS_MAVLINK (used to queue statustext messages from GCS_MAVLINK)
+        // add firmware and frame info to message queue
+        const char* _frame_string = gcs().frame_string();
+        if (_frame_string == nullptr) {
+            queue_message(MAV_SEVERITY_INFO, AP::fwversion().fw_string);
+        } else {
+            char firmware_buf[MAVLINK_MSG_STATUSTEXT_FIELD_TEXT_LEN+1];
+            snprintf(firmware_buf, sizeof(firmware_buf), "%s %s", AP::fwversion().fw_string, _frame_string);
+            queue_message(MAV_SEVERITY_INFO, firmware_buf);
+        }
+
+        // initialize packet weights for the WFQ scheduler
+        // weight[i] = 1/_passthrough.packet_period[i]
+        // rate[i] = LinkRate * ( weight[i] / (sum(weight[1-n])) )
+        _passthrough.packet_weight[0] = 35;   // 0x5000 status text (dynamic)
+        _passthrough.packet_weight[1] = 50;   // 0x5006 Attitude and range (dynamic)
+        _passthrough.packet_weight[2] = 550;   // 0x800 GPS lat (600 with 1 sensor)
+        _passthrough.packet_weight[3] = 550;   // 0x800 GPS lon (600 with 1 sensor)
+        _passthrough.packet_weight[4] = 400;   // 0x5005 Vel and Yaw
+        _passthrough.packet_weight[5] = 700;   // 0x5001 AP status
+        _passthrough.packet_weight[6] = 700;   // 0x5002 GPS Status
+        _passthrough.packet_weight[7] = 400;   // 0x5004 Home
+        _passthrough.packet_weight[8] = 1300;  // 0x5008 Battery 2 status
+        _passthrough.packet_weight[9] = 1300;  // 0x5003 Battery 1 status
+        _passthrough.packet_weight[10] = 1700; // 0x5007 parameters
+>>>>>>> myquadplane
     }
 
     if (_port != nullptr) {
@@ -136,12 +172,19 @@ void AP_Frsky_Telem::update_avg_packet_rate()
  * WFQ scheduler
  * for FrSky SPort Passthrough (OpenTX) protocol (X-receivers)
  */
+<<<<<<< HEAD
 void AP_Frsky_Telem::passthrough_wfq_adaptive_scheduler(void)
 {
     update_avg_packet_rate();
 
     uint32_t now = AP_HAL::millis();
     uint8_t max_delay_idx = 0;
+=======
+void AP_Frsky_Telem::passthrough_wfq_adaptive_scheduler(uint8_t prev_byte)
+{
+    uint32_t now = AP_HAL::millis();
+    uint8_t max_delay_idx = TIME_SLOT_MAX;
+>>>>>>> myquadplane
     
     float max_delay = 0;
     float delay = 0;
@@ -151,7 +194,11 @@ void AP_Frsky_Telem::passthrough_wfq_adaptive_scheduler(void)
     check_sensor_status_flags();
     // build message queue for ekf_status
     check_ekf_status();
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> myquadplane
     // dynamic priorities
     bool queue_empty;
     {
@@ -198,6 +245,11 @@ void AP_Frsky_Telem::passthrough_wfq_adaptive_scheduler(void)
     _passthrough.packet_timer[max_delay_idx] = AP_HAL::millis();
     // send packet
     switch (max_delay_idx) {
+<<<<<<< HEAD
+=======
+        case TIME_SLOT_MAX: // nothing to send
+            break;
+>>>>>>> myquadplane
         case 0: // 0x5000 status text
             if (get_next_msg_chunk()) {
                 send_uint32(SPORT_DATA_FRAME, DIY_FIRST_ID, _msg_chunk.chunk);
@@ -268,7 +320,12 @@ void AP_Frsky_Telem::send_SPort_Passthrough(void)
     }
     if (prev_byte == START_STOP_SPORT) {
         if (_passthrough.new_byte == SENSOR_ID_28) { // byte 0x7E is the header of each poll request
+<<<<<<< HEAD
             passthrough_wfq_adaptive_scheduler();
+=======
+            update_avg_packet_rate();
+            passthrough_wfq_adaptive_scheduler(prev_byte);
+>>>>>>> myquadplane
         }
     }
 }
@@ -349,14 +406,18 @@ void AP_Frsky_Telem::send_SPort(void)
                                 break;
                             }                        
                             break;
+<<<<<<< HEAD
                     }
                     if (++_SPort.fas_call > 2) {
                         _SPort.fas_call = 0;
+=======
+>>>>>>> myquadplane
                     }
                     break;
                 case SENSOR_ID_GPS: // Sensor ID  3
                     switch (_SPort.gps_call) {
                         case 0:
+<<<<<<< HEAD
                             send_uint32(SPORT_DATA_FRAME, GPS_LONG_LATI_FIRST_ID, calc_gps_latlng(&_passthrough.send_latitude)); // gps latitude or longitude
                             break;
                         case 1:
@@ -377,13 +438,63 @@ void AP_Frsky_Telem::send_SPort(void)
                         case 6:
                             send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_COURS_BP, _SPort_data.yaw); // send heading in degree based on AHRS and not GPS
                             _SPort.gps_refresh = true;
+=======
+                            calc_gps_position(); // gps data is not recalculated until all of it has been sent
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_LAT_BP, _gps.latdddmm); // send gps lattitude degree and minute integer part
+                            break;
+                        case 1:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_LAT_AP, _gps.latmmmm); // send gps lattitude minutes decimal part
+                            break;
+                        case 2:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_LAT_NS, _gps.lat_ns); // send gps North / South information
+                            break;
+                        case 3:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_LONG_BP, _gps.londddmm); // send gps longitude degree and minute integer part
+                            break;
+                        case 4:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_LONG_AP, _gps.lonmmmm); // send gps longitude minutes decimal part
+                            break;
+                        case 5:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_LONG_EW, _gps.lon_ew); // send gps East / West information
+                            break;
+                        case 6:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_SPEED_BP, _gps.speed_in_meter); // send gps speed integer part
+                            break;
+                        case 7:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_SPEED_AP, _gps.speed_in_centimeter); // send gps speed decimal part
+                            break;
+                        case 8:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_ALT_BP, _gps.alt_gps_meters); // send gps altitude integer part
+                            break;
+                        case 9:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_ALT_AP, _gps.alt_gps_cm); // send gps altitude decimals
+                            break;
+                        case 10:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_GPS_COURS_BP, (uint16_t)((_ahrs.yaw_sensor / 100) % 360)); // send heading in degree based on AHRS and not GPS
+>>>>>>> myquadplane
                             break;
                     }
                     if (++_SPort.gps_call > 6) {
                         _SPort.gps_call = 0;
                     }
                     break;
+<<<<<<< HEAD
                 case SENSOR_ID_SP2UR: // Sensor ID  6
+=======
+                case SENSOR_ID_VARIO:
+                    switch (_SPort.vario_call) {
+                        case 0 :
+                            calc_nav_alt(); // nav altitude is not recalculated until all of it has been sent
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_BARO_ALT_BP, _gps.alt_nav_meters); // send altitude integer part
+                            break;
+                        case 1:
+                            send_uint32(SPORT_DATA_FRAME, DATA_ID_BARO_ALT_AP, _gps.alt_nav_cm); // send altitude decimal part
+                            break;
+                        }
+                    if (_SPort.vario_call++ > 1) _SPort.vario_call = 0;
+                    break;    
+                case SENSOR_ID_SP2UR:
+>>>>>>> myquadplane
                     switch (_SPort.various_call) {
                         case 0 :
                             send_uint32(SPORT_DATA_FRAME, DATA_ID_TEMP2, (uint16_t)(AP::gps().num_sats() * 10 + AP::gps().status())); // send GPS status and number of satellites as num_sats*10 + status (to fit into a uint8_t)
@@ -530,6 +641,7 @@ void AP_Frsky_Telem::send_byte(uint8_t byte)
  */
 void  AP_Frsky_Telem::send_uint32(uint8_t frame, uint16_t id, uint32_t data)
 {
+<<<<<<< HEAD
     if (use_external_data) {
         external_data.frame = frame;
         external_data.appid = id;
@@ -537,6 +649,8 @@ void  AP_Frsky_Telem::send_uint32(uint8_t frame, uint16_t id, uint32_t data)
         external_data.pending = true;
         return;
     }
+=======
+>>>>>>> myquadplane
     send_byte(frame); // frame type
     uint8_t *bytes = (uint8_t*)&id;
     send_byte(bytes[0]); // LSB

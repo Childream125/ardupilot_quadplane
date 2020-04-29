@@ -126,7 +126,11 @@ I2CDeviceManager::I2CDeviceManager(void)
           drop the speed to be the minimum speed requested
          */
         businfo[i].busclock = HAL_I2C_MAX_CLOCK;
+<<<<<<< HEAD
 #if defined(STM32F7) || defined(STM32F3)
+=======
+#if defined(STM32F7)
+>>>>>>> myquadplane
         if (businfo[i].busclock <= 100000) {
             businfo[i].i2ccfg.timingr = HAL_I2C_F7_100_TIMINGR;
             businfo[i].busclock = 100000;
@@ -213,7 +217,11 @@ bool I2CDevice::transfer(const uint8_t *send, uint32_t send_len,
         return false;
     }
 
+<<<<<<< HEAD
 #if defined(STM32F7) || defined(STM32H7) || defined(STM32F3)
+=======
+#if defined(STM32F7) || defined(STM32H7)
+>>>>>>> myquadplane
     if (_use_smbus) {
         bus.i2ccfg.cr1 |= I2C_CR1_SMBHEN;
     } else {

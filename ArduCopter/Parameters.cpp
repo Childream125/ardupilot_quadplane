@@ -741,7 +741,11 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
 #if BUTTON_ENABLED == ENABLED
     // @Group: BTN_
     // @Path: ../libraries/AP_Button/AP_Button.cpp
+<<<<<<< HEAD
     AP_SUBGROUPPTR(button_ptr, "BTN_", 2, ParametersG2, AP_Button),
+=======
+    AP_SUBGROUPINFO(button, "BTN_", 2, ParametersG2, AP_Button),
+>>>>>>> myquadplane
 #endif
 
 #if MODE_THROW_ENABLED == ENABLED
@@ -963,6 +967,7 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_SUBGROUPINFO(arot, "AROT_", 37, ParametersG2, AC_Autorotation),
 #endif
 
+<<<<<<< HEAD
 #if MODE_ZIGZAG_ENABLED == ENABLED && SPRAYER_ENABLED == ENABLED
     // @Param: ZIGZAG_AUTO_PUMP
     // @DisplayName: Auto pump in ZigZag
@@ -971,6 +976,8 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("ZIGZAG_AUTO_PUMP", 38, ParametersG2, zigzag_auto_pump_enabled, ZIGZAG_AUTO_PUMP_ENABLED),
 #endif
+=======
+>>>>>>> myquadplane
 
 
     AP_GROUPEND
@@ -1011,7 +1018,10 @@ ParametersG2::ParametersG2(void)
 #if MODE_AUTOROTATE_ENABLED == ENABLED
     ,arot(copter.inertial_nav)
 #endif
+<<<<<<< HEAD
     ,button_ptr(&copter.button)
+=======
+>>>>>>> myquadplane
 {
     AP_Param::setup_object_defaults(this, var_info);
 }

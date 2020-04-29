@@ -67,6 +67,27 @@ void RC_Channel_Copter::init_aux_function(const aux_func_t ch_option, const aux_
 {
     // init channel options
     switch(ch_option) {
+<<<<<<< HEAD
+=======
+    case AUX_FUNC::SIMPLE_MODE:
+    case AUX_FUNC::RANGEFINDER:
+    case AUX_FUNC::SUPERSIMPLE_MODE:
+    case AUX_FUNC::ACRO_TRAINER:
+    case AUX_FUNC::PARACHUTE_ENABLE:
+    case AUX_FUNC::PARACHUTE_3POS:      // we trust the vehicle will be disarmed so even if switch is in release position the chute will not release
+    case AUX_FUNC::RETRACT_MOUNT:
+    case AUX_FUNC::ATTCON_FEEDFWD:
+    case AUX_FUNC::ATTCON_ACCEL_LIM:
+    case AUX_FUNC::MOTOR_INTERLOCK:
+    case AUX_FUNC::AVOID_ADSB:
+    case AUX_FUNC::PRECISION_LOITER:
+    case AUX_FUNC::INVERTED:
+    case AUX_FUNC::WINCH_ENABLE:
+    case AUX_FUNC::STANDBY:
+    case AUX_FUNC::SURFACE_TRACKING:
+        do_aux_function(ch_option, ch_flag);
+        break;
+>>>>>>> myquadplane
     // the following functions do not need to be initialised:
     case AUX_FUNC::ALTHOLD:
     case AUX_FUNC::AUTO:
@@ -535,12 +556,20 @@ void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const aux_sw
             switch (ch_flag) {
                 case HIGH:
                     copter.standby_active = true;
+<<<<<<< HEAD
                     AP::logger().Write_Event(LogEvent::STANDBY_ENABLE);
+=======
+                    copter.Log_Write_Event(DATA_STANDBY_ENABLE);
+>>>>>>> myquadplane
                     gcs().send_text(MAV_SEVERITY_INFO, "Stand By Enabled");
                     break;
                 default:
                     copter.standby_active = false;
+<<<<<<< HEAD
                     AP::logger().Write_Event(LogEvent::STANDBY_DISABLE);
+=======
+                    copter.Log_Write_Event(DATA_STANDBY_DISABLE);
+>>>>>>> myquadplane
                     gcs().send_text(MAV_SEVERITY_INFO, "Stand By Disabled");
                     break;
                 }
@@ -560,7 +589,11 @@ void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const aux_sw
                 break;
             }
             break;
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> myquadplane
     default:
         RC_Channel::do_aux_function(ch_option, ch_flag);
         break;

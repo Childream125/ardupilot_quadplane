@@ -24,6 +24,10 @@ const uint8_t SERVO_CHAN_1 = 9; // Pixhawk Aux1
 const uint8_t SERVO_CHAN_2 = 10; // Pixhawk Aux2
 const uint8_t SERVO_CHAN_3 = 11; // Pixhawk Aux3
 
+<<<<<<< HEAD
+=======
+uint8_t roll_pitch_flag = false; // Flag to adjust roll/pitch instead of forward/lateral
+>>>>>>> myquadplane
 bool controls_reset_since_input_hold = true;
 }
 

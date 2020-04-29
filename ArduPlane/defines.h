@@ -84,6 +84,10 @@ enum log_messages {
     LOG_NTUN_MSG,
     LOG_STARTUP_MSG,
     TYPE_GROUNDSTART_MSG,
+<<<<<<< HEAD
+=======
+    LOG_SONAR_MSG,
+>>>>>>> myquadplane
     LOG_STATUS_MSG,
     LOG_QTUN_MSG,
     LOG_PIQR_MSG,

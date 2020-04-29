@@ -883,7 +883,11 @@ class AutoTest(ABC):
 
     def load_fence_using_mavproxy(self, filename):
         self.set_parameter("FENCE_TOTAL", 0)
+<<<<<<< HEAD
         filepath = os.path.join(testdir, self.current_test_name_directory, filename)
+=======
+        filepath = os.path.join(self.mission_directory(), filename)
+>>>>>>> myquadplane
         count = self.count_expected_fence_lines_in_filepath(filepath)
         self.mavproxy.send('fence load %s\n' % filepath)
 #        self.mavproxy.expect("Loaded %u (geo-)?fence" % count)
@@ -1626,6 +1630,16 @@ class AutoTest(ABC):
                                         self.mav.message_hooks))
         if len(self.mav.message_hooks) == oldlen:
             raise NotAchievedException("Failed to remove hook")
+<<<<<<< HEAD
+=======
+
+    def rootdir(self):
+        this_dir = os.path.dirname(__file__)
+        return os.path.realpath(os.path.join(this_dir, "../.."))
+
+    def mission_directory(self):
+        return testdir
+>>>>>>> myquadplane
 
     def rootdir(self):
         this_dir = os.path.dirname(__file__)
@@ -2589,6 +2603,12 @@ class AutoTest(ABC):
         return AutoTest.get_distance_accurate(
             mavutil.location(loc1_lat*1e-7, loc1_lon*1e-7),
             mavutil.location(loc2_lat*1e-7, loc2_lon*1e-7))
+<<<<<<< HEAD
+=======
+
+        dlat = loc2_lat - loc1_lat
+        dlong = loc2_lon - loc1_lon
+>>>>>>> myquadplane
 
         # dlat = loc2_lat - loc1_lat
         # dlong = loc2_lon - loc1_lon
@@ -2638,7 +2658,11 @@ class AutoTest(ABC):
 
     def get_autopilot_capabilities(self):
         # Cannot use run_cmd otherwise the respond is lost during the wait for ACK
+<<<<<<< HEAD
         self.mav.mav.command_long_send(self.sysid_thismav(),
+=======
+        self.mav.mav.command_long_send(1,
+>>>>>>> myquadplane
                                        1,
                                        mavutil.mavlink.MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
                                        0,  # confirmation
@@ -2656,9 +2680,14 @@ class AutoTest(ABC):
             raise NotAchievedException("Did not get AUTOPILOT_VERSION")
         return m.capabilities
 
+<<<<<<< HEAD
     def test_get_autopilot_capabilities(self):
         self.assert_capability(mavutil.mavlink.MAV_PROTOCOL_CAPABILITY_PARAM_FLOAT)
         self.assert_capability(mavutil.mavlink.MAV_PROTOCOL_CAPABILITY_COMPASS_CALIBRATION)
+=======
+    def do_get_autopilot_capabilities(self):
+        self.assert_capability(mavutil.mavlink.MAV_PROTOCOL_CAPABILITY_PARAM_FLOAT)
+>>>>>>> myquadplane
 
     def get_mode_from_mode_mapping(self, mode):
         """Validate and return the mode number from a string or int."""
@@ -3334,8 +3363,11 @@ class AutoTest(ABC):
                           self.get_exception_stacktrace(e))
             ex = e
         self.test_timings[desc] = time.time() - start_time
+<<<<<<< HEAD
         if self.contexts[-1].sitl_commandline_customised:
             self.reset_SITL_commandline()
+=======
+>>>>>>> myquadplane
         self.context_pop()
 
         passed = True
@@ -3344,8 +3376,12 @@ class AutoTest(ABC):
 
         self.wait_heartbeat()
         if self.armed() and not self.is_tracker():
+<<<<<<< HEAD
             if ex is None:
                 ex = ArmedAtEndOfTestException("Still armed at end of test")
+=======
+            ex = ArmedAtEndOfTestException("Still armed at end of test")
+>>>>>>> myquadplane
             self.progress("Armed at end of test; force-rebooting SITL")
             self.disarm_vehicle(force=True)
             self.forced_post_test_sitl_reboots += 1
@@ -3446,7 +3482,24 @@ class AutoTest(ABC):
             raise ValueError("frame must not be None")
 
         self.progress("Starting simulator")
+<<<<<<< HEAD
         self.start_SITL()
+=======
+        self.sitl = util.start_SITL(self.binary,
+                                    breakpoints=self.breakpoints,
+                                    disable_breakpoints=self.disable_breakpoints,
+                                    defaults_file=self.defaults_filepath(),
+                                    gdb=self.gdb,
+                                    gdbserver=self.gdbserver,
+                                    lldb=self.lldb,
+                                    home=self.sitl_home(),
+                                    model=self.frame,
+                                    speedup=self.speedup,
+                                    valgrind=self.valgrind,
+                                    vicon=self.uses_vicon(),
+                                    wipe=True,
+                                    )
+>>>>>>> myquadplane
 
         self.start_mavproxy()
 
@@ -3912,8 +3965,13 @@ class AutoTest(ABC):
                     self.mavproxy.send('dataflash_logger status\n')
                     # seen on autotest: Active Rate(3s):97.790kB/s Block:164 Missing:0 Fixed:0 Abandoned:0
                     self.mavproxy.expect("Active Rate\([0-9]s\):([0-9]+[.][0-9]+)")
+<<<<<<< HEAD
                     rate = float(self.mavproxy.match.group(1))
                     self.progress("Rate: %f" % rate)
+=======
+                    rate = self.mavproxy.match.group(1)
+                    self.progress("Rate: %f" % float(rate))
+>>>>>>> myquadplane
                     if rate < 50:
                         raise NotAchievedException("Exceptionally low transfer rate")
             self.disarm_vehicle()
@@ -4948,6 +5006,7 @@ switch value'''
             self.assert_capability(mavutil.mavlink.MAV_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION)
             self.set_parameter("AFS_TERM_ACTION", 42)
             self.load_sample_mission()
+<<<<<<< HEAD
             messages = []
             def my_message_hook(mav, m):
                 if m.get_type() != 'STATUSTEXT':
@@ -4961,6 +5020,9 @@ switch value'''
 
             if "AFS State: AFS_AUTO" not in [x.text for x in messages]:
                 self.wait_statustext("AFS State: AFS_AUTO")
+=======
+            self.change_mode("AUTO") # must go to auto for AFS to latch on
+>>>>>>> myquadplane
             self.change_mode("MANUAL")
             self.start_subtest("RC Failure")
             self.set_parameter("AFS_RC_FAIL_TIME", 1)
@@ -5005,6 +5067,7 @@ switch value'''
         if ex is not None:
             raise ex
 
+<<<<<<< HEAD
     def drain_mav_seconds(self, seconds):
         tstart = self.get_sim_time_cached()
         while self.get_sim_time_cached() - tstart < seconds:
@@ -5414,6 +5477,8 @@ switch value'''
                     self.progress("  Fulfilled")
                     del wants[want]
 
+=======
+>>>>>>> myquadplane
     def tests(self):
         return [
             ("PIDTuning",

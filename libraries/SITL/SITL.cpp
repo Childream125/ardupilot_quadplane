@@ -198,6 +198,7 @@ const AP_Param::GroupInfo SITL::var_info2[] = {
     // @Path: ./SIM_ToneAlarm.cpp
     AP_SUBGROUPINFO(tonealarm_sim, "TA_", 57, SITL, ToneAlarm),
 
+<<<<<<< HEAD
     AP_GROUPINFO("EFI_TYPE",    58, SITL,  efi_type,  SITL::EFI_TYPE_NONE),
 
     AP_GROUPINFO("SAFETY_STATE",    59, SITL,  _safety_switch_state, 0),
@@ -211,6 +212,10 @@ const AP_Param::GroupInfo SITL::var_info2[] = {
     // amplitude scaling of motor noise relative to gyro/accel noise
     AP_GROUPINFO("VIB_MOT_MULT", 63, SITL,  vibe_motor_scale, 1.0f),
 
+=======
+    AP_GROUPINFO("MAG_SCALING",    60, SITL,  mag_scaling, 1),
+
+>>>>>>> myquadplane
     AP_GROUPEND
 
 };

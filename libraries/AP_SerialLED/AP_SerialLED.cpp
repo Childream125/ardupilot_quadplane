@@ -18,7 +18,10 @@
 
 #include "AP_SerialLED.h"
 #include <AP_Math/AP_Math.h>
+<<<<<<< HEAD
 #include "SRV_Channel/SRV_Channel.h"
+=======
+>>>>>>> myquadplane
 
 extern const AP_HAL::HAL& hal;
 
@@ -28,15 +31,24 @@ AP_SerialLED::AP_SerialLED()
 {
 }
 
+<<<<<<< HEAD
 // set number of NeoPixels per pin
 bool AP_SerialLED::set_num_neopixel(uint8_t chan, uint8_t num_leds)
 {
     if (chan >= 1 && chan <= 16 && num_leds <= AP_SERIALLED_MAX_LEDS) {
         return hal.rcout->set_serial_led_num_LEDs(chan-1, num_leds, AP_HAL::RCOutput::MODE_NEOPIXEL);
+=======
+// set number of LEDs per pin
+bool AP_SerialLED::set_num_LEDs(uint8_t chan, uint8_t num_leds)
+{
+    if (chan >= 1 && chan <= 16 && num_leds <= 32) {
+        return hal.rcout->set_neopixel_num_LEDs(chan-1, num_leds);
+>>>>>>> myquadplane
     }
     return false;
 }
 
+<<<<<<< HEAD
 // set number of ProfiLEDs per pin
 bool AP_SerialLED::set_num_profiled(uint8_t chan, uint8_t num_leds)
 {
@@ -58,14 +70,27 @@ void AP_SerialLED::set_RGB(uint8_t chan, int8_t led, uint8_t red, uint8_t green,
 {
     if (chan >= 1 && chan <= 16) {
         hal.rcout->set_serial_led_rgb_data(chan-1, led, red, green, blue);
+=======
+// set RGB value on mask of LEDs. chan is PWM output, 1..16
+void AP_SerialLED::set_RGB(uint8_t chan, uint32_t ledmask, uint8_t red, uint8_t green, uint8_t blue)
+{
+    if (chan >= 1 && chan <= 16) {
+        hal.rcout->set_neopixel_rgb_data(chan-1, ledmask, red, green, blue);
+>>>>>>> myquadplane
     }
 }
 
 // trigger sending of LED changes to LEDs
+<<<<<<< HEAD
 void AP_SerialLED::send(uint8_t chan)
 {
     if (chan >= 1 && chan <= 16) {
         hal.rcout->serial_led_send(chan-1);
     }
 
+=======
+void AP_SerialLED::send(void)
+{
+    hal.rcout->neopixel_send();
+>>>>>>> myquadplane
 }

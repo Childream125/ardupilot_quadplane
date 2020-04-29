@@ -37,12 +37,18 @@
 #include <uavcan/equipment/indication/BeepCommand.h>
 #include <uavcan/equipment/indication/LightsCommand.h>
 #include <uavcan/equipment/range_sensor/Measurement.h>
+<<<<<<< HEAD
 #include <uavcan/equipment/hardpoint/Command.h>
 #include <uavcan/equipment/esc/Status.h>
 #include <ardupilot/indication/SafetyState.h>
 #include <ardupilot/indication/Button.h>
 #include <ardupilot/equipment/trafficmonitor/TrafficReport.h>
 #include <uavcan/equipment/gnss/RTCMStream.h>
+=======
+#include <ardupilot/indication/SafetyState.h>
+#include <ardupilot/indication/Button.h>
+#include <ardupilot/equipment/trafficmonitor/TrafficReport.h>
+>>>>>>> myquadplane
 #include <uavcan/protocol/debug/LogMessage.h>
 #include <stdio.h>
 #include <AP_HAL_ChibiOS/hwdef/common/stm32_util.h>
@@ -50,8 +56,11 @@
 #include <drivers/stm32/canard_stm32.h>
 #include <AP_HAL/I2CDevice.h>
 #include "../AP_Bootloader/app_comms.h"
+<<<<<<< HEAD
 #include <AP_HAL/utility/RingBuffer.h>
 #include <AP_Common/AP_FWVersion.h>
+=======
+>>>>>>> myquadplane
 
 #include "i2c.h"
 #include <utility>
@@ -64,7 +73,11 @@ extern AP_Periph_FW periph;
 #endif
 
 static CanardInstance canard;
+<<<<<<< HEAD
 static uint32_t canard_memory_pool[HAL_CAN_POOL_SIZE/sizeof(uint32_t)];
+=======
+static uint32_t canard_memory_pool[2048/4];
+>>>>>>> myquadplane
 #ifndef HAL_CAN_DEFAULT_NODE_ID
 #define HAL_CAN_DEFAULT_NODE_ID CANARD_BROADCAST_NODE_ID
 #endif
@@ -486,6 +499,7 @@ static void handle_safety_state(CanardInstance* ins, CanardRxTransfer* transfer)
 }
 #endif // HAL_GPIO_PIN_SAFE_LED
 
+<<<<<<< HEAD
 #ifdef HAL_PERIPH_ENABLE_GPS
 /*
   handle gnss::RTCMStream
@@ -503,12 +517,20 @@ static void handle_RTCMStream(CanardInstance* ins, CanardRxTransfer* transfer)
 #endif // HAL_PERIPH_ENABLE_GPS
 
 
+=======
+>>>>>>> myquadplane
 #ifdef AP_PERIPH_HAVE_LED
 static void set_rgb_led(uint8_t red, uint8_t green, uint8_t blue)
 {
 #ifdef HAL_PERIPH_NEOPIXEL_COUNT
+<<<<<<< HEAD
     hal.rcout->set_serial_led_rgb_data(HAL_PERIPH_NEOPIXEL_CHAN, -1, red, green, blue);
     hal.rcout->serial_led_send(HAL_PERIPH_NEOPIXEL_CHAN);
+=======
+    hal.rcout->set_neopixel_rgb_data(HAL_PERIPH_NEOPIXEL_CHAN, (1U<<HAL_PERIPH_NEOPIXEL_COUNT)-1,
+                                     red, green, blue);
+    hal.rcout->neopixel_send();
+>>>>>>> myquadplane
 #endif // HAL_PERIPH_NEOPIXEL_COUNT
 #ifdef HAL_PERIPH_ENABLE_NCP5623_LED
     {
@@ -689,12 +711,15 @@ static void onTransferReceived(CanardInstance* ins,
         break;
 #endif
 
+<<<<<<< HEAD
 #ifdef HAL_PERIPH_ENABLE_GPS
     case UAVCAN_EQUIPMENT_GNSS_RTCMSTREAM_ID:
         handle_RTCMStream(ins, transfer);
         break;
 #endif
         
+=======
+>>>>>>> myquadplane
 #ifdef AP_PERIPH_HAVE_LED
     case UAVCAN_EQUIPMENT_INDICATION_LIGHTSCOMMAND_ID:
         handle_lightscommand(ins, transfer);
@@ -899,6 +924,7 @@ static void process1HzTasks(uint64_t timestamp_usec)
 #if !defined(HAL_NO_FLASH_SUPPORT) && !defined(HAL_NO_ROMFS_SUPPORT)
     if (periph.g.flash_bootloader.get()) {
         periph.g.flash_bootloader.set_and_save_ifchanged(0);
+<<<<<<< HEAD
         hal.scheduler->delay(1000);
         AP_HAL::Util::FlashBootloader res = hal.util->flash_bootloader();
         switch (res) {
@@ -911,6 +937,12 @@ static void process1HzTasks(uint64_t timestamp_usec)
         default:
             can_printf("Flash bootloader FAILED\n");
             break;
+=======
+        if (hal.util->flash_bootloader()) {
+            can_printf("Flash bootloader OK\n");
+        } else {
+            can_printf("Flash bootloader FAILED\n");
+>>>>>>> myquadplane
         }
     }
 #endif
@@ -1495,10 +1527,13 @@ void AP_Periph_FW::can_baro_update(void)
 void AP_Periph_FW::can_airspeed_update(void)
 {
 #ifdef HAL_PERIPH_ENABLE_AIRSPEED
+<<<<<<< HEAD
     if (!airspeed.enabled()) {
         return;
     }
 #if CAN_PROBE_CONTINUOUS
+=======
+>>>>>>> myquadplane
     if (!airspeed.healthy()) {
         uint32_t now = AP_HAL::millis();
         static uint32_t last_probe_ms;
@@ -1507,7 +1542,10 @@ void AP_Periph_FW::can_airspeed_update(void)
             airspeed.init();
         }
     }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> myquadplane
     uint32_t now = AP_HAL::millis();
     if (now - last_airspeed_update_ms < 50) {
         // max 20Hz data
@@ -1519,7 +1557,11 @@ void AP_Periph_FW::can_airspeed_update(void)
         // don't send any data
         return;
     }
+<<<<<<< HEAD
     const float press = airspeed.get_corrected_pressure();
+=======
+    const float press = airspeed.get_differential_pressure();
+>>>>>>> myquadplane
     float temp;
     if (!airspeed.get_temperature(temp)) {
         temp = nanf("");
@@ -1559,10 +1601,13 @@ void AP_Periph_FW::can_airspeed_update(void)
 void AP_Periph_FW::can_rangefinder_update(void)
 {
 #ifdef HAL_PERIPH_ENABLE_RANGEFINDER
+<<<<<<< HEAD
     if (rangefinder.get_type(0) == RangeFinder::Type::NONE) {
         return;
     }
 #if CAN_PROBE_CONTINUOUS
+=======
+>>>>>>> myquadplane
     if (rangefinder.num_sensors() == 0) {
         uint32_t now = AP_HAL::millis();
         static uint32_t last_probe_ms;
@@ -1571,7 +1616,10 @@ void AP_Periph_FW::can_rangefinder_update(void)
             rangefinder.init(ROTATION_NONE);
         }
     }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> myquadplane
     uint32_t now = AP_HAL::millis();
     static uint32_t last_update_ms;
     if (now - last_update_ms < 20) {
@@ -1580,14 +1628,20 @@ void AP_Periph_FW::can_rangefinder_update(void)
     }
     last_update_ms = now;
     rangefinder.update();
+<<<<<<< HEAD
     RangeFinder::Status status = rangefinder.status_orient(ROTATION_NONE);
     if (status <= RangeFinder::Status::NoData) {
+=======
+    RangeFinder::RangeFinder_Status status = rangefinder.status_orient(ROTATION_NONE);
+    if (status <= RangeFinder::RangeFinder_NoData) {
+>>>>>>> myquadplane
         // don't send any data
         return;
     }
     uint16_t dist_cm = rangefinder.distance_cm_orient(ROTATION_NONE);
     uavcan_equipment_range_sensor_Measurement pkt {};
     switch (status) {
+<<<<<<< HEAD
     case RangeFinder::Status::OutOfRangeLow:
         pkt.reading_type = UAVCAN_EQUIPMENT_RANGE_SENSOR_MEASUREMENT_READING_TYPE_TOO_CLOSE;
         break;
@@ -1595,6 +1649,15 @@ void AP_Periph_FW::can_rangefinder_update(void)
         pkt.reading_type = UAVCAN_EQUIPMENT_RANGE_SENSOR_MEASUREMENT_READING_TYPE_TOO_FAR;
         break;
     case RangeFinder::Status::Good:
+=======
+    case RangeFinder::RangeFinder_OutOfRangeLow:
+        pkt.reading_type = UAVCAN_EQUIPMENT_RANGE_SENSOR_MEASUREMENT_READING_TYPE_TOO_CLOSE;
+        break;
+    case RangeFinder::RangeFinder_OutOfRangeHigh:
+        pkt.reading_type = UAVCAN_EQUIPMENT_RANGE_SENSOR_MEASUREMENT_READING_TYPE_TOO_FAR;
+        break;
+    case RangeFinder::RangeFinder_Good:
+>>>>>>> myquadplane
         pkt.reading_type = UAVCAN_EQUIPMENT_RANGE_SENSOR_MEASUREMENT_READING_TYPE_VALID_RANGE;
         break;
     default:

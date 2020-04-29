@@ -67,6 +67,14 @@ private:
     void read_adc(uint32_t *val);
     void update_power_flags(void);
 
+<<<<<<< HEAD
+=======
+    int _battery_handle;
+    int _servorail_handle;
+    int _system_power_handle;
+    uint64_t _battery_timestamp;
+    uint64_t _servorail_timestamp;
+>>>>>>> myquadplane
     ChibiOS::AnalogSource* _channels[ANALOG_MAX_CHANNELS];
 
     uint32_t _last_run;

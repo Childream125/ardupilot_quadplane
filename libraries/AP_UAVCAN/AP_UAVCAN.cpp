@@ -51,7 +51,11 @@
 #include <SRV_Channel/SRV_Channel.h>
 #include <AP_OpticalFlow/AP_OpticalFlow_HereFlow.h>
 #include <AP_ADSB/AP_ADSB.h>
+<<<<<<< HEAD
 #include "AP_UAVCAN_DNA_Server.h"
+=======
+#include "AP_UAVCAN_Server.h"
+>>>>>>> myquadplane
 #include <AP_Logger/AP_Logger.h>
 
 #define LED_DELAY_US 50000
@@ -234,13 +238,21 @@ void AP_UAVCAN::init(uint8_t driver_index, bool enable_filters)
     }
 
     //Start Servers
+<<<<<<< HEAD
     if (!AP::uavcan_dna_server().init(this)) {
+=======
+    if (!AP::uavcan_server().init(this)) {
+>>>>>>> myquadplane
         debug_uavcan(1, "UAVCAN: Failed to start DNA Server\n\r");
         return;
     }
 
     // Roundup all subscribers from supported drivers
+<<<<<<< HEAD
     AP_UAVCAN_DNA_Server::subscribe_msgs(this);
+=======
+    AP_UAVCAN_Server::subscribe_msgs(this);
+>>>>>>> myquadplane
     AP_GPS_UAVCAN::subscribe_msgs(this);
     AP_Compass_UAVCAN::subscribe_msgs(this);
     AP_Baro_UAVCAN::subscribe_msgs(this);
@@ -365,7 +377,11 @@ void AP_UAVCAN::loop(void)
         buzzer_send();
         rtcm_stream_send();
         safety_state_send();
+<<<<<<< HEAD
         AP::uavcan_dna_server().verify_nodes(this);
+=======
+        AP::uavcan_server().verify_nodes(this);
+>>>>>>> myquadplane
     }
 }
 

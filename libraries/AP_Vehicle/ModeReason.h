@@ -53,7 +53,10 @@ enum class ModeReason : uint8_t {
   UNAVAILABLE,
   AUTOROTATION_START,
   AUTOROTATION_BAILOUT,
+<<<<<<< HEAD
   SOARING_ALT_TOO_HIGH,
   SOARING_ALT_TOO_LOW,
   SOARING_DRIFT_EXCEEDED,
+=======
+>>>>>>> myquadplane
 };

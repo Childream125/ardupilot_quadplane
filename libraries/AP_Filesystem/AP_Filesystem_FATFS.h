@@ -23,6 +23,7 @@
 #define MAX_NAME_LEN 13
 #endif
 
+<<<<<<< HEAD
 class AP_Filesystem_FATFS : public AP_Filesystem_Backend
 {
 public:
@@ -48,4 +49,12 @@ public:
 
     // set modification time on a file
     bool set_mtime(const char *filename, const uint32_t mtime_sec) override;
+=======
+#define DT_REG 0
+#define DT_DIR 1
+
+struct dirent {
+   char           d_name[MAX_NAME_LEN]; /* filename */
+   uint8_t d_type;
+>>>>>>> myquadplane
 };

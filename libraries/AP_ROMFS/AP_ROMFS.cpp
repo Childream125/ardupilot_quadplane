@@ -54,7 +54,10 @@ const uint8_t *AP_ROMFS::find_decompress(const char *name, uint32_t &size)
     }
 
 #ifdef HAL_ROMFS_UNCOMPRESSED
+<<<<<<< HEAD
     size = compressed_size;
+=======
+>>>>>>> myquadplane
     return compressed_data;
 #else
     // last 4 bytes of gzip file are length of decompressed data
@@ -112,6 +115,7 @@ void AP_ROMFS::free(const uint8_t *data)
 #ifndef HAL_ROMFS_UNCOMPRESSED
     ::free(const_cast<uint8_t *>(data));
 #endif
+<<<<<<< HEAD
 }
 
 /*
@@ -130,4 +134,6 @@ const char *AP_ROMFS::dir_list(const char *dirname, uint16_t &ofs)
         }
     }
     return nullptr;
+=======
+>>>>>>> myquadplane
 }

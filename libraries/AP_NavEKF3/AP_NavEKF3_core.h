@@ -380,6 +380,7 @@ public:
     // get timing statistics structure
     void getTimingStatistics(struct ekf_timing &timing);
 
+<<<<<<< HEAD
     // values for EK3_MAG_CAL
     enum class MagCal {
         WHEN_FLYING = 0,
@@ -405,6 +406,8 @@ public:
     // request a reset the yaw to the EKF-GSF value
     void EKFGSF_requestYawReset();
 
+=======
+>>>>>>> myquadplane
 private:
     EKFGSF_yaw *yawEstimator;
 

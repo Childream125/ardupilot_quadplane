@@ -1437,7 +1437,14 @@ void AP_Radio_cypress::dsm_choose_channel(void)
  */
 void AP_Radio_cypress::start_recv_bind(void)
 {
+<<<<<<< HEAD
     dev->get_semaphore()->take_blocking();
+=======
+    if (!dev->get_semaphore()->take(HAL_SEMAPHORE_BLOCK_FOREVER)) {
+        // shouldn't be possible
+        return;
+    }
+>>>>>>> myquadplane
 
     Debug(1, "Cypress: start_recv_bind\n");
 

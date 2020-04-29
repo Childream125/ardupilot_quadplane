@@ -137,6 +137,12 @@ private:
     Parameters g;
     ParametersG2 g2;
 
+<<<<<<< HEAD
+=======
+    // main loop scheduler
+    AP_Scheduler scheduler{FUNCTOR_BIND_MEMBER(&Sub::fast_loop, void)};
+
+>>>>>>> myquadplane
     // primary input control channels
     RC_Channel *channel_roll;
     RC_Channel *channel_pitch;
@@ -527,7 +533,10 @@ private:
     void fence_check();
     bool set_mode(control_mode_t mode, ModeReason reason);
     bool set_mode(const uint8_t mode, const ModeReason reason) override;
+<<<<<<< HEAD
     uint8_t get_mode() const override { return (uint8_t)control_mode; }
+=======
+>>>>>>> myquadplane
     void update_flight_mode();
     void exit_mode(control_mode_t old_control_mode, control_mode_t new_control_mode);
     bool mode_requires_GPS(control_mode_t mode);

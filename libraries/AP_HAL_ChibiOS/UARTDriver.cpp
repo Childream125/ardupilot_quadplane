@@ -480,6 +480,13 @@ void UARTDriver::rxbuff_full_irq(void* self, uint32_t flags)
         uart_drv->receive_timestamp_update();
     }
 
+<<<<<<< HEAD
+=======
+    //restart the DMA transfers
+    dmaStreamSetMemory0(uart_drv->rxdma, uart_drv->rx_bounce_buf);
+    dmaStreamSetTransactionSize(uart_drv->rxdma, RX_BOUNCE_BUFSIZE);
+    dmaStreamEnable(uart_drv->rxdma);
+>>>>>>> myquadplane
     if (uart_drv->_wait.thread_ctx && uart_drv->_readbuf.available() >= uart_drv->_wait.n) {
         chSysLockFromISR();
         chEvtSignalI(uart_drv->_wait.thread_ctx, EVT_DATA);
@@ -608,7 +615,10 @@ size_t UARTDriver::write(uint8_t c)
     if (lock_write_key != 0) {
         return 0;
     }
+<<<<<<< HEAD
     _write_mutex.take_blocking();
+=======
+>>>>>>> myquadplane
 
     if (!_initialised) {
         _write_mutex.give();
@@ -1041,6 +1051,11 @@ void UARTDriver::_timer_tick(void)
                 receive_timestamp_update();
             }
 
+<<<<<<< HEAD
+=======
+            receive_timestamp_update();
+
+>>>>>>> myquadplane
             /* stop reading as we read less than we asked for */
             if ((unsigned)ret < vec[i].len) {
                 break;

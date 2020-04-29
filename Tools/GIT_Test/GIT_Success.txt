@@ -128,6 +128,7 @@ kenhuyang
 Bhavya
 Nick Restivo - Hello from Georgia Tech! (10/8/2019)
 Randy Mackay from Xiamen
+<<<<<<< HEAD
 Andrew Michelmore in an attempt to fly
 prajesh_pixelburn
 Gautham P Krishnan
@@ -143,3 +144,6 @@ Marek Lukasiewicz
 Jacob Gruver
 Jawed Alam
 Vinicius Juvinski
+=======
+
+>>>>>>> myquadplane

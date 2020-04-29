@@ -300,7 +300,11 @@ bool AP_Arming_Copter::motor_checks(bool display_failure)
 {
     // check motors initialised  correctly
     if (!copter.motors->initialised_ok()) {
+<<<<<<< HEAD
         check_failed(display_failure, "Check firmware or FRAME_CLASS");
+=======
+        check_failed(display_failure, "check firmware or FRAME_CLASS");
+>>>>>>> myquadplane
         return false;
     }
 
@@ -328,6 +332,7 @@ bool AP_Arming_Copter::motor_checks(bool display_failure)
         }
         if (copter.motors->get_pwm_output_max() != 2000) {
             check_failed(display_failure, "TCAN ESCs require MOT_PWM_MAX=2000");
+<<<<<<< HEAD
             return false;
         }
 
@@ -349,6 +354,8 @@ bool AP_Arming_Copter::motor_checks(bool display_failure)
         }
         if (escs_missing > 0) {
             check_failed(display_failure, "TCAN missing %d escs, check #%d", (int)escs_missing, (int)first_missing);
+=======
+>>>>>>> myquadplane
             return false;
         }
     }

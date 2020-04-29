@@ -112,6 +112,11 @@ inherit Rover's tests!'''
             ("TestWheelEncoder",
              "Test wheel encoders",
              self.test_wheelencoders),
+<<<<<<< HEAD
+=======
+
+            ("GetBanner", "Get Banner", self.do_get_banner),
+>>>>>>> myquadplane
 
             ("GetBanner", "Get Banner", self.do_get_banner),
 

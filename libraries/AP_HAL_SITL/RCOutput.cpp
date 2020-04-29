@@ -87,9 +87,15 @@ void RCOutput::push(void)
 /*
   Serial LED emulation
 */
+<<<<<<< HEAD
 bool RCOutput::set_serial_led_num_LEDs(const uint16_t chan, uint8_t num_leds, output_mode mode, uint16_t clock_mask)
 {
     if (chan > 15 || num_leds > 64) {
+=======
+bool RCOutput::set_neopixel_num_LEDs(const uint16_t chan, uint8_t num_leds)
+{
+    if (chan > 15 || num_leds > 32) {
+>>>>>>> myquadplane
         return false;
     }
     SITL::SITL *sitl = AP::sitl();
@@ -100,12 +106,17 @@ bool RCOutput::set_serial_led_num_LEDs(const uint16_t chan, uint8_t num_leds, ou
     return false;
 }
 
+<<<<<<< HEAD
 void RCOutput::set_serial_led_rgb_data(const uint16_t chan, int8_t led, uint8_t red, uint8_t green, uint8_t blue)
+=======
+void RCOutput::set_neopixel_rgb_data(const uint16_t chan, uint32_t ledmask, uint8_t red, uint8_t green, uint8_t blue)
+>>>>>>> myquadplane
 {
     if (chan > 15) {
         return;
     }
     SITL::SITL *sitl = AP::sitl();
+<<<<<<< HEAD
     if (led == -1) {
         for (uint8_t i=0; i < sitl->led.num_leds[chan]; i++) {
             set_serial_led_rgb_data(chan, i, red, green, blue);
@@ -123,6 +134,20 @@ void RCOutput::set_serial_led_rgb_data(const uint16_t chan, int8_t led, uint8_t 
 }
 
 void RCOutput::serial_led_send(const uint16_t chan)
+=======
+    if (sitl) {
+        for (uint8_t i=0; i<32; i++) {
+            if ((1U<<i) & ledmask) {
+                sitl->led.rgb[chan][i].rgb[0] = red;
+                sitl->led.rgb[chan][i].rgb[1] = green;
+                sitl->led.rgb[chan][i].rgb[2] = blue;
+            }
+        }
+    }
+}
+
+void RCOutput::neopixel_send(void)
+>>>>>>> myquadplane
 {
     SITL::SITL *sitl = AP::sitl();
     if (sitl) {

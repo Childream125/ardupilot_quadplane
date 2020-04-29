@@ -201,7 +201,11 @@ private:
     bool load_sector(uint8_t sector) WARN_IF_UNUSED;
 
     // erase a sector and write header
+<<<<<<< HEAD
     bool erase_sector(uint8_t sector, bool mark_available) WARN_IF_UNUSED;
+=======
+    bool erase_sector(uint8_t sector, bool mark_available);
+>>>>>>> myquadplane
 
     // erase all sectors and reset
     bool erase_all() WARN_IF_UNUSED;

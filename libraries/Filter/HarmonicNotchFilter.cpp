@@ -71,6 +71,7 @@ const AP_Param::GroupInfo HarmonicNotchFilterParams::var_info[] = {
 
     // @Param: MODE
     // @DisplayName: Harmonic Notch Filter dynamic frequency tracking mode
+<<<<<<< HEAD
     // @Description: Harmonic Notch Filter dynamic frequency tracking mode. Dynamic updates can be throttle, RPM sensor, ESC telemetry or dynamic FFT based. Throttle-based updates should only be used with multicopters.
     // @Range: 0 4
     // @Values: 0:Disabled,1:Throttle,2:RPM Sensor,3:ESC Telemetry,4:Dynamic FFT
@@ -84,6 +85,13 @@ const AP_Param::GroupInfo HarmonicNotchFilterParams::var_info[] = {
     // @User: Advanced
     // @RebootRequired: True
     AP_GROUPINFO("OPTS", 8, HarmonicNotchFilterParams, _options, 0),
+=======
+    // @Description: Harmonic Notch Filter dynamic frequency tracking mode. Dynamic updates can be throttle, RPM sensor or ESC telemetry based. Throttle-based updates should only be used with multicopters.
+    // @Range: 0 3
+    // @Values: 0:Disabled,1:Throttle,2:RPM Sensor,3:ESC Telemetry
+    // @User: Advanced
+    AP_GROUPINFO("MODE", 7, HarmonicNotchFilterParams, _tracking_mode, 1),
+>>>>>>> myquadplane
 
     AP_GROUPEND
 };

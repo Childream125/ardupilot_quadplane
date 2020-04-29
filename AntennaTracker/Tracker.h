@@ -42,6 +42,13 @@
 #include <AP_Mission/AP_Mission.h>
 #include <AP_Stats/AP_Stats.h>                      // statistics library
 #include <AP_BattMonitor/AP_BattMonitor.h> // Battery monitor library
+<<<<<<< HEAD
+=======
+#include <AP_Airspeed/AP_Airspeed.h>
+#include <AP_OpticalFlow/AP_OpticalFlow.h>
+#include <AP_Beacon/AP_Beacon.h>
+#include <AP_Common/AP_FWVersion.h>
+>>>>>>> myquadplane
 
 // Configuration
 #include "config.h"
@@ -62,8 +69,11 @@
 #include <SITL/SITL.h>
 #endif
 
+<<<<<<< HEAD
 #include "mode.h"
 
+=======
+>>>>>>> myquadplane
 class Tracker : public AP_Vehicle {
 public:
     friend class GCS_MAVLINK_Tracker;
@@ -78,10 +88,28 @@ public:
 private:
     Parameters g;
 
+<<<<<<< HEAD
+=======
+    // main loop scheduler
+    AP_Scheduler scheduler;
+
+>>>>>>> myquadplane
     uint32_t start_time_ms = 0;
 
     AP_Logger logger;
 
+<<<<<<< HEAD
+=======
+// Inertial Navigation EKF
+#if AP_AHRS_NAVEKF_AVAILABLE
+    NavEKF2 EKF2{&ahrs, rangefinder};
+    NavEKF3 EKF3{&ahrs, rangefinder};
+    AP_AHRS_NavEKF ahrs{EKF2, EKF3};
+#else
+    AP_AHRS_DCM ahrs;
+#endif
+
+>>>>>>> myquadplane
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
     SITL::SITL sitl;
 #endif
@@ -214,9 +242,14 @@ private:
     void arm_servos();
     void disarm_servos();
     void prepare_servos();
+<<<<<<< HEAD
     void set_mode(Mode &newmode, ModeReason reason);
     bool set_mode(uint8_t new_mode, ModeReason reason) override;
     uint8_t get_mode() const override { return (uint8_t)mode->number(); }
+=======
+    void set_mode(enum ControlMode mode, ModeReason reason);
+    bool set_mode(const uint8_t new_mode, const ModeReason reason) override;
+>>>>>>> myquadplane
     bool should_log(uint32_t mask);
     bool start_command_callback(const AP_Mission::Mission_Command& cmd) { return false; }
     void exit_mission_callback() { return; }

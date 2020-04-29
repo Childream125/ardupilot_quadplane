@@ -30,6 +30,7 @@ class AP_AHRS_View;
 
 // do not do anything here apart from add stuff; maintaining older
 // entries means log analysis is easier
+<<<<<<< HEAD
 enum class LogEvent : uint8_t {
     ARMED = 10,
     DISARMED = 11,
@@ -99,6 +100,74 @@ enum class LogDataID : uint8_t {
     AP_STATE = 7,
 // SYSTEM_TIME_SET = 8,
     INIT_SIMPLE_BEARING = 9,
+=======
+enum Log_Event : uint8_t {
+    DATA_AP_STATE = 7,
+// DATA_SYSTEM_TIME_SET = 8,
+    DATA_INIT_SIMPLE_BEARING = 9,
+    DATA_ARMED = 10,
+    DATA_DISARMED = 11,
+    DATA_AUTO_ARMED = 15,
+    DATA_LAND_COMPLETE_MAYBE = 17,
+    DATA_LAND_COMPLETE = 18,
+    DATA_NOT_LANDED = 28,
+    DATA_LOST_GPS = 19,
+    DATA_FLIP_START = 21,
+    DATA_FLIP_END = 22,
+    DATA_SET_HOME = 25,
+    DATA_SET_SIMPLE_ON = 26,
+    DATA_SET_SIMPLE_OFF = 27,
+    DATA_SET_SUPERSIMPLE_ON = 29,
+    DATA_AUTOTUNE_INITIALISED = 30,
+    DATA_AUTOTUNE_OFF = 31,
+    DATA_AUTOTUNE_RESTART = 32,
+    DATA_AUTOTUNE_SUCCESS = 33,
+    DATA_AUTOTUNE_FAILED = 34,
+    DATA_AUTOTUNE_REACHED_LIMIT = 35,
+    DATA_AUTOTUNE_PILOT_TESTING = 36,
+    DATA_AUTOTUNE_SAVEDGAINS = 37,
+    DATA_SAVE_TRIM = 38,
+    DATA_SAVEWP_ADD_WP = 39,
+    DATA_FENCE_ENABLE = 41,
+    DATA_FENCE_DISABLE = 42,
+    DATA_ACRO_TRAINER_DISABLED = 43,
+    DATA_ACRO_TRAINER_LEVELING = 44,
+    DATA_ACRO_TRAINER_LIMITED = 45,
+    DATA_GRIPPER_GRAB = 46,
+    DATA_GRIPPER_RELEASE = 47,
+    DATA_PARACHUTE_DISABLED = 49,
+    DATA_PARACHUTE_ENABLED = 50,
+    DATA_PARACHUTE_RELEASED = 51,
+    DATA_LANDING_GEAR_DEPLOYED = 52,
+    DATA_LANDING_GEAR_RETRACTED = 53,
+    DATA_MOTORS_EMERGENCY_STOPPED = 54,
+    DATA_MOTORS_EMERGENCY_STOP_CLEARED = 55,
+    DATA_MOTORS_INTERLOCK_DISABLED = 56,
+    DATA_MOTORS_INTERLOCK_ENABLED = 57,
+    DATA_ROTOR_RUNUP_COMPLETE = 58, // Heli only
+    DATA_ROTOR_SPEED_BELOW_CRITICAL = 59, // Heli only
+    DATA_EKF_ALT_RESET = 60,
+    DATA_LAND_CANCELLED_BY_PILOT = 61,
+    DATA_EKF_YAW_RESET = 62,
+    DATA_AVOIDANCE_ADSB_ENABLE = 63,
+    DATA_AVOIDANCE_ADSB_DISABLE = 64,
+    DATA_AVOIDANCE_PROXIMITY_ENABLE = 65,
+    DATA_AVOIDANCE_PROXIMITY_DISABLE = 66,
+    DATA_GPS_PRIMARY_CHANGED = 67,
+    DATA_WINCH_RELAXED = 68,
+    DATA_WINCH_LENGTH_CONTROL = 69,
+    DATA_WINCH_RATE_CONTROL = 70,
+    DATA_ZIGZAG_STORE_A = 71,
+    DATA_ZIGZAG_STORE_B = 72,
+    DATA_LAND_REPO_ACTIVE = 73,
+    DATA_STANDBY_ENABLE = 74,
+    DATA_STANDBY_DISABLE = 75,
+
+    DATA_SURFACED = 163,
+    DATA_NOT_SURFACED = 164,
+    DATA_BOTTOMED = 165,
+    DATA_NOT_BOTTOMED = 166,
+>>>>>>> myquadplane
 };
 
 enum class LogErrorSubsystem : uint8_t {
@@ -258,7 +327,11 @@ public:
     void Write_CameraInfo(enum LogMessages msg, const Location &current_loc, uint64_t timestamp_us=0);
     void Write_Camera(const Location &current_loc, uint64_t timestamp_us=0);
     void Write_Trigger(const Location &current_loc);
+<<<<<<< HEAD
     void Write_ESC(uint8_t id, uint64_t time_us, int32_t rpm, uint16_t voltage, uint16_t current, int16_t esc_temp, uint16_t current_tot, int16_t motor_temp);
+=======
+    void Write_ESC(uint8_t id, uint64_t time_us, int32_t rpm, uint16_t voltage, uint16_t current, int16_t temperature, uint16_t current_tot);
+>>>>>>> myquadplane
     void Write_ServoStatus(uint64_t time_us, uint8_t id, float position, float force, float speed, uint8_t power_pct);
     void Write_ESCStatus(uint64_t time_us, uint8_t id, uint32_t error_count, float voltage, float current, float temperature, int32_t rpm, uint8_t power_pct);
     void Write_Attitude(const Vector3f &targets);
@@ -420,7 +493,11 @@ private:
         const char *units;
         const char *mults;
     } *log_write_fmts;
+<<<<<<< HEAD
     HAL_Semaphore log_write_fmts_sem;
+=======
+    HAL_Semaphore_Recursive log_write_fmts_sem;
+>>>>>>> myquadplane
 
     // return (possibly allocating) a log_write_fmt for a name
     struct log_write_fmt *msg_fmt_for_name(const char *name, const char *labels, const char *units, const char *mults, const char *fmt);

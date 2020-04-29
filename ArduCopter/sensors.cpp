@@ -33,14 +33,22 @@ void Copter::read_rangefinder(void)
 #if RANGEFINDER_TILT_CORRECTION == ENABLED
     const float tilt_correction = MAX(0.707f, ahrs.get_rotation_body_to_ned().c.z);
 #else
+<<<<<<< HEAD
     const float tilt_correction = 1.0f;
+=======
+    const float tile_correction = 1.0f;
+>>>>>>> myquadplane
 #endif
 
     // iterate through downward and upward facing lidar
     struct {
         RangeFinderState &state;
         enum Rotation orientation;
+<<<<<<< HEAD
     } rngfnd[2] = {{rangefinder_state, ROTATION_PITCH_270}, {rangefinder_up_state, ROTATION_PITCH_90}};
+=======
+    } rngfnd[2] = { {rangefinder_state, ROTATION_PITCH_270}, {rangefinder_up_state, ROTATION_PITCH_90}};
+>>>>>>> myquadplane
 
     for (uint8_t i=0; i < ARRAY_SIZE(rngfnd); i++) {
         // local variables to make accessing simpler
@@ -48,15 +56,22 @@ void Copter::read_rangefinder(void)
         enum Rotation rf_orient = rngfnd[i].orientation;
 
         // update health
+<<<<<<< HEAD
         rf_state.alt_healthy = ((rangefinder.status_orient(rf_orient) == RangeFinder::Status::Good) &&
+=======
+        rf_state.alt_healthy = ((rangefinder.status_orient(rf_orient) == RangeFinder::RangeFinder_Good) &&
+>>>>>>> myquadplane
                                 (rangefinder.range_valid_count_orient(rf_orient) >= RANGEFINDER_HEALTH_MAX));
 
         // tilt corrected but unfiltered, not glitch protected alt
         rf_state.alt_cm = tilt_correction * rangefinder.distance_cm_orient(rf_orient);
 
+<<<<<<< HEAD
         // remember inertial alt to allow us to interpolate rangefinder
         rf_state.inertial_alt_cm = inertial_nav.get_altitude();
 
+=======
+>>>>>>> myquadplane
         // glitch handling.  rangefinder readings more than RANGEFINDER_GLITCH_ALT_CM from the last good reading
         // are considered a glitch and glitch_count becomes non-zero
         // glitches clear after RANGEFINDER_GLITCH_NUM_SAMPLES samples in a row.
@@ -90,11 +105,18 @@ void Copter::read_rangefinder(void)
             rf_state.last_healthy_ms = now;
         }
 
+<<<<<<< HEAD
         // send downward facing lidar altitude and health to waypoint and circle navigation libraries
         if (rf_orient == ROTATION_PITCH_270) {
             if (rangefinder_state.alt_healthy || timed_out) {
                 wp_nav->set_rangefinder_alt(rangefinder_state.enabled, rangefinder_state.alt_healthy, rangefinder_state.alt_cm_filt.get());
                 circle_nav->set_rangefinder_alt(rangefinder_state.enabled && wp_nav->rangefinder_used(), rangefinder_state.alt_healthy, rangefinder_state.alt_cm_filt.get());
+=======
+        // send downward facing lidar altitude and health to waypoint navigation library
+        if (rf_orient == ROTATION_PITCH_270) {
+            if (rangefinder_state.alt_healthy || timed_out) {
+                wp_nav->set_rangefinder_alt(rangefinder_state.enabled, rangefinder_state.alt_healthy, rangefinder_state.alt_cm_filt.get());
+>>>>>>> myquadplane
             }
         }
     }
@@ -124,6 +146,7 @@ bool Copter::rangefinder_up_ok()
     return (rangefinder_up_state.enabled && rangefinder_up_state.alt_healthy);
 }
 
+<<<<<<< HEAD
 /*
   get inertially interpolated rangefinder height. Inertial height is
   recorded whenever we update the rangefinder height, then we use the
@@ -142,6 +165,8 @@ bool Copter::get_rangefinder_height_interpolated_cm(int32_t& ret)
 }
 
 
+=======
+>>>>>>> myquadplane
 /*
   update RPM sensors
  */
@@ -221,6 +246,17 @@ void Copter::init_proximity(void)
 {
 #if PROXIMITY_ENABLED == ENABLED
     g2.proximity.init();
+<<<<<<< HEAD
+=======
+#endif
+}
+
+// init visual odometry sensor
+void Copter::init_visual_odom()
+{
+#if VISUAL_ODOMETRY_ENABLED == ENABLED
+    g2.visual_odom.init();
+>>>>>>> myquadplane
 #endif
 }
 

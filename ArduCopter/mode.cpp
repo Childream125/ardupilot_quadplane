@@ -202,8 +202,14 @@ bool Copter::set_mode(Mode::Number mode, ModeReason reason)
 #if FRAME_CONFIG == HELI_FRAME
     // do not allow helis to enter a non-manual throttle mode if the
     // rotor runup is not complete
+<<<<<<< HEAD
     if (!ignore_checks && !new_flightmode->has_manual_throttle() &&
         (motors->get_spool_state() == AP_Motors::SpoolState::SPOOLING_UP || motors->get_spool_state() == AP_Motors::SpoolState::SPOOLING_DOWN)) {
+=======
+    if (!ignore_checks && 
+    !new_flightmode->has_manual_throttle() && 
+    (motors->get_spool_state() == AP_Motors::SpoolState::SPOOLING_UP || motors->get_spool_state() == AP_Motors::SpoolState::SPOOLING_DOWN)) {
+>>>>>>> myquadplane
         #if MODE_AUTOROTATE_ENABLED == ENABLED
             //if the mode being exited is the autorotation mode allow mode change despite rotor not being at
             //full speed.  This will reduce altitude loss on bail-outs back to non-manual throttle modes
@@ -213,11 +219,21 @@ bool Copter::set_mode(Mode::Number mode, ModeReason reason)
         #endif
 
         if (!in_autorotation_check) {
+<<<<<<< HEAD
             gcs().send_text(MAV_SEVERITY_WARNING,"Flight mode change failed %s", new_flightmode->name());
+=======
+            gcs().send_text(MAV_SEVERITY_WARNING,"Flight mode change failed");
+>>>>>>> myquadplane
             AP::logger().Write_Error(LogErrorSubsystem::FLIGHT_MODE, LogErrorCode(mode));
             return false;
         }
     }
+
+    #if MODE_AUTOROTATE_ENABLED == ENABLED
+        // If changing to autorotate flight mode from a non-manual throttle mode, store the previous flight mode
+        // to exit back to it when interlock is re-engaged
+        prev_control_mode = control_mode;
+    #endif
 #endif
 
 #if FRAME_CONFIG != HELI_FRAME
@@ -356,12 +372,15 @@ void Copter::exit_mode(Mode *&old_flightmode,
     }
 #endif
 
+<<<<<<< HEAD
 #if MODE_ZIGZAG_ENABLED == ENABLED
     if (old_flightmode == &mode_zigzag) {
         mode_zigzag.exit();
     }
 #endif
 
+=======
+>>>>>>> myquadplane
 #if FRAME_CONFIG == HELI_FRAME
     // firmly reset the flybar passthrough to false when exiting acro mode.
     if (old_flightmode == &mode_acro) {

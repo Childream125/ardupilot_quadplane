@@ -86,8 +86,12 @@ bool AP_Arming_Rover::pre_arm_checks(bool report)
             & rover.g2.motors.pre_arm_check(report)
             & fence_checks(report)
             & oa_check(report)
+<<<<<<< HEAD:Rover/AP_Arming.cpp
             & parameter_checks(report)
             & mode_checks(report));
+=======
+            & parameter_checks(report));
+>>>>>>> myquadplane:APMrover2/AP_Arming.cpp
 }
 
 bool AP_Arming_Rover::arm_checks(AP_Arming::Method method)
@@ -186,6 +190,7 @@ bool AP_Arming_Rover::parameter_checks(bool report)
     return true;
 }
 
+<<<<<<< HEAD:Rover/AP_Arming.cpp
 // check if arming allowed from this mode
 bool AP_Arming_Rover::mode_checks(bool report)
 {   
@@ -196,3 +201,5 @@ bool AP_Arming_Rover::mode_checks(bool report)
     }
     return true;
 }
+=======
+>>>>>>> myquadplane:APMrover2/AP_Arming.cpp

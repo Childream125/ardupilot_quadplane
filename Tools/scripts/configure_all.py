@@ -16,9 +16,13 @@ parser.add_argument('--build', action='store_true', default=False, help='build a
 parser.add_argument('--build-target', default='copter', help='build target')
 parser.add_argument('--stop', action='store_true', default=False, help='stop on build fail')
 parser.add_argument('--no-bl', action='store_true', default=False, help="don't check bootloader builds")
+<<<<<<< HEAD
 parser.add_argument('--Werror', action='store_true', default=False, help="build with -Werror")
 parser.add_argument('--pattern', default='*')
 parser.add_argument('--start', default=None, type=int, help='continue from specified build number')
+=======
+parser.add_argument('--pattern', default='*')
+>>>>>>> myquadplane
 parser.add_argument('--python', default='python')
 args = parser.parse_args()
 
@@ -53,6 +57,7 @@ def run_program(cmd_list, build):
 for board in sorted(get_board_list()):
     if not fnmatch.fnmatch(board, args.pattern):
         continue
+<<<<<<< HEAD
     board_list.append(board)
 
 if args.start is not None:
@@ -68,6 +73,10 @@ for board in board_list:
     if args.Werror:
         config_opts += ["--Werror"]
     run_program([args.python, "waf", "configure"] + config_opts, "configure: " + board)
+=======
+    print("Configuring for %s" % board)
+    run_program([args.python, "waf", "configure", "--board", board], "configure: " + board)
+>>>>>>> myquadplane
     if args.build:
         if board == "iomcu":
             target = "iofirmware"
@@ -75,10 +84,14 @@ for board in board_list:
             target = "AP_Periph"
         else:
             target = args.build_target
+<<<<<<< HEAD
         if target.find('/') != -1:
             run_program([args.python, "waf", "--target", target], "build: " + board)
         else:
             run_program([args.python, "waf", target], "build: " + board)
+=======
+        run_program([args.python, "waf", target], "build: " + board)
+>>>>>>> myquadplane
     if args.no_bl:
         continue
     # check for bootloader def

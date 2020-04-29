@@ -14,6 +14,10 @@ def build(bld):
             'AP_Navigation',
             'AR_WPNav',
             'AP_RCMapper',
+<<<<<<< HEAD:Rover/wscript
+=======
+            'AP_Stats',
+>>>>>>> myquadplane:APMrover2/wscript
             'AP_Beacon',
             'AP_AdvancedFailsafe',
             'AP_WheelEncoder',

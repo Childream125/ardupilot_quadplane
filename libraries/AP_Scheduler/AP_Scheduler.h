@@ -145,8 +145,11 @@ public:
         return extra_loop_us;
     }
 
+<<<<<<< HEAD
     HAL_Semaphore &get_semaphore(void) { return _rsem; }
 
+=======
+>>>>>>> myquadplane
     static const struct AP_Param::GroupInfo var_info[];
 
     // loop performance monitoring:
@@ -226,10 +229,13 @@ private:
     // extra time available for each loop - used to dynamically adjust
     // the loop rate in case we are well over budget
     uint32_t extra_loop_us;
+<<<<<<< HEAD
 
 
     // semaphore that is held while not waiting for ins samples
     HAL_Semaphore _rsem;
+=======
+>>>>>>> myquadplane
 };
 
 namespace AP {

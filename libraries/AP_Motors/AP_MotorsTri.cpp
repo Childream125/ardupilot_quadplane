@@ -51,8 +51,11 @@ void AP_MotorsTri::init(motor_frame_class frame_class, motor_frame_type frame_ty
     // allow mapping of motor7
     add_motor_num(AP_MOTORS_CH_TRI_YAW);
 
+<<<<<<< HEAD
     SRV_Channels::set_angle(SRV_Channels::get_motor_function(AP_MOTORS_CH_TRI_YAW), _yaw_servo_angle_max_deg*100);
 
+=======
+>>>>>>> myquadplane
     // check for reverse tricopter
     if (frame_type == MOTOR_FRAME_TYPE_PLUSREV) {
         _pitch_reversed = true;

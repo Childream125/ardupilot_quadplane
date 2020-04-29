@@ -237,6 +237,12 @@ private:
     Parameters g;
     ParametersG2 g2;
 
+<<<<<<< HEAD
+=======
+    // main loop scheduler
+    AP_Scheduler scheduler{FUNCTOR_BIND_MEMBER(&Copter::fast_loop, void)};
+
+>>>>>>> myquadplane
     // used to detect MAVLink acks from GCS to stop compassmot
     uint8_t command_ack_counter;
 
@@ -263,11 +269,14 @@ private:
         int8_t glitch_count;    // non-zero number indicates rangefinder is glitching
         uint32_t glitch_cleared_ms; // system time glitch cleared
     } rangefinder_state, rangefinder_up_state;
+<<<<<<< HEAD
 
     /*
       return rangefinder height interpolated using inertial altitude
      */
     bool get_rangefinder_height_interpolated_cm(int32_t& ret);
+=======
+>>>>>>> myquadplane
 
     class SurfaceTracking {
     public:
@@ -380,7 +389,13 @@ private:
     // There are multiple states defined such as STABILIZE, ACRO,
     Mode::Number control_mode;
     ModeReason control_mode_reason = ModeReason::UNKNOWN;
+<<<<<<< HEAD
     Mode::Number prev_control_mode;
+=======
+
+    Mode::Number prev_control_mode;
+    ModeReason prev_control_mode_reason = ModeReason::UNKNOWN;
+>>>>>>> myquadplane
 
     RCMapper rcmap;
 
@@ -508,6 +523,11 @@ private:
     AP_Parachute parachute{relay};
 #endif
 
+    // Button 
+#if BUTTON_ENABLED == ENABLED
+    AP_Button button;
+#endif
+
     // Landing Gear Controller
     AP_LandingGear landinggear;
 
@@ -570,6 +590,12 @@ private:
     } gndeffect_state;
 
     bool standby_active;
+<<<<<<< HEAD
+=======
+
+    // set when we are upgrading parameters from 3.4
+    bool upgrading_frame_params;
+>>>>>>> myquadplane
 
     static const AP_Scheduler::Task scheduler_tasks[];
     static const AP_Param::Info var_info[];
@@ -782,7 +808,10 @@ private:
     // mode.cpp
     bool set_mode(Mode::Number mode, ModeReason reason);
     bool set_mode(const uint8_t new_mode, const ModeReason reason) override;
+<<<<<<< HEAD
     uint8_t get_mode() const override { return (uint8_t)control_mode; }
+=======
+>>>>>>> myquadplane
     void update_flight_mode();
     void notify_flight_mode();
 

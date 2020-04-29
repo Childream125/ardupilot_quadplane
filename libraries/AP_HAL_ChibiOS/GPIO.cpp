@@ -315,6 +315,7 @@ static void pal_interrupt_cb_functor(void *arg)
     }
     (g->fn)(g->pin_num, palReadLine(g->pal_line), now);
 }
+<<<<<<< HEAD
 
 /*
   handle interrupt from pin change for wait_pin()
@@ -366,3 +367,5 @@ bool GPIO::wait_pin(uint8_t pin, INTERRUPT_TRIGGER_TYPE mode, uint32_t timeout_u
 
     return msg == MSG_OK;
 }
+=======
+>>>>>>> myquadplane

@@ -588,8 +588,11 @@ void Scheduler::_expect_delay_ms(uint32_t ms)
     // pat once immediately
     watchdog_pat();
 
+<<<<<<< HEAD
     WITH_SEMAPHORE(expect_delay_sem);
 
+=======
+>>>>>>> myquadplane
     if (ms == 0) {
         if (expect_delay_nesting > 0) {
             expect_delay_nesting--;

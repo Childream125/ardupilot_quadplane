@@ -88,7 +88,10 @@ int AP_Filesystem_Posix::stat(const char *pathname, struct stat *stbuf)
 
 int AP_Filesystem_Posix::unlink(const char *pathname)
 {
+<<<<<<< HEAD
     pathname = map_filename(pathname);
+=======
+>>>>>>> myquadplane
     // we match the FATFS interface and use unlink
     // for both files and directories
     int ret = ::rmdir(pathname);

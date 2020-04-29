@@ -615,9 +615,12 @@ is bob we will attempt to checkout bob-AVR'''
         return ["f103-GPS",
                 "f103-ADSB",
                 "f103-RangeFinder",
+<<<<<<< HEAD
                 "f303-GPS",
                 "f303-Universal",
                 "f303-M10025",
+=======
+>>>>>>> myquadplane
                 "CUAV_GPS",
                 "ZubaxGNSS",
                 ]
@@ -795,7 +798,10 @@ is bob we will attempt to checkout bob-AVR'''
             self.build_antennatracker(tag)
             self.build_ardusub(tag)
             self.build_AP_Periph(tag)
+<<<<<<< HEAD
             self.history.record_run(githash, tag, t0, time.time()-t0)
+=======
+>>>>>>> myquadplane
 
         if os.path.exists(self.tmpdir):
             shutil.rmtree(self.tmpdir)

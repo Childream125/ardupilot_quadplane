@@ -65,12 +65,15 @@ public:
     // reset on next loop
     virtual void reset(void) = 0;
 
+<<<<<<< HEAD
     // set gliding requested flag
     virtual void set_gliding_requested_flag(bool gliding_requested) = 0;
 
     // set propulsion failed flag
     virtual void set_propulsion_failed_flag(bool propulsion_failed) = 0;
 
+=======
+>>>>>>> myquadplane
 	// add new controllers to this enum. Users can then
 	// select which controller to use by setting the
 	// SPDHGT_CONTROLLER parameter

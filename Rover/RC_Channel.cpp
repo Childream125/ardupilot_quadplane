@@ -33,6 +33,14 @@ void RC_Channel_Rover::init_aux_function(const aux_func_t ch_option, const aux_s
     // init channel options
     switch (ch_option) {
     // the following functions do not need initialising:
+<<<<<<< HEAD:Rover/RC_Channel.cpp
+=======
+    case AUX_FUNC::SAVE_TRIM:
+    case AUX_FUNC::SAVE_WP:
+    case AUX_FUNC::LEARN_CRUISE:
+    case AUX_FUNC::ARMDISARM:
+    case AUX_FUNC::MANUAL:
+>>>>>>> myquadplane:APMrover2/RC_Channel.cpp
     case AUX_FUNC::ACRO:
     case AUX_FUNC::AUTO:
     case AUX_FUNC::FOLLOW:

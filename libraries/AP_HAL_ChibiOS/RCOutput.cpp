@@ -399,7 +399,11 @@ void RCOutput::push_local(void)
                     pwmEnableChannel(group.pwm_drv, j, width);
                 }
 #ifndef DISABLE_DSHOT
+<<<<<<< HEAD
                 else if (is_dshot_protocol(group.current_mode) || group.current_mode == MODE_NEOPIXEL || group.current_mode == MODE_PROFILED) {
+=======
+                else if (is_dshot_protocol(group.current_mode) || group.current_mode == MODE_NEOPIXEL) {
+>>>>>>> myquadplane
                     // set period_us to time for pulse output, to enable very fast rates
                     period_us = dshot_pulse_time_us;
                 }
@@ -635,10 +639,18 @@ void RCOutput::set_group_mode(pwm_group &group)
         // configure timer driver for DMAR at requested rate
         const uint8_t pad_end_bits = 8;
         const uint8_t pad_start_bits = 1;
+<<<<<<< HEAD
         const uint8_t channels_per_group = 4;
         const uint16_t bit_length = bits_per_pixel * channels_per_group * group.serial_nleds + (pad_start_bits + pad_end_bits) * channels_per_group;
         const uint16_t buffer_length = bit_length * sizeof(uint32_t);
         if (!setup_group_DMA(group, rate, bit_period, active_high, buffer_length, true)) {
+=======
+        const uint8_t bits_per_pixel = 24;
+        const uint8_t channels_per_group = 4;
+        const uint16_t neopixel_bit_length = bits_per_pixel * channels_per_group * group.neopixel_nleds + (pad_start_bits + pad_end_bits) * channels_per_group;
+        const uint16_t neopixel_buffer_length = neopixel_bit_length * sizeof(uint32_t);
+        if (!setup_group_DMA(group, rate, bit_period, true, neopixel_buffer_length, true)) {
+>>>>>>> myquadplane
             group.current_mode = MODE_PWM_NONE;
             break;
         }
@@ -1809,6 +1821,7 @@ void RCOutput::set_serial_led_rgb_data(const uint16_t chan, int8_t led, uint8_t 
         return;
     }
 
+<<<<<<< HEAD
     if (led >= grp->serial_nleds || (grp->current_mode != MODE_NEOPIXEL && grp->current_mode != MODE_PROFILED)) {
         return;
     }
@@ -1841,6 +1854,24 @@ void RCOutput::set_serial_led_rgb_data(const uint16_t chan, int8_t led, uint8_t 
                 if ((grp->clock_mask & 1U<<j) != 0) {
                    _set_profiled_clock(grp, j, uint8_t(led));
                 }
+=======
+    // mask out for enabled LEDs
+    ledmask &= (1U<<grp->neopixel_nleds)-1;
+
+    uint8_t led = 0;
+    while (ledmask) {
+        if (ledmask & 1) {
+            const uint8_t pad_start_bits = 1;
+            const uint8_t neopixel_bit_length = 24;
+            const uint8_t stride = 4;
+            uint32_t *buf = grp->dma_buffer + (led * neopixel_bit_length + pad_start_bits) * stride + i;
+            uint32_t bits = (green<<16) | (red<<8) | blue;
+            const uint32_t BIT_0 = 7 * grp->bit_width_mul;
+            const uint32_t BIT_1 = 14 * grp->bit_width_mul;
+            for (uint16_t b=0; b < 24; b++) {
+                buf[b * stride] = (bits & 0x800000) ? BIT_1 : BIT_0;
+                bits <<= 1;
+>>>>>>> myquadplane
             }
 
             break;

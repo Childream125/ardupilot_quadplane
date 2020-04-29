@@ -1,5 +1,6 @@
 Rover Release Notes:
 --------------------------------
+<<<<<<< HEAD:Rover/release-notes.txt
 Rover 4.0.0 26-Nov-2019 / 4.0.0-rc4 20-Nov-2019
 Changes from 4.0.0-rc3
 1) Lightware SF40c lidar driver for latest version
@@ -24,6 +25,8 @@ Changes from 4.0.0-rc2
     f) Sparky2 autopilot firmware available
     g) Startup message "AK09916: Unable to get bus semaphore" removed (was not an error)  
 --------------------------------
+=======
+>>>>>>> myquadplane:APMrover2/release-notes.txt
 Rover 4.0.0-rc2 24-Oct-2019
 Changes from 4.0.0-rc1
 1) Vehicle stays in Auto mode after completing missions using RTL-within-Auto, Hold-within-Auto 

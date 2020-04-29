@@ -346,6 +346,7 @@ void AP_SerialManager::init()
     state[4].uart = hal.uartE;  // serial4, uartE, normally 2nd GPS
 #endif
 #if SERIALMANAGER_NUM_PORTS > 5
+<<<<<<< HEAD
     state[5].uart = hal.uartF;  // serial5, uartF, User Configurable
 #endif
 #if SERIALMANAGER_NUM_PORTS > 6
@@ -367,6 +368,29 @@ void AP_SerialManager::init()
     }
 #endif
 
+=======
+    state[5].uart = hal.uartF;  // serial5
+#endif
+#if SERIALMANAGER_NUM_PORTS > 6
+    state[6].uart = hal.uartG;  // serial6
+#endif
+#if SERIALMANAGER_NUM_PORTS > 7
+    state[7].uart = hal.uartH;  // serial7
+#endif
+
+#ifdef HAL_OTG1_CONFIG
+    /*
+      prevent users from changing USB protocol to other than
+      MAVLink. This fixes an issue where users trying to get SLCAN
+      change SERIAL0_PROTOCOL to 22 and find they can no longer connect
+     */
+    if (state[0].protocol != SerialProtocol_MAVLink &&
+        state[0].protocol != SerialProtocol_MAVLink2) {
+        state[0].protocol.set(SerialProtocol_MAVLink2);
+    }
+#endif
+
+>>>>>>> myquadplane
 #if SERIALMANAGER_NUM_PORTS > 0
     if (state[0].uart == nullptr) {
         init_console();

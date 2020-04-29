@@ -111,6 +111,7 @@ PD0 UART4_RX UART4 NODMA
 # UART5 (RX only, for ESC telem), disabled for now until we add uartH support
 # PB8 UART5_RX UART5 NODMA
 
+<<<<<<< HEAD
 # USART6 (RC input), SERIAL7
 PC7 TIM3_CH2 TIM3 RCININT FLOAT LOW
 PC6 USART6_TX USART6 NODMA
@@ -119,6 +120,11 @@ PC6 USART6_TX USART6 NODMA
 # for bi-directional UART based receiver protocols such as FPort
 # without any extra hardware
 PC7 USART6_RX USART6 NODMA ALT(1)
+=======
+# USART6 (RC input)
+PC7 TIM3_CH2 TIM3 RCININT FLOAT LOW
+PC6 USART6_TX USART6 NODMA LOW
+>>>>>>> myquadplane
 
 # UART7 (telem1)
 PE7 UART7_RX UART7

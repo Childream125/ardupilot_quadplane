@@ -94,7 +94,11 @@ const AP_Param::GroupInfo AP_Follow::var_info[] = {
     // @User: Standard
     AP_GROUPINFO("_OFS", 7, AP_Follow, _offset, 0),
 
+<<<<<<< HEAD
 #if !(APM_BUILD_TYPE(APM_BUILD_Rover))
+=======
+#if !(APM_BUILD_TYPE(APM_BUILD_APMrover2))
+>>>>>>> myquadplane
     // @Param: _YAW_BEHAVE
     // @DisplayName: Follow yaw behaviour
     // @Description: Follow yaw behaviour
@@ -111,7 +115,11 @@ const AP_Param::GroupInfo AP_Follow::var_info[] = {
     // @User: Standard
     AP_SUBGROUPINFO(_p_pos, "_POS_", 9, AP_Follow, AC_P),
 
+<<<<<<< HEAD
 #if !(APM_BUILD_TYPE(APM_BUILD_Rover)) 
+=======
+#if !(APM_BUILD_TYPE(APM_BUILD_APMrover2)) 
+>>>>>>> myquadplane
     // @Param: _ALT_TYPE
     // @DisplayName: Follow altitude type
     // @Description: Follow altitude type

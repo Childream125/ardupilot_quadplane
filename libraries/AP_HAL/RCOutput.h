@@ -214,7 +214,11 @@ public:
     /*
       trigger send of serial led
      */
+<<<<<<< HEAD
     virtual void serial_led_send(const uint16_t chan) {}
+=======
+    virtual void neopixel_send(void) {}
+>>>>>>> myquadplane
 
 protected:
 

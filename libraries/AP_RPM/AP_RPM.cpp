@@ -26,7 +26,11 @@ const AP_Param::GroupInfo AP_RPM::var_info[] = {
     // @Param: _TYPE
     // @DisplayName: RPM type
     // @Description: What type of RPM sensor is connected
+<<<<<<< HEAD
     // @Values: 0:None,1:PWM,2:AUXPIN,3:EFI,4:Harmonic Notch
+=======
+    // @Values: 0:None,1:PWM,2:AUXPIN
+>>>>>>> myquadplane
     // @User: Standard
     AP_GROUPINFO("_TYPE",    0, AP_RPM, _type[0], 0),
 
@@ -69,7 +73,11 @@ const AP_Param::GroupInfo AP_RPM::var_info[] = {
     // @Param: 2_TYPE
     // @DisplayName: Second RPM type
     // @Description: What type of RPM sensor is connected
+<<<<<<< HEAD
     // @Values: 0:None,1:PWM,2:AUXPIN,3:EFI,4:Harmonic Notch
+=======
+    // @Values: 0:None,1:PWM,2:AUXPIN
+>>>>>>> myquadplane
     // @User: Advanced
     AP_GROUPINFO("2_TYPE",    10, AP_RPM, _type[1], 0),
 
@@ -112,7 +120,11 @@ void AP_RPM::init(void)
     }
     for (uint8_t i=0; i<RPM_MAX_INSTANCES; i++) {
         uint8_t type = _type[i];
+<<<<<<< HEAD
 #if CONFIG_HAL_BOARD != HAL_BOARD_SITL
+=======
+
+>>>>>>> myquadplane
         if (type == RPM_TYPE_PWM) {
             // PWM option same as PIN option, for upgrade
             type = RPM_TYPE_PIN;

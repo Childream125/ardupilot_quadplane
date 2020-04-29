@@ -14,8 +14,11 @@ from common import AutoTestTimeoutException
 from common import NotAchievedException
 from common import PreconditionFailedException
 
+<<<<<<< HEAD
 import operator
 
+=======
+>>>>>>> myquadplane
 # get location of scripts
 testdir = os.path.dirname(os.path.realpath(__file__))
 SITL_START_LOCATION = mavutil.location(-35.362938, 149.165085, 585, 354)
@@ -594,9 +597,15 @@ class AutoTestPlane(AutoTest):
         self.disarm_wait(timeout=120)
 
         self.progress("Flying home")
+<<<<<<< HEAD
         self.takeoff(100)
         self.set_parameter("LAND_TYPE", 0)
         self.fly_home_land_and_disarm(timeout=240)
+=======
+        self.takeoff(10)
+        self.set_parameter("LAND_TYPE", 0)
+        self.fly_home_land_and_disarm()
+>>>>>>> myquadplane
 
     def fly_do_change_speed(self):
         # the following lines ensure we revert these parameter values
@@ -1423,6 +1432,7 @@ class AutoTestPlane(AutoTest):
         self.wait_mode("CIRCLE")
         self.set_rc(9, 1000)
 
+<<<<<<< HEAD
     def wait_for_collision_threat_to_clear(self):
         '''wait to get a "clear" collision message", then slurp remaining
         messages'''
@@ -1440,6 +1450,15 @@ class AutoTestPlane(AutoTest):
 
     def test_adsb_send_threatening_adsb_message(self, here):
         self.progress("Sending ABSD_VEHICLE message")
+=======
+    def test_adsb(self):
+        self.wait_ready_to_arm()
+        here = self.mav.location()
+        # message ADSB_VEHICLE 37 -353632614 1491652305 0 584070 0 0 0 "bob" 3 1 255 17
+        self.set_parameter("ADSB_ENABLE", 1)
+        self.set_parameter("AVD_ENABLE", 1)
+        self.delay_sim_time(2) # TODO: work out why this is required...
+>>>>>>> myquadplane
         self.mav.mav.adsb_vehicle_send(37, # ICAO address
                                        int(here.lat * 1e7),
                                        int(here.lng * 1e7),
@@ -1454,6 +1473,7 @@ class AutoTestPlane(AutoTest):
                                        65535, # flags
                                        17 # squawk
         )
+<<<<<<< HEAD
 
     def test_adsb(self):
         self.context_push()
@@ -1599,6 +1619,10 @@ class AutoTestPlane(AutoTest):
             pitch = math.degrees(m.pitch)
             self.progress("Pitch:%f throttle:%u alt:%f" % (pitch, new_throttle, alt))
         m = self.mav.recv_match(type='VFR_HUD', blocking=True, timeout=5)
+=======
+        self.progress("Waiting for collision message")
+        m = self.mav.recv_match(type='COLLISION', blocking=True, timeout=4)
+>>>>>>> myquadplane
         if m is None:
             raise NotAchievedException("Did not get VFR_HUD")
         initial_throttle = m.throttle
@@ -1811,6 +1835,7 @@ class AutoTestPlane(AutoTest):
              "Test ADSB",
              self.test_adsb),
 
+<<<<<<< HEAD
             ("Button",
              "Test Buttons",
              self.test_button),
@@ -1831,18 +1856,24 @@ class AutoTestPlane(AutoTest):
              "Test LTM serial output",
              self.test_ltm),
 
+=======
+>>>>>>> myquadplane
             ("AdvancedFailsafe",
              "Test Advanced Failsafe",
              self.test_advanced_failsafe),
 
+<<<<<<< HEAD
             ("LOITER",
              "Test Loiter mode",
              self.LOITER),
 
+=======
+>>>>>>> myquadplane
             ("DeepStall",
              "Test DeepStall Landing",
              self.fly_deepstall),
 
+<<<<<<< HEAD
             ("LargeMissions",
              "Test Manipulation of Large missions",
              self.test_large_missions),
@@ -1851,6 +1882,8 @@ class AutoTestPlane(AutoTest):
             "Test Soaring feature",
             self.fly_soaring),
 
+=======
+>>>>>>> myquadplane
             ("LogDownLoad",
              "Log download",
              lambda: self.log_download(

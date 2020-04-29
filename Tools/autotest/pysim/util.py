@@ -247,12 +247,16 @@ def start_SITL(binary,
                breakpoints=[],
                disable_breakpoints=False,
                vicon=False,
+<<<<<<< HEAD
                customisations=[],
                lldb=False):
 
     if model is None:
         raise ValueError("model must not be None")
 
+=======
+               lldb=False):
+>>>>>>> myquadplane
     """Launch a SITL instance."""
     cmd = []
     if valgrind and os.path.exists('/usr/bin/valgrind'):
@@ -393,10 +397,15 @@ def start_MAVProxy_SITL(atype, aircraft=None, setup=False, master='tcp:127.0.0.1
 
     import pexpect
     global close_list
+<<<<<<< HEAD
     cmd = []
     cmd.append(mavproxy_cmd())
     cmd.extend(['--master', master])
     cmd.extend(['--out', '127.0.0.1:14550'])
+=======
+    MAVPROXY = mavproxy_cmd()
+    cmd = MAVPROXY + ' --master=%s --out=127.0.0.1:14550' % master
+>>>>>>> myquadplane
     if setup:
         cmd.append('--setup')
     if aircraft is None:

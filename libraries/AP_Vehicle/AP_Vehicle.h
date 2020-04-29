@@ -29,6 +29,7 @@
 #include <AP_Logger/AP_Logger.h>
 #include <AP_Notify/AP_Notify.h>                    // Notify library
 #include <AP_Param/AP_Param.h>
+<<<<<<< HEAD
 #include <AP_RangeFinder/AP_RangeFinder.h>
 #include <AP_Relay/AP_Relay.h>                      // APM relay
 #include <AP_RSSI/AP_RSSI.h>                        // RSSI Library
@@ -40,6 +41,12 @@
 #include <AP_ESC_Telem/AP_ESC_Telem.h>
 #include <AP_GyroFFT/AP_GyroFFT.h>
 #include <AP_VisualOdom/AP_VisualOdom.h>
+=======
+#include <AP_Relay/AP_Relay.h>                      // APM relay
+#include <AP_RSSI/AP_RSSI.h>                        // RSSI Library
+#include <AP_SerialManager/AP_SerialManager.h>      // Serial manager library
+#include <AP_ServoRelayEvents/AP_ServoRelayEvents.h>
+>>>>>>> myquadplane
 
 class AP_Vehicle : public AP_HAL::HAL::Callbacks {
 
@@ -49,7 +56,10 @@ public:
         if (_singleton) {
             AP_HAL::panic("Too many Vehicles");
         }
+<<<<<<< HEAD
         AP_Param::setup_object_defaults(this, var_info);
+=======
+>>>>>>> myquadplane
         _singleton = this;
     }
 
@@ -59,6 +69,7 @@ public:
 
     static AP_Vehicle *get_singleton();
 
+<<<<<<< HEAD
     // setup() is called once during vehicle startup to initialise the
     // vehicle object and the objects it contains.  The
     // AP_HAL_MAIN_CALLBACKS pragma creates a main(...) function
@@ -73,6 +84,9 @@ public:
 
     bool virtual set_mode(const uint8_t new_mode, const ModeReason reason) = 0;
     uint8_t virtual get_mode() const = 0;
+=======
+    bool virtual set_mode(const uint8_t new_mode, const ModeReason reason) = 0;
+>>>>>>> myquadplane
 
     /*
       common parameters for fixed wing aircraft
@@ -127,6 +141,7 @@ public:
         AP_Int16 angle_max;
     };
 
+<<<<<<< HEAD
     void get_common_scheduler_tasks(const AP_Scheduler::Task*& tasks, uint8_t& num_tasks);
     // implementations *MUST* fill in all passed-in fields or we get
     // Valgrind errors
@@ -180,6 +195,10 @@ protected:
     virtual void load_parameters() = 0;
     virtual void set_control_channels() {}
 
+=======
+protected:
+
+>>>>>>> myquadplane
     // board specific config
     AP_BoardConfig BoardConfig;
 
@@ -188,6 +207,7 @@ protected:
     AP_BoardConfig_CAN BoardConfig_CAN;
 #endif
 
+<<<<<<< HEAD
     // main loop scheduler
     AP_Scheduler scheduler{FUNCTOR_BIND_MEMBER(&AP_Vehicle::fast_loop, void)};
     virtual void fast_loop() { }
@@ -196,6 +216,8 @@ protected:
     // Integration time; time last loop took to run
     float G_Dt;
 
+=======
+>>>>>>> myquadplane
     // sensor drivers
     AP_GPS gps;
     AP_Baro barometer;
@@ -205,12 +227,16 @@ protected:
     RangeFinder rangefinder;
 
     AP_RSSI rssi;
+<<<<<<< HEAD
 #if HAL_RUNCAM_ENABLED
     AP_RunCam runcam;
 #endif
 #if HAL_GYROFFT_ENABLED
     AP_GyroFFT gyro_fft;
 #endif
+=======
+
+>>>>>>> myquadplane
     AP_SerialManager serial_manager;
 
     AP_Relay relay;
@@ -221,6 +247,7 @@ protected:
     // false disables external leds)
     AP_Notify notify;
 
+<<<<<<< HEAD
     // Inertial Navigation EKF
 #if AP_AHRS_NAVEKF_AVAILABLE
     AP_AHRS_NavEKF ahrs;
@@ -263,5 +290,18 @@ namespace AP {
 extern const AP_HAL::HAL& hal;
 
 extern const AP_Param::Info vehicle_var_info[];
+=======
+private:
+
+    static AP_Vehicle *_singleton;
+
+};
+
+namespace AP {
+    AP_Vehicle *vehicle();
+};
+
+extern const AP_HAL::HAL& hal;
+>>>>>>> myquadplane
 
 #include "AP_Vehicle_Type.h"

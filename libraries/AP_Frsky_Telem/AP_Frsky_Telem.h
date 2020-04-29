@@ -189,7 +189,11 @@ private:
     struct
     {
         const uint32_t packet_min_period[TIME_SLOT_MAX] = {
+<<<<<<< HEAD
             28,     //0x5000 text,      25Hz
+=======
+            0,      //0x5000 text,      no rate limiter
+>>>>>>> myquadplane
             38,     //0x5006 attitude   20Hz
             280,    //0x800  GPS        3Hz
             280,    //0x800  GPS        3Hz
@@ -199,7 +203,11 @@ private:
             500,    //0x5004 home       2Hz
             500,    //0x5008 batt 2     2Hz
             500,    //0x5003 batt 1     2Hz
+<<<<<<< HEAD
             1000    //0x5007 parameters 1Hz
+=======
+            1000   //0x5007 parameters 1Hz
+>>>>>>> myquadplane
         };
     } _sport_config;
 
@@ -227,10 +235,16 @@ private:
         uint8_t char_index; // index of which character to get in the message
     } _msg_chunk;
     
+<<<<<<< HEAD
     float get_vspeed_ms(void);
     // passthrough WFQ scheduler
     void update_avg_packet_rate();
     void passthrough_wfq_adaptive_scheduler();
+=======
+    // passthrough WFQ scheduler
+    void update_avg_packet_rate();
+    void passthrough_wfq_adaptive_scheduler(uint8_t prev_byte);
+>>>>>>> myquadplane
     // main transmission function when protocol is FrSky SPort Passthrough (OpenTX)
     void send_SPort_Passthrough(void);
     // main transmission function when protocol is FrSky SPort

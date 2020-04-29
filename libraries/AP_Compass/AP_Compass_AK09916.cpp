@@ -190,7 +190,11 @@ bool AP_Compass_AK09916::init()
 {
     AP_HAL::Semaphore *bus_sem = _bus->get_semaphore();
 
+<<<<<<< HEAD
     if (!bus_sem) {
+=======
+    if (!bus_sem || !_bus->get_semaphore()->take(HAL_SEMAPHORE_BLOCK_FOREVER)) {
+>>>>>>> myquadplane
         return false;
     }
     _bus->get_semaphore()->take_blocking();
@@ -201,6 +205,10 @@ bool AP_Compass_AK09916::init()
     }
 
     if (!_reset()) {
+<<<<<<< HEAD
+=======
+        hal.console->printf("AK09916: Reset Failed\n");
+>>>>>>> myquadplane
         goto fail;
     }
 

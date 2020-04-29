@@ -361,12 +361,21 @@ float Sailboat::calc_heading(float desired_heading_cd)
     }
     bool should_tack = false;
 
+<<<<<<< HEAD:Rover/sailboat.cpp
     // find which tack we are on
     const AP_WindVane::Sailboat_Tack current_tack = rover.g2.windvane.get_current_tack();
 
     // convert desired heading to radians
     const float desired_heading_rad = radians(desired_heading_cd * 0.01f);
 
+=======
+    // find witch tack we are on
+    const AP_WindVane::Sailboat_Tack current_tack = rover.g2.windvane.get_current_tack();
+
+    // convert desired heading to radians
+    const float desired_heading_rad = radians(desired_heading_cd * 0.01f);
+
+>>>>>>> myquadplane:APMrover2/sailboat.cpp
     // if the desired heading is outside the no go zone there is no need to change it
     // this allows use of heading controller rather than L1 when desired
     // this is used in the 'SAILBOAT_NOGO_PAD' region

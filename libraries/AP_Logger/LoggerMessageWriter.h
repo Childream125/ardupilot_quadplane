@@ -27,7 +27,12 @@ public:
 
 private:
     enum class Stage : uint8_t {
+<<<<<<< HEAD
         FIRMWARE_STRING = 0,
+=======
+        FORMATS = 0,
+        FIRMWARE_STRING,
+>>>>>>> myquadplane
         GIT_VERSIONS,
         SYSTEM_ID,
         PARAM_SPACE_USED,
@@ -103,8 +108,15 @@ private:
         MULTIPLIERS,
         FORMAT_UNITS,
         PARMS,
+<<<<<<< HEAD
         VEHICLE_MESSAGES,
         RUNNING_SUBWRITERS, // must be last thing to run as we can redo bits of these
+=======
+        SYSINFO,
+        WRITE_ENTIRE_MISSION,
+        WRITE_ALL_RALLY_POINTS,
+        VEHICLE_MESSAGES,
+>>>>>>> myquadplane
         DONE,
     };
 

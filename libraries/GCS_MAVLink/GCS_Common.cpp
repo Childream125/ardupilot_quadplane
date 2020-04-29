@@ -1002,7 +1002,13 @@ void GCS_MAVLINK::update_send()
         AP::logger().handle_log_send();
     }
 
+<<<<<<< HEAD
     send_ftp_replies();
+=======
+#if HAVE_FILESYSTEM_SUPPORT
+    send_ftp_replies();
+#endif // HAVE_FILESYSTEM_SUPPORT
+>>>>>>> myquadplane
 
     if (!deferred_messages_initialised) {
         initialise_message_intervals_from_streamrates();
@@ -1855,6 +1861,24 @@ void GCS::send_textv(MAV_SEVERITY severity, const char *fmt, va_list arg_list, u
     if (notify) {
         notify->send_text(first_piece_of_text);
     }
+<<<<<<< HEAD
+=======
+
+    statustext.msg.severity = severity;
+    strncpy(statustext.msg.text, text, sizeof(statustext.msg.text));
+
+    WITH_SEMAPHORE(_statustext_sem);
+    
+    // The force push will ensure comm links do not block other comm links forever if they fail.
+    // If we push to a full buffer then we overwrite the oldest entry, effectively removing the
+    // block but not until the buffer fills up.
+    _statustext_queue.push_force(statustext);
+
+    // try and send immediately if possible
+    if (hal.scheduler->in_main_thread()) {
+        service_statustext();
+    }
+>>>>>>> myquadplane
 }
 
 /*
@@ -1940,10 +1964,14 @@ void GCS::update_send()
     if (_missionitemprotocol_fence != nullptr) {
         _missionitemprotocol_fence->update();
     }
+<<<<<<< HEAD
     // round-robin the GCS_MAVLINK backend that gets to go first so
     // one backend doesn't monopolise all of the time allowed for sending
     // messages
     for (uint8_t i=first_backend_to_send; i<num_gcs(); i++) {
+=======
+    for (uint8_t i=0; i<num_gcs(); i++) {
+>>>>>>> myquadplane
         chan(i)->update_send();
     }
     for (uint8_t i=0; i<first_backend_to_send; i++) {
@@ -3054,6 +3082,7 @@ MAV_RESULT GCS_MAVLINK::handle_fixed_mag_cal_yaw(const mavlink_command_long_t &p
                                      packet.param4);
 }
 
+<<<<<<< HEAD
 void GCS_MAVLINK::handle_distance_sensor(const mavlink_message_t &msg)
 {
     RangeFinder *rangefinder = AP::rangefinder();
@@ -3075,6 +3104,8 @@ void GCS_MAVLINK::handle_obstacle_distance(const mavlink_message_t &msg)
     }
 }
 
+=======
+>>>>>>> myquadplane
 /*
   handle messages which don't require vehicle specific data
  */
@@ -3118,7 +3149,13 @@ void GCS_MAVLINK::handle_common_message(const mavlink_message_t &msg)
         break;
 
     case MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL:
+<<<<<<< HEAD
         handle_file_transfer_protocol(msg);
+=======
+#if HAVE_FILESYSTEM_SUPPORT
+        handle_file_transfer_protocol(msg);
+#endif // HAVE_FILESYSTEM_SUPPORT
+>>>>>>> myquadplane
         break;
 
     case MAVLINK_MSG_ID_DIGICAM_CONTROL:
@@ -4894,7 +4931,13 @@ uint64_t GCS_MAVLINK::capabilities() const
         ret |= MAV_PROTOCOL_CAPABILITY_MISSION_FENCE;
     }
 
+<<<<<<< HEAD
     ret |= MAV_PROTOCOL_CAPABILITY_FTP;
+=======
+#if HAVE_FILESYSTEM_SUPPORT
+    ret |= MAV_PROTOCOL_CAPABILITY_FTP;
+#endif // HAVE_FILESYSTEM_SUPPORT
+>>>>>>> myquadplane
 
     return ret;
 }

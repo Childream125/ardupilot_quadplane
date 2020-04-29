@@ -25,6 +25,12 @@ extern const AP_HAL::HAL& hal;
 #define BENEWAKE_FRAME_HEADER 0x59
 #define BENEWAKE_FRAME_LENGTH 9
 #define BENEWAKE_DIST_MAX_CM 32768
+<<<<<<< HEAD
+=======
+#define BENEWAKE_TFMINI_OUT_OF_RANGE_CM 1200
+#define BENEWAKE_TF02_OUT_OF_RANGE_CM 2200
+#define BENEWAKE_TF03_OUT_OF_RANGE_CM 18000
+>>>>>>> myquadplane
 #define BENEWAKE_OUT_OF_RANGE_ADD_CM 100
 
 // format of serial packets received from benewake lidar
@@ -94,7 +100,11 @@ bool AP_RangeFinder_Benewake::get_reading(uint16_t &reading_cm)
                     if (dist >= BENEWAKE_DIST_MAX_CM) {
                         // this reading is out of range
                         count_out_of_range++;
+<<<<<<< HEAD
                     } else if (!has_signal_byte()) {
+=======
+                    } else if (model_type == BENEWAKE_TFmini || model_type == BENEWAKE_TF03) {
+>>>>>>> myquadplane
                         // no signal byte from TFmini so add distance to sum
                         sum_cm += dist;
                         count++;
@@ -125,7 +135,23 @@ bool AP_RangeFinder_Benewake::get_reading(uint16_t &reading_cm)
     if (count_out_of_range > 0) {
         // if only out of range readings return larger of
         // driver defined maximum range for the model and user defined max range + 1m
+<<<<<<< HEAD
         reading_cm = MAX(model_dist_max_cm(), max_distance_cm() + BENEWAKE_OUT_OF_RANGE_ADD_CM);
+=======
+        float model_dist_max_cm = 0.0f;
+        switch (model_type) {
+        case BENEWAKE_TFmini:
+            model_dist_max_cm = BENEWAKE_TFMINI_OUT_OF_RANGE_CM;
+            break;
+        case BENEWAKE_TF02:
+            model_dist_max_cm = BENEWAKE_TF02_OUT_OF_RANGE_CM;
+            break;
+        case BENEWAKE_TF03:
+            model_dist_max_cm = BENEWAKE_TF03_OUT_OF_RANGE_CM;
+            break;
+        }
+        reading_cm = MAX(model_dist_max_cm, max_distance_cm() + BENEWAKE_OUT_OF_RANGE_ADD_CM);
+>>>>>>> myquadplane
         return true;
     }
 

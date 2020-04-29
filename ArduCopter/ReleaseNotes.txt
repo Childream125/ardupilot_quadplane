@@ -1,5 +1,6 @@
 ArduPilot Copter Release Notes:
 ------------------------------------------------------------------
+<<<<<<< HEAD
 Copter 4.0.3 28-Feb-2020 / 4.0.3-rc1 20-Feb-2020
 Changes from 4.0.2
 1) Bug Fixes:
@@ -27,6 +28,8 @@ Changes from 4.0.2-rc3
     g) SpeedyBeeF5 probes all I2C ports for external baro
 2) Rangefinder fallback support (both must have same _ORIENT) 
 ------------------------------------------------------------------
+=======
+>>>>>>> myquadplane
 Copter 4.0.2-rc3 01-Feb-2020
 Changes from 4.0.2-rc2
 1) Bug Fixes:
@@ -229,11 +232,14 @@ Changes from 3.6.11
     b) Independent WatchDog gets improved logging
     c) EKF failsafe triggers slightly more quickly  
 ------------------------------------------------------------------
+<<<<<<< HEAD
 Copter 3.6.12 13-Dec-2019 / 3.6.12-rc1 06-Dec-2019
 Changes from 3.6.11
 1) More ChibiOS fixes for I2C storm 
 2) COMPASS_SCALE param to allow manual correction of compass scaling
 ------------------------------------------------------------------
+=======
+>>>>>>> myquadplane
 Copter 3.6.11 01-Oct-2019 / 3.6.11-rc1 16-Sep-2019
 Changes from 3.6.10
 1) EKF and IMU improvements:

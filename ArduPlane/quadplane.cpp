@@ -470,6 +470,7 @@ const AP_Param::GroupInfo QuadPlane::var_info2[] = {
     // @User: Standard
     AP_GROUPINFO("ASSIST_ALT", 16, QuadPlane, assist_alt, 0),
 
+<<<<<<< HEAD
     // @Param: TAILSIT_GSCMSK
     // @DisplayName: Tailsitter gain scaling mask
     // @Description: Bitmask of gain scaling methods to be applied: BOOST: boost gain at low throttle, ATT_THR: reduce gain at high throttle/tilt, INTERP: interpolate between fixed-wing and copter controls
@@ -484,6 +485,8 @@ const AP_Param::GroupInfo QuadPlane::var_info2[] = {
     // @User: Standard
     AP_GROUPINFO("TAILSIT_GSCMIN", 18, QuadPlane, tailsitter.gain_scaling_min, 0.4),
 
+=======
+>>>>>>> myquadplane
     AP_GROUPEND
 };
 
@@ -1935,7 +1938,11 @@ void QuadPlane::update_throttle_hover()
     // calc average throttle if we are in a level hover and low airspeed
     if (throttle > 0.0f && fabsf(inertial_nav.get_velocity_z()) < 60 &&
         labs(ahrs_view->roll_sensor) < 500 && labs(ahrs_view->pitch_sensor) < 500 &&
+<<<<<<< HEAD
         ahrs.airspeed_estimate(aspeed) && aspeed < plane.aparm.airspeed_min*0.3) {
+=======
+        ahrs.airspeed_estimate(&aspeed) && aspeed < plane.aparm.airspeed_min*0.3) {
+>>>>>>> myquadplane
         // Can we set the time constant automatically
         motors->update_throttle_hover(0.01f);
     }
@@ -3215,7 +3222,11 @@ void QuadPlane::update_throttle_mix(void)
         // check for requested decent
         bool descent_not_demanded = pos_control->get_desired_velocity().z >= 0.0f;
 
+<<<<<<< HEAD
         if (large_angle_request || large_angle_error || accel_moving || descent_not_demanded) {
+=======
+        if ( large_angle_request || large_angle_error || accel_moving || descent_not_demanded) {
+>>>>>>> myquadplane
             attitude_control->set_throttle_mix_max(1.0);
         } else {
             attitude_control->set_throttle_mix_min();

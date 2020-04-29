@@ -31,9 +31,13 @@ void Copter::init_ardupilot()
     g2.gripper.init();
 #endif
 
+<<<<<<< HEAD
 #if AC_FENCE == ENABLED
     fence.init();
 #endif
+=======
+    fence.init();
+>>>>>>> myquadplane
 
     // init winch and wheel encoder
     winch_init();
@@ -243,9 +247,12 @@ void Copter::startup_INS_ground()
 // update the harmonic notch filter center frequency dynamically
 void Copter::update_dynamic_notch()
 {
+<<<<<<< HEAD
     if (!ins.gyro_harmonic_notch_enabled()) {
         return;
     }
+=======
+>>>>>>> myquadplane
     const float ref_freq = ins.get_gyro_harmonic_notch_center_freq_hz();
     const float ref = ins.get_gyro_harmonic_notch_reference();
 
@@ -255,23 +262,35 @@ void Copter::update_dynamic_notch()
     }
 
     switch (ins.get_gyro_harmonic_notch_tracking_mode()) {
+<<<<<<< HEAD
         case HarmonicNotchDynamicMode::UpdateThrottle: // throttle based tracking
+=======
+        case HarmonicNotch_UpdateThrottle: // throttle based tracking
+>>>>>>> myquadplane
             // set the harmonic notch filter frequency approximately scaled on motor rpm implied by throttle
             ins.update_harmonic_notch_freq_hz(ref_freq * MAX(1.0f, sqrtf(motors->get_throttle_out() / ref)));
             break;
 
 #if RPM_ENABLED == ENABLED
+<<<<<<< HEAD
         case HarmonicNotchDynamicMode::UpdateRPM: // rpm sensor based tracking
             float rpm;
             if (rpm_sensor.get_rpm(0, rpm)) {
                 // set the harmonic notch filter frequency from the main rotor rpm
                 ins.update_harmonic_notch_freq_hz(MAX(ref_freq, rpm * ref / 60.0f));
+=======
+        case HarmonicNotch_UpdateRPM: // rpm sensor based tracking
+            if (rpm_sensor.healthy(0)) {
+                // set the harmonic notch filter frequency from the main rotor rpm
+                ins.update_harmonic_notch_freq_hz(MAX(ref_freq, rpm_sensor.get_rpm(0) * ref / 60.0f));
+>>>>>>> myquadplane
             } else {
                 ins.update_harmonic_notch_freq_hz(ref_freq);
             }
             break;
 #endif
 #ifdef HAVE_AP_BLHELI_SUPPORT
+<<<<<<< HEAD
         case HarmonicNotchDynamicMode::UpdateBLHeli: // BLHeli based tracking
             ins.update_harmonic_notch_freq_hz(MAX(ref_freq, AP_BLHeli::get_singleton()->get_average_motor_frequency_hz() * ref));
             break;
@@ -283,6 +302,13 @@ void Copter::update_dynamic_notch()
             break;
 #endif
         case HarmonicNotchDynamicMode::Fixed: // static
+=======
+        case HarmonicNotch_UpdateBLHeli: // BLHeli based tracking
+            ins.update_harmonic_notch_freq_hz(MAX(ref_freq, AP_BLHeli::get_singleton()->get_average_motor_frequency_hz() * ref));
+            break;
+#endif
+        case HarmonicNotch_Fixed: // static
+>>>>>>> myquadplane
         default:
             ins.update_harmonic_notch_freq_hz(ref_freq);
             break;

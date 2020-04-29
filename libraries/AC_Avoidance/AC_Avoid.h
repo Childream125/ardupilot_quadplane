@@ -84,9 +84,12 @@ public:
     // return margin (in meters) that the vehicle should stay from objects
     float get_margin() const { return _margin; }
 
+<<<<<<< HEAD
     // return true if limiting is active
     bool limits_active() const {return (AP_HAL::millis() - _last_limit_time) < AC_AVOID_ACTIVE_LIMIT_TIMEOUT_MS;};
 
+=======
+>>>>>>> myquadplane
     static const struct AP_Param::GroupInfo var_info[];
 
 private:

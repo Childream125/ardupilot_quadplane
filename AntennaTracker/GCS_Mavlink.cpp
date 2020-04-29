@@ -446,7 +446,11 @@ MAV_RESULT GCS_MAVLINK_Tracker::handle_command_long_packet(const mavlink_command
 
         // mavproxy/mavutil sends this when auto command is entered 
     case MAV_CMD_MISSION_START:
+<<<<<<< HEAD
         tracker.set_mode(tracker.mode_auto, ModeReason::GCS_COMMAND);
+=======
+        tracker.set_mode(AUTO, ModeReason::GCS_COMMAND);
+>>>>>>> myquadplane
         return MAV_RESULT_ACCEPTED;
 
     default:
@@ -613,6 +617,47 @@ mission_failed:
 } // end handle mavlink
 
 
+<<<<<<< HEAD
+=======
+uint64_t GCS_MAVLINK_Tracker::capabilities() const
+{
+    return (MAV_PROTOCOL_CAPABILITY_PARAM_FLOAT |
+            MAV_PROTOCOL_CAPABILITY_COMPASS_CALIBRATION |
+            GCS_MAVLINK::capabilities());
+}
+
+/*
+ *  a delay() callback that processes MAVLink packets. We set this as the
+ *  callback in long running library initialisation routines to allow
+ *  MAVLink to process packets while waiting for the initialisation to
+ *  complete
+ */
+void Tracker::mavlink_delay_cb()
+{
+    static uint32_t last_1hz, last_50hz, last_5s;
+
+    logger.EnableWrites(false);
+
+    uint32_t tnow = AP_HAL::millis();
+    if (tnow - last_1hz > 1000) {
+        last_1hz = tnow;
+        gcs().send_message(MSG_HEARTBEAT);
+        gcs().send_message(MSG_SYS_STATUS);
+    }
+    if (tnow - last_50hz > 20) {
+        last_50hz = tnow;
+        gcs().update_receive();
+        gcs().update_send();
+        notify.update();
+    }
+    if (tnow - last_5s > 5000) {
+        last_5s = tnow;
+        gcs().send_text(MAV_SEVERITY_INFO, "Initialising APM");
+    }
+    logger.EnableWrites(true);
+}
+
+>>>>>>> myquadplane
 // send position tracker is using
 void GCS_MAVLINK_Tracker::send_global_position_int()
 {
@@ -633,3 +678,18 @@ void GCS_MAVLINK_Tracker::send_global_position_int()
         0,                        // Z speed cm/s (+ve Down)
         tracker.ahrs.yaw_sensor); // compass heading in 1/100 degree
 }
+<<<<<<< HEAD
+=======
+
+
+/* dummy methods to avoid having to link against AP_Camera */
+void AP_Camera::control_msg(const mavlink_message_t &) {}
+void AP_Camera::configure(float, float, float, float, float, float, float) {}
+void AP_Camera::control(float, float, float, float, float, float) {}
+void AP_Camera::send_feedback(mavlink_channel_t chan) {}
+/* end dummy methods to avoid having to link against AP_Camera */
+
+// dummy method to avoid linking AFS
+bool AP_AdvancedFailsafe::gcs_terminate(bool should_terminate, const char *reason) {return false;}
+AP_AdvancedFailsafe *AP::advancedfailsafe() { return nullptr; }
+>>>>>>> myquadplane

@@ -471,11 +471,14 @@ public:
     // handle possibly fragmented RTCM injection data
     void handle_gps_rtcm_fragment(uint8_t flags, const uint8_t *data, uint8_t len);
 
+<<<<<<< HEAD
     // get configured type by instance
     GPS_Type get_type(uint8_t instance) const {
         return instance>=GPS_MAX_RECEIVERS? GPS_Type::GPS_TYPE_NONE : GPS_Type(_type[instance].get());
     }
 
+=======
+>>>>>>> myquadplane
 protected:
 
     // configuration parameters
@@ -615,12 +618,15 @@ private:
 
     bool needs_uart(GPS_Type type) const;
 
+<<<<<<< HEAD
     /// Update primary instance
     void update_primary(void);
 
     // helper function for mavlink gps yaw
     uint16_t gps_yaw_cdeg(uint8_t instance) const;
 
+=======
+>>>>>>> myquadplane
     // Auto configure types
     enum GPS_AUTO_CONFIG {
         GPS_AUTO_CONFIG_DISABLE = 0,

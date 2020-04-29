@@ -380,8 +380,31 @@ void ModeGuided::takeoff_run()
 {
     auto_takeoff_run();
     if (wp_nav->reached_wp_destination()) {
+<<<<<<< HEAD
         // optionally retract landing gear
         copter.landinggear.retract_after_takeoff();
+=======
+        const Vector3f& target = wp_nav->get_wp_destination();
+        set_destination(target);
+    }
+}
+
+void Mode::auto_takeoff_run()
+{
+    // if not armed set throttle to zero and exit immediately
+    if (!motors->armed() || !copter.ap.auto_armed) {
+        make_safe_spool_down();
+        wp_nav->shift_wp_origin_to_current_pos();
+        return;
+    }
+
+    // process pilot's yaw input
+    float target_yaw_rate = 0;
+    if (!copter.failsafe.radio) {
+        // get pilot's desired yaw rate
+        target_yaw_rate = get_pilot_desired_yaw_rate(channel_yaw->get_control_in());
+    }
+>>>>>>> myquadplane
 
         // switch to position control mode but maintain current target
         const Vector3f target = wp_nav->get_wp_destination();

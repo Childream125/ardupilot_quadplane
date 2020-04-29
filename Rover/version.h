@@ -6,6 +6,7 @@
 
 #include "ap_version.h"
 
+<<<<<<< HEAD:Rover/version.h
 #define THISFIRMWARE "ArduRover V4.1.0-dev"
 
 // the following line is parsed by the autotest scripts
@@ -13,5 +14,14 @@
 
 #define FW_MAJOR 4
 #define FW_MINOR 1
+=======
+#define THISFIRMWARE "ArduRover V4.0.0-dev"
+
+// the following line is parsed by the autotest scripts
+#define FIRMWARE_VERSION 4,0,0,FIRMWARE_VERSION_TYPE_DEV
+
+#define FW_MAJOR 4
+#define FW_MINOR 0
+>>>>>>> myquadplane:APMrover2/version.h
 #define FW_PATCH 0
 #define FW_TYPE FIRMWARE_VERSION_TYPE_DEV

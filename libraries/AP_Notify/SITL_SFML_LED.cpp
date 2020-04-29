@@ -34,6 +34,7 @@ SITL_SFML_LED::SITL_SFML_LED():
 }
 
 /*
+<<<<<<< HEAD
   return layout size for a LED layout scheme
  */
 bool SITL_SFML_LED::layout_size(SITL::LedLayout layout, uint16_t &xsize, uint16_t &ysize)
@@ -112,29 +113,42 @@ bool SITL_SFML_LED::layout_pos(SITL::LedLayout layout, uint8_t chan, uint8_t led
 }
 
 /*
+=======
+>>>>>>> myquadplane
   update simulation of WS2812 (NeoPixel) serial LEDs
  */
 void SITL_SFML_LED::update_serial_LEDs()
 {
     static sf::RenderWindow *w;
+<<<<<<< HEAD
     static sf::RectangleShape *leds[16][MAX_LEDS];
+=======
+    static sf::RectangleShape *leds[16][32];
+>>>>>>> myquadplane
 
     SITL::SITL *sitl = AP::sitl();
     if (sitl == nullptr || sitl->led.send_counter == 0) {
         // no SerialLEDs set
         return;
     }
+<<<<<<< HEAD
     SITL::LedLayout layout = SITL::LedLayout(sitl->led_layout.get());
+=======
+>>>>>>> myquadplane
     if (w == nullptr) {
         uint8_t max_leds = 0;
         for (uint8_t i=0; i<16; i++) {
             max_leds = MAX(max_leds, sitl->led.num_leds[i]);
         }
+<<<<<<< HEAD
         uint16_t xsize=0, ysize=0;
         if (!layout_size(layout, xsize, ysize)) {
             return;
         }
         w = new sf::RenderWindow(sf::VideoMode(xsize*(serialLED_size+1), ysize*(serialLED_size+1)), "SerialLED");
+=======
+        w = new sf::RenderWindow(sf::VideoMode(32*(serialLED_size+1), 16*(serialLED_size+1)), "SerialLED");
+>>>>>>> myquadplane
         if (!w) {
             return;
         }
@@ -150,10 +164,14 @@ void SITL_SFML_LED::update_serial_LEDs()
                 if (!leds[chan][led]) {
                     return;
                 }
+<<<<<<< HEAD
                 uint16_t xpos, ypos;
                 if (layout_pos(layout, chan, led, xpos, ypos)) {
                     leds[chan][led]->setPosition(xpos*(serialLED_size+1), ypos*(serialLED_size+1));
                 }
+=======
+                leds[chan][led]->setPosition(led*(serialLED_size+1), chan*(serialLED_size+1));
+>>>>>>> myquadplane
             }
             leds[chan][led]->setFillColor(sf::Color(rgb[0], rgb[1], rgb[2], 255));
             w->draw(*leds[chan][led]);

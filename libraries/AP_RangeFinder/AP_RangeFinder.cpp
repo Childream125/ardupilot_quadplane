@@ -395,7 +395,11 @@ void RangeFinder::detect_instance(uint8_t instance, uint8_t& serial_instance)
         }
         break;
 #if CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
+<<<<<<< HEAD:libraries/AP_RangeFinder/AP_RangeFinder.cpp
     case Type::PX4_PWM:
+=======
+    case RangeFinder_TYPE_PX4_PWM:
+>>>>>>> myquadplane:libraries/AP_RangeFinder/RangeFinder.cpp
 #ifndef HAL_BUILD_AP_PERIPH
         // to ease moving from PX4 to ChibiOS we'll lie a little about
         // the backend driver...
@@ -435,7 +439,11 @@ void RangeFinder::detect_instance(uint8_t instance, uint8_t& serial_instance)
         }
         break;
 #endif
+<<<<<<< HEAD:libraries/AP_RangeFinder/AP_RangeFinder.cpp
     case Type::MAVLink:
+=======
+    case RangeFinder_TYPE_MAVLink:
+>>>>>>> myquadplane:libraries/AP_RangeFinder/RangeFinder.cpp
 #ifndef HAL_BUILD_AP_PERIPH
         if (AP_RangeFinder_MAVLink::detect()) {
             drivers[instance] = new AP_RangeFinder_MAVLink(state[instance], params[instance]);
@@ -447,7 +455,11 @@ void RangeFinder::detect_instance(uint8_t instance, uint8_t& serial_instance)
             drivers[instance] = new AP_RangeFinder_MaxsonarSerialLV(state[instance], params[instance], serial_instance++);
         }
         break;
+<<<<<<< HEAD:libraries/AP_RangeFinder/AP_RangeFinder.cpp
     case Type::ANALOG:
+=======
+    case RangeFinder_TYPE_ANALOG:
+>>>>>>> myquadplane:libraries/AP_RangeFinder/RangeFinder.cpp
 #ifndef HAL_BUILD_AP_PERIPH
         // note that analog will always come back as present if the pin is valid
         if (AP_RangeFinder_analog::detect(params[instance])) {
@@ -480,7 +492,16 @@ void RangeFinder::detect_instance(uint8_t instance, uint8_t& serial_instance)
             drivers[instance] = new AP_RangeFinder_Benewake_TF03(state[instance], params[instance], serial_instance++);
         }
         break;
+<<<<<<< HEAD:libraries/AP_RangeFinder/AP_RangeFinder.cpp
     case Type::PWM:
+=======
+    case RangeFinder_TYPE_BenewakeTF03:
+        if (AP_RangeFinder_Benewake::detect(serial_instance)) {
+            drivers[instance] = new AP_RangeFinder_Benewake(state[instance], params[instance], serial_instance++, AP_RangeFinder_Benewake::BENEWAKE_TF03);
+        }
+        break;
+    case RangeFinder_TYPE_PWM:
+>>>>>>> myquadplane:libraries/AP_RangeFinder/RangeFinder.cpp
 #ifndef HAL_BUILD_AP_PERIPH
         if (AP_RangeFinder_PWM::detect()) {
             drivers[instance] = new AP_RangeFinder_PWM(state[instance], params[instance], estimated_terrain_height);
@@ -562,7 +583,11 @@ AP_RangeFinder_Backend *RangeFinder::find_instance(enum Rotation orientation) co
         AP_RangeFinder_Backend *backend = get_backend(i);
         if (backend != nullptr &&
             backend->orientation() == orientation &&
+<<<<<<< HEAD:libraries/AP_RangeFinder/AP_RangeFinder.cpp
             backend->status() == Status::Good) {
+=======
+            backend->status() == RangeFinder_Good) {
+>>>>>>> myquadplane:libraries/AP_RangeFinder/RangeFinder.cpp
             return backend;
         }
     }

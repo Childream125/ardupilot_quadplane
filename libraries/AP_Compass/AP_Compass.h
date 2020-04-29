@@ -122,7 +122,10 @@ public:
     void set_and_save_diagonals(uint8_t i, const Vector3f &diagonals);
     void set_and_save_offdiagonals(uint8_t i, const Vector3f &diagonals);
     void set_and_save_scale_factor(uint8_t i, float scale_factor);
+<<<<<<< HEAD
     void set_and_save_orientation(uint8_t i, Rotation orientation);
+=======
+>>>>>>> myquadplane
 
     /// Saves the current offset x/y/z values for one or all compasses
     ///
@@ -140,6 +143,9 @@ public:
     /// Return the current field as a Vector3f in milligauss
     const Vector3f &get_field(uint8_t i) const { return _get_state(Priority(i)).field; }
     const Vector3f &get_field(void) const { return get_field(0); }
+
+    /// Return true if we have set a scale factor for a compass
+    bool have_scale_factor(uint8_t i) const;
 
     /// Return true if we have set a scale factor for a compass
     bool have_scale_factor(uint8_t i) const;

@@ -48,10 +48,14 @@ void loop(void)
 
 static uint32_t start_ms;
 
+<<<<<<< HEAD
 /*
   declare constant app_descriptor in flash
  */
 const struct app_descriptor app_descriptor __attribute__((section(".app_descriptor")));
+=======
+const struct app_descriptor app_descriptor __attribute__((section(".app_descriptor")));;
+>>>>>>> myquadplane
 
 void AP_Periph_FW::init()
 {
@@ -72,8 +76,11 @@ void AP_Periph_FW::init()
 
     serial_manager.init();
 
+<<<<<<< HEAD
     stm32_watchdog_pat();
 
+=======
+>>>>>>> myquadplane
 #ifdef HAL_BOARD_AP_PERIPH_ZUBAXGNSS
     // setup remapping register for ZubaxGNSS
     uint32_t mapr = AFIO->MAPR;
@@ -119,6 +126,7 @@ void AP_Periph_FW::init()
 #endif
 
 #ifdef HAL_PERIPH_ENABLE_AIRSPEED
+<<<<<<< HEAD
     if (airspeed.enabled()) {
         airspeed.init();
     }
@@ -139,6 +147,13 @@ void AP_Periph_FW::init()
 
 #ifdef HAL_PERIPH_ENABLE_HWESC
     hwesc_telem.init(hal.uartB);
+=======
+    airspeed.init();
+#endif
+
+#ifdef HAL_PERIPH_ENABLE_RANGEFINDER
+    rangefinder.init(ROTATION_NONE);
+>>>>>>> myquadplane
 #endif
     
     start_ms = AP_HAL::millis();

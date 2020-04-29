@@ -18,6 +18,14 @@ bool ModeServoTest::set_servo(uint8_t servo_num, uint16_t pwm)
         return false;
     }
 
+<<<<<<< HEAD:AntennaTracker/mode_servotest.cpp
+=======
+    // ensure we are in servo test mode
+    if (control_mode != SERVO_TEST) {
+        set_mode(SERVO_TEST, ModeReason::SERVOTEST);
+    }
+
+>>>>>>> myquadplane:AntennaTracker/control_servo_test.cpp
     // set yaw servo pwm and send output to servo
     if (servo_num == CH_YAW) {
         SRV_Channels::set_output_pwm(SRV_Channel::k_tracker_yaw, pwm);

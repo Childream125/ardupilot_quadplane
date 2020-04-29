@@ -21,7 +21,11 @@
 
 #include <stdio.h>
 
+<<<<<<< HEAD
 #if APM_BUILD_TYPE(APM_BUILD_Rover)
+=======
+#if APM_BUILD_TYPE(APM_BUILD_APMrover2)
+>>>>>>> myquadplane
  # define AP_AVOID_BEHAVE_DEFAULT AC_Avoid::BehaviourType::BEHAVIOR_STOP
 #else
  # define AP_AVOID_BEHAVE_DEFAULT AC_Avoid::BehaviourType::BEHAVIOR_SLIDE
@@ -356,7 +360,10 @@ void AC_Avoid::adjust_velocity_circle_fence(float kP, float accel_cmss, Vector2f
         if (is_positive(distance_to_target)) {
             const float max_speed = get_max_speed(kP, accel_cmss, distance_to_target, dt);
             desired_vel_cms = target_direction * (MIN(desired_speed,max_speed) / distance_to_target);
+<<<<<<< HEAD
             _last_limit_time = AP_HAL::millis();
+=======
+>>>>>>> myquadplane
         }
     } else {
         // implement stopping behaviour

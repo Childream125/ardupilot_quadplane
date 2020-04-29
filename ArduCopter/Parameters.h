@@ -482,8 +482,14 @@ public:
     // altitude at which nav control can start in takeoff
     AP_Float wp_navalt_min;
 
+#if BUTTON_ENABLED == ENABLED
     // button checking
+<<<<<<< HEAD
     AP_Button *button_ptr;
+=======
+    AP_Button button;
+#endif
+>>>>>>> myquadplane
 
 #if STATS_ENABLED == ENABLED
     // vehicle statistics
@@ -610,12 +616,15 @@ public:
     // Autonmous autorotation
     AC_Autorotation arot;
 #endif
+<<<<<<< HEAD
 
 #if MODE_ZIGZAG_ENABLED == ENABLED && SPRAYER_ENABLED == ENABLED
     // auto pump enable/disable
     AP_Int8 zigzag_auto_pump_enabled;
 #endif
 
+=======
+>>>>>>> myquadplane
 };
 
 extern const AP_Param::Info        var_info[];

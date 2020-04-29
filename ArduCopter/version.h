@@ -6,6 +6,7 @@
 
 #include "ap_version.h"
 
+<<<<<<< HEAD
 #define THISFIRMWARE "ArduCopter V4.0.4-dev"
 
 // the following line is parsed by the autotest scripts
@@ -15,3 +16,14 @@
 #define FW_MINOR 0
 #define FW_PATCH 4
 #define FW_TYPE FIRMWARE_VERSION_TYPE_DEV
+=======
+#define THISFIRMWARE "ArduCopter V4.0.2-rc3"
+
+// the following line is parsed by the autotest scripts
+#define FIRMWARE_VERSION 4,0,2,FIRMWARE_VERSION_TYPE_RC
+
+#define FW_MAJOR 4
+#define FW_MINOR 0
+#define FW_PATCH 2
+#define FW_TYPE FIRMWARE_VERSION_TYPE_RC
+>>>>>>> myquadplane

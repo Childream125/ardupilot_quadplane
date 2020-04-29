@@ -102,8 +102,17 @@ for t in $CI_BUILD_TARGET; do
         run_autotest "BalanceBot" "build.Rover" "test.BalanceBot"
         continue
     fi
+    if [ "$t" == "sitltest-balancebot" ]; then
+        run_autotest "BalanceBot" "build.APMrover2" "drive.BalanceBot"
+        continue
+    fi
     if [ "$t" == "sitltest-sub" ]; then
         run_autotest "Sub" "build.Sub" "test.Sub"
+        continue
+    fi
+
+    if [ "$t" == "unit-tests" ]; then
+        run_autotest "Unit Tests" "build.unit_tests" "run.unit_tests"
         continue
     fi
 
@@ -127,6 +136,7 @@ for t in $CI_BUILD_TARGET; do
         $waf bootloader
         echo "Building f103 peripheral fw"
         $waf configure --board f103-GPS
+<<<<<<< HEAD
         $waf clean
         $waf AP_Periph
         echo "Building f303 bootloader"
@@ -135,6 +145,8 @@ for t in $CI_BUILD_TARGET; do
         $waf bootloader
         echo "Building f303 peripheral fw"
         $waf configure --board f303-Universal
+=======
+>>>>>>> myquadplane
         $waf clean
         $waf AP_Periph
         continue

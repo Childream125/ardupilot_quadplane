@@ -1,4 +1,5 @@
 #pragma once
+<<<<<<< HEAD
 // auto generated bindings, don't manually edit.  See README.md for details.
 #include <AP_Button/AP_Button.h>
 #include <AP_RPM/AP_RPM.h>
@@ -8,6 +9,9 @@
 #include <AP_Baro/AP_Baro.h>
 #include <AP_SerialManager/AP_SerialManager.h>
 #include <RC_Channel/RC_Channel.h>
+=======
+// auto generated bindings, don't manually edit
+>>>>>>> myquadplane
 #include <SRV_Channel/SRV_Channel.h>
 #include <AP_SerialLED/AP_SerialLED.h>
 #include <AP_Vehicle/AP_Vehicle.h>

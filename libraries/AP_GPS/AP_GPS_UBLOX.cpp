@@ -350,11 +350,16 @@ AP_GPS_UBLOX::_request_next_config(void)
         }
         break;
     case STEP_TMODE:
+<<<<<<< HEAD
         if (supports_F9_config()) {
+=======
+        if (_hardware_generation >= UBLOX_F9) {
+>>>>>>> myquadplane
             if (!_configure_valget(ConfigKey::TMODE_MODE)) {
                 _next_message--;
             }
         }
+<<<<<<< HEAD
         break;
     case STEP_RTK_MOVBASE:
 #if GPS_UBLOX_MOVING_BASELINE
@@ -379,6 +384,8 @@ AP_GPS_UBLOX::_request_next_config(void)
             }
         }
 #endif
+=======
+>>>>>>> myquadplane
         break;
     default:
         // this case should never be reached, do a full reset if it is hit
@@ -1111,8 +1118,12 @@ AP_GPS_UBLOX::_parse_gps(void)
                         if (mode != 0) {
                             // ask for mode 0, to disable TIME mode
                             mode = 0;
+<<<<<<< HEAD
                             _configure_valset(ConfigKey::TMODE_MODE, &mode);
                             _cfg_needs_save = true;
+=======
+                            _configure_valset(ConfigKey::TMODE_MODE, 1, &mode);
+>>>>>>> myquadplane
                             _unconfigured_messages |= CONFIG_TMODE_MODE;
                         } else {
                             _unconfigured_messages &= ~CONFIG_TMODE_MODE;
@@ -1121,6 +1132,7 @@ AP_GPS_UBLOX::_parse_gps(void)
                     }
                     default:
                         break;
+<<<<<<< HEAD
                 }
 #if GPS_UBLOX_MOVING_BASELINE
                 // see if it is in active config list
@@ -1153,6 +1165,42 @@ AP_GPS_UBLOX::_parse_gps(void)
             }
         }
         }
+=======
+        }
+           
+                // step over the value
+                const uint8_t key_size = ((uint32_t)id >> 28) & 0x07; // mask off the storage size
+                uint8_t step_size = 0;
+                switch (key_size) {
+                    case 0x1: // bit
+                        step_size = 1;
+                        break;
+                    case 0x2: // byte
+                        step_size = 1;
+                        break;
+                    case 0x3: // 2 bytes
+                        step_size = 2;
+                        break;
+                    case 0x4: // 4 bytes
+                        step_size = 4;
+                        break;
+                    case 0x5: // 8 bytes
+                        step_size = 8;
+                        break;
+                    default:
+                        // unknown/bad key size
+                        return false;
+                }
+                if (cfg_len <= step_size) {
+                    cfg_len = 0;
+                } else {
+                    cfg_len -= step_size;
+                    cfg_data += step_size;
+                }
+            }
+        }
+        }
+>>>>>>> myquadplane
     }
 
     if (_class == CLASS_MON) {
@@ -1319,8 +1367,13 @@ AP_GPS_UBLOX::_parse_gps(void)
         break;
     case MSG_RELPOSNED:
         {
+<<<<<<< HEAD
             const Vector3f &offset0 = gps._antenna_offset[state.instance^1].get();
             const Vector3f &offset1 = gps._antenna_offset[state.instance].get();
+=======
+            const Vector3f &offset0 = gps._antenna_offset[0].get();
+            const Vector3f &offset1 = gps._antenna_offset[1].get();
+>>>>>>> myquadplane
             // note that we require the yaw to come from a fixed solution, not a float solution
             // yaw from a float solution would only be acceptable with a very large separation between
             // GPS modules
@@ -1333,6 +1386,7 @@ AP_GPS_UBLOX::_parse_gps(void)
                                           static_cast<uint32_t>(RELPOSNED::refObsMiss) |
                                           static_cast<uint32_t>(RELPOSNED::carrSolnFloat);
 
+<<<<<<< HEAD
             const Vector3f antenna_offset = offset0 - offset1;
             const float offset_dist = antenna_offset.length();
             const float rel_dist = _buffer.relposned.relPosLength * 0.01;
@@ -1366,16 +1420,39 @@ AP_GPS_UBLOX::_parse_gps(void)
                      unsigned(_buffer.relposned.flags),
                      unsigned(_buffer.relposned.iTOW));
 
+=======
+            const float offset_dist = (offset0 - offset1).length();
+            const float rel_dist = _buffer.relposned.relPosLength * 1.0e-2;
+            const float strict_length_error_allowed = 0.2; // allow for up to 20% error
+            const float min_separation = 0.05;
+>>>>>>> myquadplane
             if (((_buffer.relposned.flags & valid_mask) == valid_mask) &&
                 ((_buffer.relposned.flags & invalid_mask) == 0) &&
                 rel_dist > min_separation &&
                 offset_dist > min_separation &&
+<<<<<<< HEAD
                 fabsf(dist_error) < strict_length_error_allowed * min_dist &&
                 tilt_ok) {
                 float rotation_offset_rad;
                 const Vector3f diff = offset1 - offset0;
                 rotation_offset_rad = Vector2f(diff.x, diff.y).angle();
                 state.gps_yaw = wrap_360(_buffer.relposned.relPosHeading * 1e-5 - degrees(rotation_offset_rad));
+=======
+                fabsf(offset_dist - rel_dist) / MIN(offset_dist, rel_dist) < strict_length_error_allowed) {
+                float rotation_offset_rad;
+                if (offset0.is_zero()) {
+                    rotation_offset_rad = Vector2f(offset1.x, offset1.y).angle();
+                } else if (offset1.is_zero()) {
+                    rotation_offset_rad = Vector2f(offset0.x, offset0.y).angle();
+                } else {
+                    const Vector3f diff = offset0 - offset1;
+                    rotation_offset_rad = Vector2f(diff.x, diff.y).angle();
+                }
+                if (state.instance != 0) {
+                    rotation_offset_rad += M_PI;
+                }
+                state.gps_yaw = wrap_360(_buffer.relposned.relPosHeading * 1e-5 + degrees(rotation_offset_rad));
+>>>>>>> myquadplane
                 state.have_gps_yaw = true;
                 state.gps_yaw_accuracy = _buffer.relposned.accHeading * 1e-5;
                 state.have_gps_yaw_accuracy = true;
@@ -1649,12 +1726,20 @@ AP_GPS_UBLOX::_configure_message_rate(uint8_t msg_class, uint8_t msg_id, uint8_t
  *  configure F9 based key/value pair - VALSET
  */
 bool
+<<<<<<< HEAD
 AP_GPS_UBLOX::_configure_valset(ConfigKey key, const void *value)
 {
     if (!supports_F9_config()) {
         return false;
     }
     const uint8_t len = config_key_size(key);
+=======
+AP_GPS_UBLOX::_configure_valset(ConfigKey key, const uint8_t len, const uint8_t *value)
+{
+    if (_hardware_generation < UBLOX_F9) {
+        return false;
+    }
+>>>>>>> myquadplane
     struct ubx_cfg_valset msg {};
     uint8_t buf[sizeof(msg)+len];
     if (port->txspace() < (uint16_t)(sizeof(struct ubx_header)+sizeof(buf)+2)) {
@@ -1676,7 +1761,11 @@ AP_GPS_UBLOX::_configure_valset(ConfigKey key, const void *value)
 bool
 AP_GPS_UBLOX::_configure_valget(ConfigKey key)
 {
+<<<<<<< HEAD
     if (!supports_F9_config()) {
+=======
+    if (_hardware_generation < UBLOX_F9) {
+>>>>>>> myquadplane
         return false;
     }
     struct {
@@ -1693,6 +1782,7 @@ AP_GPS_UBLOX::_configure_valget(ConfigKey key)
 }
 
 /*
+<<<<<<< HEAD
  *  configure F9 based key/value pair for a complete config list
  */
 bool
@@ -1722,6 +1812,8 @@ AP_GPS_UBLOX::_configure_config_set(const config_list *list, uint8_t count, uint
 }
 
 /*
+=======
+>>>>>>> myquadplane
  * save gps configurations to non-volatile memory sent until the call of
  * this message
  */
@@ -1835,8 +1927,12 @@ static const char *reasons[] = {"navigation rate",
                                 "PVT rate",
                                 "time pulse settings",
                                 "TIMEGPS rate",
+<<<<<<< HEAD
                                 "Time mode settings",
                                 "RTK MB"};
+=======
+                                "Time mode settings"};
+>>>>>>> myquadplane
 
 static_assert((1 << ARRAY_SIZE(reasons)) == CONFIG_LAST, "UBLOX: Missing configuration description");
 

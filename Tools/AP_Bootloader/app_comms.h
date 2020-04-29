@@ -4,8 +4,11 @@
   UAVCAN
  */
 
+<<<<<<< HEAD
 #pragma once
 
+=======
+>>>>>>> myquadplane
 #define APP_BOOTLOADER_COMMS_MAGIC 0xc544ad9a
 
 struct app_bootloader_comms {
@@ -15,6 +18,7 @@ struct app_bootloader_comms {
     uint8_t my_node_id;
     uint8_t path[201];
 };
+<<<<<<< HEAD
 
 #ifndef FW_MAJOR
 #define FW_MAJOR 0
@@ -47,3 +51,5 @@ struct app_descriptor {
 
 #define APP_DESCRIPTOR_TOTAL_LENGTH 36
 static_assert(sizeof(app_descriptor) == APP_DESCRIPTOR_TOTAL_LENGTH, "app_descriptor incorrect length");
+=======
+>>>>>>> myquadplane

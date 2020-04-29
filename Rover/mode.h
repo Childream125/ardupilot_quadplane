@@ -652,8 +652,11 @@ protected:
 
     bool _enter() override;
     void _exit() override;
+<<<<<<< HEAD:Rover/mode.h
 
     float _desired_speed;       // desired speed in m/s
+=======
+>>>>>>> myquadplane:APMrover2/mode.h
 };
 
 class ModeSimple : public Mode

@@ -21,6 +21,7 @@
 
 #ifdef HAL_PERIPH_ENABLE_ADSB
 
+<<<<<<< HEAD
 #include <AP_SerialManager/AP_SerialManager.h>
 
 extern const AP_HAL::HAL &hal;
@@ -30,14 +31,24 @@ extern const AP_HAL::HAL &hal;
 #include "include/mavlink/v2.0/ardupilotmega/mavlink.h"
 #include "include/mavlink/v2.0/mavlink_helpers.h"
 
+=======
+#include <GCS_MAVLink/GCS_MAVLink.h>
+
+extern const AP_HAL::HAL &hal;
+
+>>>>>>> myquadplane
 /*
   init ADSB support
  */
 void AP_Periph_FW::adsb_init(void)
 {
+<<<<<<< HEAD
     if (g.adsb_baudrate > 0) {
         ADSB_PORT->begin(AP_SerialManager::map_baudrate(g.adsb_baudrate), 256, 256);
     }
+=======
+    ADSB_PORT->begin(57600, 256, 256);
+>>>>>>> myquadplane
 }
 
 
@@ -46,9 +57,12 @@ void AP_Periph_FW::adsb_init(void)
  */
 void AP_Periph_FW::adsb_update(void)
 {
+<<<<<<< HEAD
     if (g.adsb_baudrate <= 0) {
         return;
     }
+=======
+>>>>>>> myquadplane
     // look for incoming MAVLink ADSB_VEHICLE packets
     const uint16_t nbytes = ADSB_PORT->available();
     for (uint16_t i=0; i<nbytes; i++) {

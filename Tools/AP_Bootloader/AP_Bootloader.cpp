@@ -95,6 +95,7 @@ int main(void)
         try_boot = true;
         timeout = 1000;
     }
+<<<<<<< HEAD
     if (was_watchdog && m != RTC_BOOT_FWOK) {
         // we've had a watchdog within 30s of booting main CAN
         // firmware. We will stay in bootloader to allow the user to
@@ -103,6 +104,8 @@ int main(void)
         try_boot = false;
         timeout = 0;
     }
+=======
+>>>>>>> myquadplane
 #endif
     
     // if we fail to boot properly we want to pause in bootloader to give

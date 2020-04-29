@@ -17,6 +17,10 @@
 #include <AP_HAL/AP_HAL.h>
 #include <GCS_MAVLink/GCS.h>
 #include "AP_Scripting.h"
+<<<<<<< HEAD
+=======
+#include <AP_ROMFS/AP_ROMFS.h>
+>>>>>>> myquadplane
 
 #include "lua_generated_bindings.h"
 
@@ -368,7 +372,26 @@ void lua_scripts::run(void) {
         return;
     }
     lua_atpanic(L, atpanic);
+<<<<<<< HEAD
     load_generated_bindings(L);
+=======
+    luaL_openlibs(L);
+    load_lua_bindings(L);
+
+    // load the sandbox creation function
+    uint32_t sandbox_size;
+    const char *sandbox_data = (const char *)AP_ROMFS::find_decompress("sandbox.lua", sandbox_size);
+    if (sandbox_data == nullptr) {
+        gcs().send_text(MAV_SEVERITY_CRITICAL, "Scripting: Could not find sandbox");
+        return;
+    }
+
+    if (luaL_dostring(L, sandbox_data)) {
+        gcs().send_text(MAV_SEVERITY_CRITICAL, "Scripting: Loading sandbox: %s", lua_tostring(L, -1));
+        return;
+    }
+    AP_ROMFS::free((const uint8_t *)sandbox_data);
+>>>>>>> myquadplane
 
     // Scan the filesystem in an appropriate manner and autostart scripts
     load_all_scripts_in_dir(L, SCRIPTING_DIRECTORY);
@@ -385,6 +408,10 @@ void lua_scripts::run(void) {
             continue;
         }
 
+<<<<<<< HEAD
+=======
+    while (AP_Scripting::get_singleton()->enabled()) {
+>>>>>>> myquadplane
 #if defined(AP_SCRIPTING_CHECKS) && AP_SCRIPTING_CHECKS >= 1
         if (lua_gettop(L) != 0) {
             AP_HAL::panic("Lua: Stack should be empty before running scripts");

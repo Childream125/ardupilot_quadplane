@@ -150,6 +150,7 @@ void AC_Circle::set_radius(float radius_cm)
     calc_velocities(false);
 }
 
+<<<<<<< HEAD
 /// returns true if update has been run recently
 /// used by vehicle code to determine if get_yaw() is valid
 bool AC_Circle::is_active() const
@@ -157,6 +158,8 @@ bool AC_Circle::is_active() const
     return (AP_HAL::millis() - _last_update_ms < 200);
 }
 
+=======
+>>>>>>> myquadplane
 /// update - update circle controller
 bool AC_Circle::update()
 {

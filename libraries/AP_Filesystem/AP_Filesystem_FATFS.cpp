@@ -414,10 +414,14 @@ int32_t AP_Filesystem_FATFS::read(int fd, void *buf, uint32_t count)
             errno = fatfs_to_errno((FRESULT)res);
             return -1;
         }
+<<<<<<< HEAD
         if (size == 0) {
             break;
         }
         if (size > n) {
+=======
+        if (size > n || size == 0) {
+>>>>>>> myquadplane
             errno = EIO;
             return -1;
         }

@@ -40,10 +40,13 @@ public:
 
 private:
     SITL::SITL *sitl = AP::sitl();
+<<<<<<< HEAD
 
     // sector related variables
     float _angle_deg_last;
     float _distance_m_last;
     uint8_t _last_sector;
+=======
+>>>>>>> myquadplane
 };
 #endif // CONFIG_HAL_BOARD

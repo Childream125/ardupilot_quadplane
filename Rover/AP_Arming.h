@@ -30,6 +30,9 @@ protected:
     // the following check functions do not call into AP_Arming
     bool oa_check(bool report);
     bool parameter_checks(bool report);
+<<<<<<< HEAD:Rover/AP_Arming.h
     bool mode_checks(bool report);
+=======
+>>>>>>> myquadplane:APMrover2/AP_Arming.h
 
 };

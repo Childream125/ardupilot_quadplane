@@ -21,7 +21,11 @@
 #include <AP_Common/AP_Common.h>
 #include <AP_HAL/AP_HAL.h>
 #include <AP_RTC/AP_RTC.h>
+<<<<<<< HEAD
 #include <AP_Vehicle/AP_Vehicle.h>
+=======
+#include <AP_Vehicle/AP_Vehicle_Type.h>
+>>>>>>> myquadplane
 #include <GCS_MAVLink/GCS.h>
 
 #if HAL_WITH_UAVCAN
@@ -277,6 +281,7 @@ const AP_Param::GroupInfo AP_BoardConfig::var_info[] = {
     // @User: Advanced
     AP_SUBGROUPINFO(heater.pi_controller, "IMUHEAT_",  21, AP_BoardConfig, AC_PI),
 #endif
+<<<<<<< HEAD
 
     // @Param: ALT_CONFIG
     // @DisplayName: Alternative HW config
@@ -286,6 +291,8 @@ const AP_Param::GroupInfo AP_BoardConfig::var_info[] = {
     // @User: Advanced
     // @RebootRequired: True
     AP_GROUPINFO("ALT_CONFIG", 22, AP_BoardConfig, _alt_config, 0),
+=======
+>>>>>>> myquadplane
     
     AP_GROUPEND
 };

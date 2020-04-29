@@ -8,7 +8,27 @@ class AP_RangeFinder_Benewake : public AP_RangeFinder_Backend_Serial
 
 public:
 
+<<<<<<< HEAD
     using AP_RangeFinder_Backend_Serial::AP_RangeFinder_Backend_Serial;
+=======
+    enum benewake_model_type {
+        BENEWAKE_TF02 = 0,
+        BENEWAKE_TFmini = 1,
+        BENEWAKE_TF03 = 2,
+    };
+
+    // constructor
+    AP_RangeFinder_Benewake(RangeFinder::RangeFinder_State &_state,
+                            AP_RangeFinder_Params &_params,
+                            uint8_t serial_instance,
+                            benewake_model_type model);
+
+    // static detection function
+    static bool detect(uint8_t serial_instance);
+
+    // update state
+    void update(void) override;
+>>>>>>> myquadplane
 
 protected:
 

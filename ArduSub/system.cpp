@@ -41,9 +41,13 @@ void Sub::init_ardupilot()
     g2.gripper.init();
 #endif
 
+<<<<<<< HEAD
 #if AC_FENCE == ENABLED
     fence.init();
 #endif
+=======
+    fence.init();
+>>>>>>> myquadplane
 
     // initialise notify system
     notify.init();
@@ -53,6 +57,14 @@ void Sub::init_ardupilot()
 
     barometer.init();
 
+<<<<<<< HEAD
+=======
+    // Register the mavlink service callback. This will run
+    // anytime there are more than 5ms remaining in a call to
+    // hal.scheduler->delay.
+    hal.scheduler->register_delay_callback(mavlink_delay_cb_static, 5);
+
+>>>>>>> myquadplane
     // setup telem slots with serial ports
     gcs().setup_uarts();
 

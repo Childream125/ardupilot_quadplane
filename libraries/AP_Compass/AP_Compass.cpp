@@ -29,9 +29,14 @@
 #include "Compass_learn.h"
 #include <stdio.h>
 
+<<<<<<< HEAD
 
 extern const AP_HAL::HAL& hal;
 
+=======
+extern const AP_HAL::HAL& hal;
+
+>>>>>>> myquadplane
 #ifndef COMPASS_LEARN_DEFAULT
 #define COMPASS_LEARN_DEFAULT Compass::LEARN_NONE
 #endif
@@ -46,6 +51,10 @@ extern const AP_HAL::HAL& hal;
 
 #ifndef HAL_COMPASS_AUTO_ROT_DEFAULT
 #define HAL_COMPASS_AUTO_ROT_DEFAULT 2
+#endif
+
+#ifndef HAL_COMPASS_MAX_SENSORS
+#define HAL_COMPASS_MAX_SENSORS 3
 #endif
 
 const AP_Param::GroupInfo Compass::var_info[] = {
@@ -157,7 +166,11 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("EXTERNAL", 9, Compass, _state._priv_instance[0].external, 0),
 
+<<<<<<< HEAD
 #if COMPASS_MAX_INSTANCES > 1
+=======
+#if HAL_COMPASS_MAX_SENSORS > 1
+>>>>>>> myquadplane
     // @Param: OFS2_X
     // @DisplayName: Compass2 offsets in milligauss on the X axis
     // @Description: Offset to be added to compass2's x-axis values to compensate for metal in the frame
@@ -212,9 +225,21 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("MOT2",    11, Compass, _state._priv_instance[1].motor_compensation, 0),
 
+<<<<<<< HEAD
 #endif // COMPASS_MAX_INSTANCES
 
 #if COMPASS_MAX_INSTANCES > 2
+=======
+    // @Param: PRIMARY
+    // @DisplayName: Choose primary compass
+    // @Description: If more than one compass is available, this selects which compass is the primary. When external compasses are connected, they will be ordered first. NOTE: If no external compass is attached, this parameter is ignored.
+    // @Values: 0:FirstCompass,1:SecondCompass,2:ThirdCompass
+    // @User: Advanced
+    AP_GROUPINFO("PRIMARY", 12, Compass, _primary, 0),
+#endif // HAL_COMPASS_MAX_SENSORS
+
+#if HAL_COMPASS_MAX_SENSORS > 2
+>>>>>>> myquadplane
     // @Param: OFS3_X
     // @DisplayName: Compass3 offsets in milligauss on the X axis
     // @Description: Offset to be added to compass3's x-axis values to compensate for metal in the frame
@@ -267,8 +292,13 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @Units: mGauss/A
     // @Increment: 1
     // @User: Advanced
+<<<<<<< HEAD
     AP_GROUPINFO("MOT3",    14, Compass, _state._priv_instance[2].motor_compensation, 0),
 #endif // COMPASS_MAX_INSTANCES
+=======
+    AP_GROUPINFO("MOT3",    14, Compass, _state[2].motor_compensation, 0),
+#endif // HAL_COMPASS_MAX_SENSORS
+>>>>>>> myquadplane
 
     // @Param: DEV_ID
     // @DisplayName: Compass device id
@@ -277,25 +307,43 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("DEV_ID",  15, Compass, _state._priv_instance[0].dev_id, 0),
 
+<<<<<<< HEAD
 #if COMPASS_MAX_INSTANCES > 1
+=======
+#if HAL_COMPASS_MAX_SENSORS > 1
+>>>>>>> myquadplane
     // @Param: DEV_ID2
     // @DisplayName: Compass2 device id
     // @Description: Second compass's device id.  Automatically detected, do not set manually
     // @ReadOnly: True
     // @User: Advanced
+<<<<<<< HEAD
     AP_GROUPINFO("DEV_ID2", 16, Compass, _state._priv_instance[1].dev_id, 0),
 #endif // COMPASS_MAX_INSTANCES
 
 #if COMPASS_MAX_INSTANCES > 2
+=======
+    AP_GROUPINFO("DEV_ID2", 16, Compass, _state[1].dev_id, 0),
+#endif // HAL_COMPASS_MAX_SENSORS
+
+#if HAL_COMPASS_MAX_SENSORS > 2
+>>>>>>> myquadplane
     // @Param: DEV_ID3
     // @DisplayName: Compass3 device id
     // @Description: Third compass's device id.  Automatically detected, do not set manually
     // @ReadOnly: True
     // @User: Advanced
+<<<<<<< HEAD
     AP_GROUPINFO("DEV_ID3", 17, Compass, _state._priv_instance[2].dev_id, 0),
 #endif // COMPASS_MAX_INSTANCES
 
 #if COMPASS_MAX_INSTANCES > 1
+=======
+    AP_GROUPINFO("DEV_ID3", 17, Compass, _state[2].dev_id, 0),
+#endif // HAL_COMPASS_MAX_SENSORS
+
+#if HAL_COMPASS_MAX_SENSORS > 1
+>>>>>>> myquadplane
     // @Param: USE2
     // @DisplayName: Compass2 used for yaw
     // @Description: Enable or disable the secondary compass for determining heading.
@@ -315,10 +363,17 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @Description: Configure second compass so it is attached externally. This is auto-detected on PX4 and Pixhawk. If set to 0 or 1 then auto-detection by bus connection can override the value. If set to 2 then auto-detection will be disabled.
     // @Values: 0:Internal,1:External,2:ForcedExternal
     // @User: Advanced
+<<<<<<< HEAD
     AP_GROUPINFO("EXTERN2",20, Compass, _state._priv_instance[1].external, 0),
 #endif // COMPASS_MAX_INSTANCES
 
 #if COMPASS_MAX_INSTANCES > 2
+=======
+    AP_GROUPINFO("EXTERN2",20, Compass, _state[1].external, 0),
+#endif // HAL_COMPASS_MAX_SENSORS
+
+#if HAL_COMPASS_MAX_SENSORS > 2
+>>>>>>> myquadplane
     // @Param: USE3
     // @DisplayName: Compass3 used for yaw
     // @Description: Enable or disable the tertiary compass for determining heading.
@@ -338,8 +393,13 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @Description: Configure third compass so it is attached externally. This is auto-detected on PX4 and Pixhawk. If set to 0 or 1 then auto-detection by bus connection can override the value. If set to 2 then auto-detection will be disabled.
     // @Values: 0:Internal,1:External,2:ForcedExternal
     // @User: Advanced
+<<<<<<< HEAD
     AP_GROUPINFO("EXTERN3",23, Compass, _state._priv_instance[2].external, 0),
 #endif // COMPASS_MAX_INSTANCES
+=======
+    AP_GROUPINFO("EXTERN3",23, Compass, _state[2].external, 0),
+#endif // HAL_COMPASS_MAX_SENSORS
+>>>>>>> myquadplane
 
     // @Param: DIA_X
     // @DisplayName: Compass soft-iron diagonal X component
@@ -377,7 +437,11 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("ODI",    25, Compass, _state._priv_instance[0].offdiagonals, 0),
 
+<<<<<<< HEAD
 #if COMPASS_MAX_INSTANCES > 1
+=======
+#if HAL_COMPASS_MAX_SENSORS > 1
+>>>>>>> myquadplane
     // @Param: DIA2_X
     // @DisplayName: Compass2 soft-iron diagonal X component
     // @Description: DIA_X in the compass2 soft-iron calibration matrix: [[DIA_X, ODI_X, ODI_Y], [ODI_X, DIA_Y, ODI_Z], [ODI_Y, ODI_Z, DIA_Z]]
@@ -412,10 +476,17 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @DisplayName: Compass2 soft-iron off-diagonal Z component
     // @Description: ODI_Z in the compass2 soft-iron calibration matrix: [[DIA_X, ODI_X, ODI_Y], [ODI_X, DIA_Y, ODI_Z], [ODI_Y, ODI_Z, DIA_Z]]
     // @User: Advanced
+<<<<<<< HEAD
     AP_GROUPINFO("ODI2",    27, Compass, _state._priv_instance[1].offdiagonals, 0),
 #endif // COMPASS_MAX_INSTANCES
 
 #if COMPASS_MAX_INSTANCES > 2
+=======
+    AP_GROUPINFO("ODI2",    27, Compass, _state[1].offdiagonals, 0),
+#endif // HAL_COMPASS_MAX_SENSORS
+
+#if HAL_COMPASS_MAX_SENSORS > 2
+>>>>>>> myquadplane
     // @Param: DIA3_X
     // @DisplayName: Compass3 soft-iron diagonal X component
     // @Description: DIA_X in the compass3 soft-iron calibration matrix: [[DIA_X, ODI_X, ODI_Y], [ODI_X, DIA_Y, ODI_Z], [ODI_Y, ODI_Z, DIA_Z]]
@@ -450,8 +521,13 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @DisplayName: Compass3 soft-iron off-diagonal Z component
     // @Description: ODI_Z in the compass3 soft-iron calibration matrix: [[DIA_X, ODI_X, ODI_Y], [ODI_X, DIA_Y, ODI_Z], [ODI_Y, ODI_Z, DIA_Z]]
     // @User: Advanced
+<<<<<<< HEAD
     AP_GROUPINFO("ODI3",    29, Compass, _state._priv_instance[2].offdiagonals, 0),
 #endif // COMPASS_MAX_INSTANCES
+=======
+    AP_GROUPINFO("ODI3",    29, Compass, _state[2].offdiagonals, 0),
+#endif // HAL_COMPASS_MAX_SENSORS
+>>>>>>> myquadplane
 
     // @Param: CAL_FIT
     // @DisplayName: Compass calibration fitness
@@ -503,6 +579,7 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("PRIO1_ID",  36, Compass, _priority_did_stored_list._priv_instance[0], 0),
 
+<<<<<<< HEAD
 #if COMPASS_MAX_INSTANCES > 1
     // @Param: PRIO2_ID
     // @DisplayName: Compass device id with 2nd order priority
@@ -518,6 +595,23 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("PRIO3_ID", 38, Compass, _priority_did_stored_list._priv_instance[2], 0),
 #endif // COMPASS_MAX_INSTANCES
+=======
+#if HAL_COMPASS_MAX_SENSORS > 1
+    // @Param: EXP_DID2
+    // @DisplayName: Compass2 device id expected
+    // @Description: The expected value of COMPASS_DEV_ID2, used by arming checks. Setting this to -1 means "don't care."
+    // @User: Advanced
+    AP_GROUPINFO("EXP_DID2", 37, Compass, _state[1].expected_dev_id, -1),
+#endif // HAL_COMPASS_MAX_SENSORS
+
+#if HAL_COMPASS_MAX_SENSORS > 2
+    // @Param: EXP_DID3
+    // @DisplayName: Compass3 device id expected
+    // @Description: The expected value of COMPASS_DEV_ID3, used by arming checks. Setting this to -1 means "don't care."
+    // @User: Advanced
+    AP_GROUPINFO("EXP_DID3", 38, Compass, _state[2].expected_dev_id, -1),
+#endif // HAL_COMPASS_MAX_SENSORS
+>>>>>>> myquadplane
 
     // @Param: ENABLE
     // @DisplayName: Enable Compass
@@ -531,24 +625,41 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @Description: Scaling factor for first compass to compensate for sensor scaling errors. If this is 0 then no scaling is done
     // @User: Standard
     // @Range: 0 1.3
+<<<<<<< HEAD
     AP_GROUPINFO("SCALE", 40, Compass, _state._priv_instance[0].scale_factor, 0),
 
 #if COMPASS_MAX_INSTANCES > 1
+=======
+    AP_GROUPINFO("SCALE", 40, Compass, _state[0].scale_factor, 0),
+
+#if HAL_COMPASS_MAX_SENSORS > 1
+>>>>>>> myquadplane
     // @Param: SCALE2
     // @DisplayName: Compass2 scale factor
     // @Description: Scaling factor for 2nd compass to compensate for sensor scaling errors. If this is 0 then no scaling is done
     // @User: Standard
     // @Range: 0 1.3
+<<<<<<< HEAD
     AP_GROUPINFO("SCALE2", 41, Compass, _state._priv_instance[1].scale_factor, 0),
 #endif
 
 #if COMPASS_MAX_INSTANCES > 2
+=======
+    AP_GROUPINFO("SCALE2", 41, Compass, _state[1].scale_factor, 0),
+#endif
+
+#if HAL_COMPASS_MAX_SENSORS > 2
+>>>>>>> myquadplane
     // @Param: SCALE3
     // @DisplayName: Compass3 scale factor
     // @Description: Scaling factor for 3rd compass to compensate for sensor scaling errors. If this is 0 then no scaling is done
     // @User: Standard
     // @Range: 0 1.3
+<<<<<<< HEAD
     AP_GROUPINFO("SCALE3", 42, Compass, _state._priv_instance[2].scale_factor, 0),
+=======
+    AP_GROUPINFO("SCALE3", 42, Compass, _state[2].scale_factor, 0),
+>>>>>>> myquadplane
 #endif
 
     // @Param: OPTIONS
@@ -558,6 +669,7 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("OPTIONS", 43, Compass, _options, 0),
 
+<<<<<<< HEAD
 #if COMPASS_MAX_UNREG_DEV > 0
     // @Param: DEV_ID4
     // @DisplayName: Compass4 device id
@@ -603,6 +715,8 @@ const AP_Param::GroupInfo Compass::var_info[] = {
     AP_GROUPINFO("DEV_ID8", 48, Compass, extra_dev_id[4], 0),
 #endif // COMPASS_MAX_UNREG_DEV
 
+=======
+>>>>>>> myquadplane
     AP_GROUPEND
 };
 
@@ -1025,9 +1139,21 @@ void Compass::_probe_external_i2c_compasses(void)
         ADD_BACKEND(DRIVER_RM3100, AP_Compass_RM3100::probe(GET_I2C_DEVICE(i, HAL_COMPASS_RM3100_I2C_ADDR),
                     true, ROTATION_NONE));
     }
+<<<<<<< HEAD
     FOREACH_I2C_INTERNAL(i) {
         ADD_BACKEND(DRIVER_RM3100, AP_Compass_RM3100::probe(GET_I2C_DEVICE(i, HAL_COMPASS_RM3100_I2C_ADDR),
                     all_external, ROTATION_NONE));
+=======
+
+    // external i2c bus
+    FOREACH_I2C_EXTERNAL(i) {
+            ADD_BACKEND(DRIVER_RM3100, AP_Compass_RM3100::probe(GET_I2C_DEVICE(i, HAL_COMPASS_RM3100_I2C_ADDR),
+                                                                true, ROTATION_NONE));
+    }
+    FOREACH_I2C_INTERNAL(i) {
+            ADD_BACKEND(DRIVER_RM3100, AP_Compass_RM3100::probe(GET_I2C_DEVICE(i, HAL_COMPASS_RM3100_I2C_ADDR),
+                                                                all_external, ROTATION_NONE));
+>>>>>>> myquadplane
     }
 
 #endif // HAL_MINIMIZE_FEATURES
@@ -1327,6 +1453,14 @@ Compass::set_and_save_scale_factor(uint8_t i, float scale_factor)
     StateIndex id = _get_state_id(Priority(i));
     if (i < COMPASS_MAX_INSTANCES) {
         _state[id].scale_factor.set_and_save(scale_factor);
+    }
+}
+
+void
+Compass::set_and_save_scale_factor(uint8_t i, float scale_factor)
+{
+    if (i < COMPASS_MAX_INSTANCES) {
+        _state[i].scale_factor.set_and_save(scale_factor);
     }
 }
 
@@ -1674,10 +1808,16 @@ bool Compass::consistent() const
  */
 bool Compass::have_scale_factor(uint8_t i) const
 {
+<<<<<<< HEAD
     StateIndex id = _get_state_id(Priority(i));
     if (id >= COMPASS_MAX_INSTANCES ||
         _state[id].scale_factor < COMPASS_MIN_SCALE_FACTOR ||
         _state[id].scale_factor > COMPASS_MAX_SCALE_FACTOR) {
+=======
+    if (i >= get_count() ||
+        _state[i].scale_factor < COMPASS_MIN_SCALE_FACTOR ||
+        _state[i].scale_factor > COMPASS_MAX_SCALE_FACTOR) {
+>>>>>>> myquadplane
         return false;
     }
     return true;

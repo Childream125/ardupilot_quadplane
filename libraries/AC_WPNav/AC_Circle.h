@@ -46,10 +46,17 @@ public:
 
     /// set_radius - sets circle radius in cm
     void set_radius(float radius_cm);
+<<<<<<< HEAD
 
     /// get_rate - returns target rate in deg/sec held in RATE parameter
     float get_rate() const { return _rate; }
 
+=======
+
+    /// get_rate - returns target rate in deg/sec held in RATE parameter
+    float get_rate() const { return _rate; }
+
+>>>>>>> myquadplane
     /// get_rate_current - returns actual calculated rate target in deg/sec, which may be less than _rate
     float get_rate_current() const { return ToDeg(_angular_vel); }
 
@@ -88,9 +95,12 @@ public:
     /// true if pilot control of radius and turn rate is enabled
     bool pilot_control_enabled() const { return _control > 0; }
 
+<<<<<<< HEAD
     /// provide rangefinder altitude
     void set_rangefinder_alt(bool use, bool healthy, float alt_cm) { _rangefinder_available = use; _rangefinder_healthy = healthy; _rangefinder_alt_cm = alt_cm; }
 
+=======
+>>>>>>> myquadplane
     static const struct AP_Param::GroupInfo var_info[];
 
 private:

@@ -276,6 +276,7 @@ void AC_PosControl::set_max_speed_z(float speed_down, float speed_up)
     // ensure speed_down is always negative
     speed_down = -fabsf(speed_down);
 
+<<<<<<< HEAD
     // exit immediately if no change in speed up or down
     if (is_equal(_speed_down_cms, speed_down) && is_equal(_speed_up_cms, speed_up)) {
         return;
@@ -283,6 +284,10 @@ void AC_PosControl::set_max_speed_z(float speed_down, float speed_up)
 
     // sanity check speeds and update
     if (is_positive(speed_up) && is_negative(speed_down)) {
+=======
+    // only update if there is a minimum of 1cm/s change and is valid
+    if (((fabsf(_speed_down_cms - speed_down) > 1.0f) || (fabsf(_speed_up_cms - speed_up) > 1.0f)) && is_positive(speed_up) && is_negative(speed_down) ) {
+>>>>>>> myquadplane
         _speed_down_cms = speed_down;
         _speed_up_cms = speed_up;
         _flags.recalc_leash_z = true;

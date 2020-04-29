@@ -55,6 +55,16 @@ void Storage::_storage_open(void)
         return;
     }
 
+<<<<<<< HEAD
+=======
+#ifdef USE_POSIX
+    // if we have failed filesystem init don't try again
+    if (log_fd == -1) {
+        return;
+    }
+#endif
+
+>>>>>>> myquadplane
     _dirty_mask.clearall();
 
 #if HAL_WITH_RAMTRON
@@ -78,6 +88,7 @@ void Storage::_storage_open(void)
         _save_backup();
         _initialisedType = StorageBackend::Flash;
 #elif defined(USE_POSIX)
+<<<<<<< HEAD
         // if we have failed filesystem init don't try again
         if (log_fd == -1) {
             return;
@@ -108,6 +119,32 @@ void Storage::_storage_open(void)
             _save_backup();
             _initialisedType = StorageBackend::SDCard;
         }
+=======
+    // allow for fallback to microSD based storage
+    sdcard_retry();
+
+    log_fd = AP::FS().open(HAL_STORAGE_FILE, O_RDWR|O_CREAT);
+    if (log_fd == -1) {
+        hal.console->printf("open failed of " HAL_STORAGE_FILE "\n");
+        return;
+    }
+    int ret = AP::FS().read(log_fd, _buffer, CH_STORAGE_SIZE);
+    if (ret < 0) {
+        hal.console->printf("read failed for " HAL_STORAGE_FILE "\n");
+        AP::FS().close(log_fd);
+        log_fd = -1;
+        return;
+    }
+    // pre-fill to full size
+    if (AP::FS().lseek(log_fd, ret, SEEK_SET) != ret ||
+        AP::FS().write(log_fd, &_buffer[ret], CH_STORAGE_SIZE-ret) != CH_STORAGE_SIZE-ret) {
+        hal.console->printf("setup failed for " HAL_STORAGE_FILE "\n");
+        AP::FS().close(log_fd);
+        log_fd = -1;
+        return;
+    }
+    using_filesystem = true;
+>>>>>>> myquadplane
 #endif
 
     if (_initialisedType != StorageBackend::None) {
@@ -242,7 +279,11 @@ void Storage::_flash_load(void)
 #ifdef STORAGE_FLASH_PAGE
     _flash_page = STORAGE_FLASH_PAGE;
 
+<<<<<<< HEAD
     ::printf("Storage: Using flash pages %u and %u\n", _flash_page, _flash_page+1);
+=======
+    hal.console->printf("Storage: Using flash pages %u and %u\n", _flash_page, _flash_page+1);
+>>>>>>> myquadplane
 
     if (!_flash.init()) {
         AP_HAL::panic("Unable to init flash storage");

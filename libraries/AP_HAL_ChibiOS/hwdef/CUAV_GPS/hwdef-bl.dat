@@ -91,7 +91,10 @@ define HAL_BOOTLOADER_TIMEOUT 1000
 
 # reserve 256 bytes for comms between app and bootloader
 RAM_RESERVE_START 256
+<<<<<<< HEAD
 
 # Add CS pins to ensure they are high in bootloader
 PA4 MAG_CS CS
 PA10 MS5611_CS CS
+=======
+>>>>>>> myquadplane

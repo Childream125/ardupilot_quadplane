@@ -69,7 +69,11 @@ const AP_Param::GroupInfo AP_Scripting::var_info[] = {
     // @Increment: 1024
     // @User: Advanced
     // @RebootRequired: True
+<<<<<<< HEAD
     AP_GROUPINFO("HEAP_SIZE", 3, AP_Scripting, _script_heap_size, SCRIPTING_HEAP_SIZE),
+=======
+    AP_GROUPINFO("HEAP_SIZE", 3, AP_Scripting, _script_heap_size, 42*1024),
+>>>>>>> myquadplane
 
     // @Param: DEBUG_LVL
     // @DisplayName: Scripting Debug Level
@@ -101,6 +105,7 @@ void AP_Scripting::init(void) {
         gcs().send_text(MAV_SEVERITY_CRITICAL, "Could not create scripting stack (%d)", SCRIPTING_STACK_SIZE);
         gcs().send_text(MAV_SEVERITY_ERROR, "Scripting failed to start");
         _init_failed = true;
+<<<<<<< HEAD
     }
 }
 
@@ -146,6 +151,9 @@ bool AP_Scripting::repl_start(void) {
 
     terminal.session = true;
     return true;
+=======
+    }
+>>>>>>> myquadplane
 }
 
 void AP_Scripting::repl_stop(void) {
@@ -154,10 +162,16 @@ void AP_Scripting::repl_stop(void) {
 }
 
 void AP_Scripting::thread(void) {
+<<<<<<< HEAD
     lua_scripts *lua = new lua_scripts(_script_vm_exec_count, _script_heap_size, _debug_level, terminal);
     if (lua == nullptr || !lua->heap_allocated()) {
         gcs().send_text(MAV_SEVERITY_CRITICAL, "Unable to allocate scripting memory");
         delete lua;
+=======
+    lua_scripts *lua = new lua_scripts(_script_vm_exec_count, _script_heap_size, _debug_level);
+    if (lua == nullptr || !lua->heap_allocated()) {
+        gcs().send_text(MAV_SEVERITY_CRITICAL, "Unable to allocate scripting memory");
+>>>>>>> myquadplane
         _init_failed = true;
         return;
     }

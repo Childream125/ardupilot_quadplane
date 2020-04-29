@@ -133,8 +133,11 @@ void RC_Channel_Plane::do_aux_function(const aux_func_t ch_option, const aux_swi
         do_aux_function_change_mode(Mode::Number::TAKEOFF, ch_flag);
         break;
 
+<<<<<<< HEAD
     case AUX_FUNC::FLAP:
         break; // flap input label, nothing to do
+=======
+>>>>>>> myquadplane
 
     default:
         RC_Channel::do_aux_function(ch_option, ch_flag);

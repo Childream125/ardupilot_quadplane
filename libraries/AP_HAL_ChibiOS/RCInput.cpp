@@ -179,7 +179,10 @@ void RCInput::_timer_tick(void)
         _num_channels = rcprot.num_channels();
         _num_channels = MIN(_num_channels, RC_INPUT_MAX_CHANNELS);
         rcprot.read(_rc_values, _num_channels);
+<<<<<<< HEAD
         _rssi = rcprot.get_RSSI();
+=======
+>>>>>>> myquadplane
 #ifndef HAL_NO_UARTDRIVER
         rc_protocol = rcprot.protocol_name();
 #endif
@@ -207,7 +210,10 @@ void RCInput::_timer_tick(void)
             _rcin_timestamp_last_signal = last_iomcu_us;
 #ifndef HAL_NO_UARTDRIVER
             rc_protocol = iomcu.get_rc_protocol();
+<<<<<<< HEAD
             _rssi = iomcu.get_RSSI();
+=======
+>>>>>>> myquadplane
 #endif
         }
     }

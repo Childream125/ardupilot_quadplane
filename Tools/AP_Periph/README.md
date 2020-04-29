@@ -4,6 +4,7 @@ This is an ArduPilot based UAVCAN peripheral firmware. This firmware
 takes advantage of the wide range of sensor drivers in ArduPilot to
 make building a UAVCAN peripheral firmware easy.
 
+<<<<<<< HEAD
 The AP_Periph firmware is based on the same ChibiOS hwdef.dat system
 that is used to define pinouts for STM32 based flight controllers
 supported by ArduPilot. That means you can add support for a new
@@ -12,6 +13,8 @@ hwdef.dat that defines the pinout of your device.
 
 Currently we have four targets building for AP_Periph firmwares:
 
+=======
+>>>>>>> myquadplane
  - A STM32F103 128k flash part made by mRobotics (target f103-GPS)
  - A STM32F412 512k flash part made by CUAV (target CUAV_GPS)
  - A STM32F105 256k flash part (used in ZubaxGNSSv2)

@@ -57,7 +57,11 @@ void Plane::update_soaring() {
         g2.soaring_controller.update_cruising();
 
         if (g2.soaring_controller.check_thermal_criteria()) {
+<<<<<<< HEAD
             gcs().send_text(MAV_SEVERITY_INFO, "Soaring: Thermal detected, entering %s", mode_loiter.name());
+=======
+            gcs().send_text(MAV_SEVERITY_INFO, "Soaring: Thermal detected, entering loiter");
+>>>>>>> myquadplane
             set_mode(mode_loiter, ModeReason::SOARING_THERMAL_DETECTED);
         }
         break;
@@ -66,6 +70,7 @@ void Plane::update_soaring() {
         // Update thermal estimate and check for switch back to AUTO
         g2.soaring_controller.update_thermalling();  // Update estimate
 
+<<<<<<< HEAD
         Vector2f prev_wp, next_wp;
 
         // If previous mode was AUTO and there was a previous NAV command, we can use previous and next wps for drift calculation.
@@ -119,6 +124,23 @@ void Plane::update_soaring() {
             const bool homeIsSet = AP::ahrs().home_is_set();
             const bool headingLinedupToHome = homeIsSet && plane.mode_loiter.isHeadingLinedUp(next_WP_loc, AP::ahrs().get_home());
             if (homeIsSet && !headingLinedupToHome && loiterStatus!=SoaringController::LoiterStatus::ALT_TOO_LOW && timer<20e3) {
+=======
+        if (g2.soaring_controller.check_cruise_criteria()) {
+            // Exit as soon as thermal state estimate deteriorates
+            switch (previous_mode->mode_number()) {
+            case Mode::Number::FLY_BY_WIRE_B:
+                gcs().send_text(MAV_SEVERITY_INFO, "Soaring: Thermal ended, entering RTL");
+                set_mode(mode_rtl, ModeReason::SOARING_THERMAL_ESTIMATE_DETERIORATED);
+                break;
+
+            case Mode::Number::CRUISE: {
+                // return to cruise with old ground course
+                CruiseState cruise = cruise_state;
+                gcs().send_text(MAV_SEVERITY_INFO, "Soaring: Thermal ended, restoring CRUISE");
+                set_mode(mode_cruise, ModeReason::SOARING_THERMAL_ESTIMATE_DETERIORATED);
+                cruise_state = cruise;
+                set_target_altitude_current();
+>>>>>>> myquadplane
                 break;
             }
             switch (loiterStatus) {
@@ -143,9 +165,15 @@ void Plane::update_soaring() {
             break;
             }
 
+<<<<<<< HEAD
         case Mode::Number::CRUISE: {
             const bool headingLinedupToCruise = plane.mode_loiter.isHeadingLinedUp_cd(cruise_state.locked_heading_cd);
             if (cruise_state.locked_heading && !headingLinedupToCruise && loiterStatus!=SoaringController::LoiterStatus::ALT_TOO_LOW && timer<20e3) {
+=======
+            case Mode::Number::AUTO:
+                gcs().send_text(MAV_SEVERITY_INFO, "Soaring: Thermal ended, restoring AUTO");
+                set_mode(mode_auto, ModeReason::SOARING_THERMAL_ESTIMATE_DETERIORATED);
+>>>>>>> myquadplane
                 break;
             }
             // return to cruise with old ground course

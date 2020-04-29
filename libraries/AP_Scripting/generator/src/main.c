@@ -1114,7 +1114,11 @@ void emit_checker(const struct type t, int arg_number, int skipped, const char *
         fprintf(source, "%sconst lua_Integer raw_data_%d = luaL_checkinteger(L, %d);\n", indentation, arg_number, arg_number - skipped);
         break;
       case TYPE_UINT32_T:
+<<<<<<< HEAD
         fprintf(source, "%sconst uint32_t raw_data_%d = coerce_to_uint32_t(L, %d);\n", indentation, arg_number, arg_number - skipped);
+=======
+        fprintf(source, "%sconst uint32_t raw_data_%d = *check_uint32_t(L, %d);\n", indentation, arg_number, arg_number - skipped);
+>>>>>>> myquadplane
         break;
       case TYPE_AP_OBJECT:
       case TYPE_NONE:
@@ -1345,8 +1349,12 @@ void emit_userdata_method(const struct userdata *data, const struct method *meth
       emit_checker(arg->type, arg_count, skipped, "    ", "argument");
       arg_count++;
     }
+<<<<<<< HEAD
     if (//arg->type.type == TYPE_LITERAL ||
         arg->type.flags & TYPE_FLAGS_NULLABLE) {
+=======
+    if (arg->type.type != TYPE_LITERAL || arg->type.flags & TYPE_FLAGS_NULLABLE) {
+>>>>>>> myquadplane
       skipped++;
     }
     arg = arg->next;

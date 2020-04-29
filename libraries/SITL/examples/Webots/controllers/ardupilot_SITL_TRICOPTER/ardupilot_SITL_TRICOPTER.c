@@ -45,11 +45,14 @@ static double servo_value_extra = 0;
 int port;
 
 
+<<<<<<< HEAD
 // delatTime limits the fasts execution path. it is very useful in SLOW MOTION.
 // Increasing simulation speed using ">>" button on webots may not be effective
 // if this value > 0.
 int maxSimCycleTime = 0; // no delay
 
+=======
+>>>>>>> myquadplane
 static int timestep;
 
 
@@ -290,11 +293,14 @@ void run ()
     fd_set rfds;
     while (wb_robot_step(timestep) != -1) 
     {
+<<<<<<< HEAD
         for (int i=0;i<maxSimCycleTime;++i)
         {
           usleep(1000);
         }
         
+=======
+>>>>>>> myquadplane
         #ifdef DEBUG_USE_KB
         process_keyboard();
         #endif
@@ -359,9 +365,17 @@ void run ()
                 if (n > 0)
                 {
 
+<<<<<<< HEAD
                   command_buffer[n] = 0;
                   parse_controls (command_buffer);
                   update_controls();
+=======
+                  //printf("Received %d bytes:\n", n);
+                  command_buffer[n] = 0;
+                  parse_controls (command_buffer);
+                  update_controls();
+                  
+>>>>>>> myquadplane
 
                 }
           }
@@ -388,6 +402,7 @@ void initialize (int argc, char *argv[])
             port = atoi (argv[i+1]);
           }
         }
+<<<<<<< HEAD
        else if (strcmp (argv[i],"-d")==0)
         {
           if (argc > i+1 )
@@ -397,6 +412,8 @@ void initialize (int argc, char *argv[])
             printf("max simulation cycle time is %d ms\n",maxSimCycleTime);
           }
         }
+=======
+>>>>>>> myquadplane
     }
     
     

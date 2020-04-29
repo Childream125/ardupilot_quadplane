@@ -269,6 +269,7 @@ void AP_RCProtocol::read(uint16_t *pwm, uint8_t n)
     }
 }
 
+<<<<<<< HEAD
 int16_t AP_RCProtocol::get_RSSI(void) const
 {
     if (_detected_protocol != AP_RCProtocol::NONE) {
@@ -277,6 +278,8 @@ int16_t AP_RCProtocol::get_RSSI(void) const
     return -1;
 }
 
+=======
+>>>>>>> myquadplane
 /*
   ask for bind start on supported receivers (eg spektrum satellite)
  */

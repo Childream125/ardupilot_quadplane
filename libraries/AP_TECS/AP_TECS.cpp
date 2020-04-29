@@ -249,6 +249,7 @@ const AP_Param::GroupInfo AP_TECS::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("OPTIONS", 28, AP_TECS, _options, 0),
 
+<<<<<<< HEAD
     // @Param: PTCH_FF_V0
     // @DisplayName: Baseline airspeed for pitch feed-forward.
     // @Description: This parameter sets the airspeed at which no feed-forward is applied between demanded airspeed and pitch. It should correspond to the airspeed in metres per second at which the plane glides at neutral pitch including STAB_PITCH_DOWN.
@@ -263,6 +264,8 @@ const AP_Param::GroupInfo AP_TECS::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("PTCH_FF_K", 30, AP_TECS, _pitch_ff_k, 0.0),
     
+=======
+>>>>>>> myquadplane
     AP_GROUPEND
 };
 

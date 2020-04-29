@@ -18,7 +18,11 @@
 #define AP_UAVCAN_H_
 
 #include <uavcan/uavcan.hpp>
+<<<<<<< HEAD
 #include "AP_UAVCAN_DNA_Server.h"
+=======
+#include "AP_UAVCAN_Server.h"
+>>>>>>> myquadplane
 
 #include <AP_HAL/CAN.h>
 #include <AP_HAL/Semaphores.h>

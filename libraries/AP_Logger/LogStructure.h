@@ -938,6 +938,28 @@ struct PACKED log_CESC {
     uint8_t power_pct;
 };
 
+struct PACKED log_CSRV {
+    LOG_PACKET_HEADER;
+    uint64_t time_us;     
+    uint8_t id;
+    float position;
+    float force;
+    float speed;
+    uint8_t power_pct;
+};
+
+struct PACKED log_CESC {
+    LOG_PACKET_HEADER;
+    uint64_t time_us;     
+    uint8_t id;
+    uint32_t error_count;
+    float voltage;
+    float current;
+    float temperature;
+    int32_t rpm;
+    uint8_t power_pct;
+};
+
 struct PACKED log_AIRSPEED {
     LOG_PACKET_HEADER;
     uint64_t time_us;
@@ -2353,7 +2375,14 @@ struct PACKED log_Arm_Disarm {
     { LOG_OA_BENDYRULER_MSG, sizeof(log_OABendyRuler), \
       "OABR","QBHHfLLLL","TimeUS,Active,DesYaw,Yaw,Mar,DLat,DLng,OALat,OALng", "sbddmDUDU", "F----GGGG" }, \
     { LOG_OA_DIJKSTRA_MSG, sizeof(log_OADijkstra), \
+<<<<<<< HEAD
       "OADJ","QBBBBLLLL","TimeUS,State,Err,CurrPoint,TotPoints,DLat,DLng,OALat,OALng", "sbbbbDUDU", "F----GGGG" }, \
+=======
+      "OADJ","QBBBBLLLL","TimeUS,State,Err,CurrPoint,TotPoints,DLat,DLng,OALat,OALng", "sbbbbDUDU", "F----GGGG" }
+
+// messages for more advanced boards
+#define LOG_EXTRA_STRUCTURES \
+>>>>>>> myquadplane
     { LOG_IMU2_MSG, sizeof(log_IMU), \
       "IMU2",  IMU_FMT,     IMU_LABELS, IMU_UNITS, IMU_MULTS }, \
     { LOG_IMU3_MSG, sizeof(log_IMU), \

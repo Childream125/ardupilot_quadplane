@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "AP_Vehicle.h"
 
 #include <AP_Common/AP_FWVersion.h>
@@ -194,6 +195,9 @@ void AP_Vehicle::send_watchdog_reset_statustext()
                     pd.thread_name4
         );
 }
+=======
+#include <AP_Vehicle/AP_Vehicle.h>
+>>>>>>> myquadplane
 
 AP_Vehicle *AP_Vehicle::_singleton = nullptr;
 
@@ -210,3 +214,7 @@ AP_Vehicle *vehicle()
 }
 
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> myquadplane

@@ -231,6 +231,7 @@ void ModeZigZag::manual_control()
     if (copter.ap.land_complete_maybe) {
         loiter_nav->soften_for_landing();
     }
+<<<<<<< HEAD
 
     // Loiter State Machine Determination
     AltHoldModeState althold_state = get_alt_hold_state(target_climb_rate);
@@ -271,6 +272,48 @@ void ModeZigZag::manual_control()
         pos_control->update_z_controller();
         break;
 
+=======
+
+    // Loiter State Machine Determination
+    AltHoldModeState althold_state = get_alt_hold_state(target_climb_rate);
+
+    // althold state machine
+    switch (althold_state) {
+
+    case AltHold_MotorStopped:
+        attitude_control->reset_rate_controller_I_terms();
+        attitude_control->set_yaw_target_to_current_heading();
+        pos_control->relax_alt_hold_controllers(0.0f);   // forces throttle output to go to zero
+        loiter_nav->init_target();
+        attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(loiter_nav->get_roll(), loiter_nav->get_pitch(), target_yaw_rate);
+        pos_control->update_z_controller();
+        break;
+
+    case AltHold_Takeoff:
+        // initiate take-off
+        if (!takeoff.running()) {
+            takeoff.start(constrain_float(g.pilot_takeoff_alt,0.0f,1000.0f));
+        }
+
+        // get takeoff adjusted pilot and takeoff climb rates
+        takeoff.get_climb_rates(target_climb_rate, takeoff_climb_rate);
+
+        // get avoidance adjusted climb rate
+        target_climb_rate = get_avoidance_adjusted_climbrate(target_climb_rate);
+
+        // run loiter controller
+        loiter_nav->update();
+
+        // call attitude controller
+        attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(loiter_nav->get_roll(), loiter_nav->get_pitch(), target_yaw_rate);
+
+        // update altitude target and call position controller
+        pos_control->set_alt_target_from_climb_rate_ff(target_climb_rate, G_Dt, false);
+        pos_control->add_takeoff_climb_rate(takeoff_climb_rate, G_Dt);
+        pos_control->update_z_controller();
+        break;
+
+>>>>>>> myquadplane
     case AltHold_Landed_Ground_Idle:
         attitude_control->set_yaw_target_to_current_heading();
         FALLTHROUGH;

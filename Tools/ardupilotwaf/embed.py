@@ -38,6 +38,7 @@ def embed_file(out, f, idx, embedded_name, uncompressed):
 
     compressed = tempfile.NamedTemporaryFile()
     if uncompressed:
+<<<<<<< HEAD
         # ensure nul termination
         if sys.version_info[0] >= 3:
             nul = bytearray(0)
@@ -46,6 +47,14 @@ def embed_file(out, f, idx, embedded_name, uncompressed):
         if contents[-1] != nul:
             contents += nul
         compressed.write(contents)
+=======
+        compressed.write(open(f,'rb').read())
+        # ensure nul termination
+        if sys.version_info[0] >= 3:
+            compressed.write(bytearray(0))
+        else:
+            compressed.write(chr(0))
+>>>>>>> myquadplane
     else:
         # compress it
         f = open(compressed.name, "wb")

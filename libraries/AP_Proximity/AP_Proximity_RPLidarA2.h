@@ -38,8 +38,16 @@ class AP_Proximity_RPLidarA2 : public AP_Proximity_Backend_Serial
 {
 
 public:
+<<<<<<< HEAD
 
     using AP_Proximity_Backend_Serial::AP_Proximity_Backend_Serial;
+=======
+    // constructor
+    AP_Proximity_RPLidarA2(AP_Proximity &_frontend, AP_Proximity::Proximity_State &_state);
+
+    // static detection function
+    static bool detect();
+>>>>>>> myquadplane
 
     // update state
     void update(void) override;

@@ -148,11 +148,15 @@ void AP_InertialSensor_SITL::generate_accel()
         accel_accum += accel;
     }
 
+<<<<<<< HEAD
     accel_accum /= nsamples;
     _rotate_and_correct_accel(accel_instance, accel_accum);
     _notify_new_accel_raw_sample(accel_instance, accel_accum);
 
     _publish_temperature(accel_instance, 23);
+=======
+    _publish_temperature(instance, 23);
+>>>>>>> myquadplane
 }
 
 /*

@@ -34,7 +34,11 @@ void Compass::cal_update()
         if (_calibrator[i].running()) {
             running = true;
         } else if (_cal_autosave && !_cal_saved[i] && _calibrator[i].get_status() == CompassCalibrator::Status::SUCCESS) {
+<<<<<<< HEAD
             _accept_calibration(uint8_t(i));
+=======
+            _accept_calibration(i);
+>>>>>>> myquadplane
         }
     }
 
@@ -57,11 +61,14 @@ bool Compass::_start_calibration(uint8_t i, bool retry, float delay)
     if (!use_for_yaw(i)) {
         return false;
     }
+<<<<<<< HEAD
     Priority prio = Priority(i);
     if (_priority_did_list[prio] != _priority_did_stored_list[prio]) {
         gcs().send_text(MAV_SEVERITY_ERROR, "Compass cal requires reboot after priority change");
         return false;
     }
+=======
+>>>>>>> myquadplane
     if (_options.get() & uint16_t(Option::CAL_REQUIRE_GPS)) {
         if (AP::gps().status() < AP_GPS::GPS_OK_FIX_2D) {
             gcs().send_text(MAV_SEVERITY_ERROR, "Compass cal requires GPS lock");
@@ -127,11 +134,19 @@ void Compass::_cancel_calibration(uint8_t i)
     AP_Notify::events.initiated_compass_cal = 0;
     Priority prio = Priority(i);
 
+<<<<<<< HEAD
     if (_calibrator[prio].running() || _calibrator[prio].get_status() == CompassCalibrator::Status::WAITING_TO_START) {
         AP_Notify::events.compass_cal_canceled = 1;
     }
     _cal_saved[prio] = false;
     _calibrator[prio].stop();
+=======
+    if (_calibrator[i].running() || _calibrator[i].get_status() == CompassCalibrator::Status::WAITING_TO_START) {
+        AP_Notify::events.compass_cal_canceled = 1;
+    }
+    _cal_saved[i] = false;
+    _calibrator[i].stop();
+>>>>>>> myquadplane
 }
 
 void Compass::_cancel_calibration_mask(uint8_t mask)
@@ -150,12 +165,19 @@ void Compass::cancel_calibration_all()
 
 bool Compass::_accept_calibration(uint8_t i)
 {
+<<<<<<< HEAD
     Priority prio = Priority(i);
 
     CompassCalibrator& cal = _calibrator[prio];
     const CompassCalibrator::Status cal_status = cal.get_status();
 
     if (_cal_saved[prio] || cal_status == CompassCalibrator::Status::NOT_STARTED) {
+=======
+    CompassCalibrator& cal = _calibrator[i];
+    const CompassCalibrator::Status cal_status = cal.get_status();
+
+    if (_cal_saved[i] || cal_status == CompassCalibrator::Status::NOT_STARTED) {
+>>>>>>> myquadplane
         return true;
     } else if (cal_status == CompassCalibrator::Status::SUCCESS) {
         _cal_complete_requires_reboot = true;
@@ -224,7 +246,11 @@ bool Compass::send_mag_cal_progress(const GCS_MAVLINK& link)
 
             mavlink_msg_mag_cal_progress_send(
                 link.get_chan(),
+<<<<<<< HEAD
                 uint8_t(compass_id), cal_mask,
+=======
+                compass_id, cal_mask,
+>>>>>>> myquadplane
                 (uint8_t)cal_status, attempt, completion_pct, completion_mask,
                 direction.x, direction.y, direction.z
             );
@@ -259,7 +285,11 @@ bool Compass::send_mag_cal_report(const GCS_MAVLINK& link)
 
             mavlink_msg_mag_cal_report_send(
                 link.get_chan(),
+<<<<<<< HEAD
                 uint8_t(compass_id), cal_mask,
+=======
+                compass_id, cal_mask,
+>>>>>>> myquadplane
                 (uint8_t)cal_status, autosaved,
                 fitness,
                 ofs.x, ofs.y, ofs.z,
@@ -294,9 +324,15 @@ bool Compass::is_calibrating() const
 uint8_t Compass::_get_cal_mask() const
 {
     uint8_t cal_mask = 0;
+<<<<<<< HEAD
     for (Priority i(0); i<COMPASS_MAX_INSTANCES; i++) {
         if (_calibrator[i].get_status() != CompassCalibrator::Status::NOT_STARTED) {
             cal_mask |= 1 << uint8_t(i);
+=======
+    for (uint8_t i=0; i<COMPASS_MAX_INSTANCES; i++) {
+        if (_calibrator[i].get_status() != CompassCalibrator::Status::NOT_STARTED) {
+            cal_mask |= 1 << i;
+>>>>>>> myquadplane
         }
     }
     return cal_mask;

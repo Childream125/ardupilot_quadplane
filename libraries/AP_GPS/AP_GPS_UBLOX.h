@@ -84,8 +84,12 @@
 #define CONFIG_TP5           (1<<14)
 #define CONFIG_RATE_TIMEGPS  (1<<15)
 #define CONFIG_TMODE_MODE    (1<<16)
+<<<<<<< HEAD
 #define CONFIG_RTK_MOVBASE   (1<<17)
 #define CONFIG_LAST          (1<<18) // this must always be the last bit
+=======
+#define CONFIG_LAST          (1<<17) // this must always be the last bit
+>>>>>>> myquadplane
 
 #define CONFIG_REQUIRED_INITIAL (CONFIG_RATE_NAV | CONFIG_RATE_POSLLH | CONFIG_RATE_STATUS | CONFIG_RATE_VELNED)
 
@@ -232,6 +236,7 @@ private:
     // F9 config keys
     enum class ConfigKey : uint32_t {
         TMODE_MODE = 0x20030001,
+<<<<<<< HEAD
         CFG_RATE_MEAS                   = 0x30210001,
 
         CFG_UART1_BAUDRATE              = 0x40520001,
@@ -269,6 +274,8 @@ private:
         MSGOUT_RTCM_3X_TYPE1127_UART2   = 0x209102d8,
         MSGOUT_RTCM_3X_TYPE1230_UART2   = 0x20910305,
         MSGOUT_UBX_NAV_RELPOSNED_UART2  = 0x2091008f,
+=======
+>>>>>>> myquadplane
     };
     struct PACKED ubx_cfg_valset {
         uint8_t version;
@@ -554,12 +561,18 @@ private:
         diffSoln           = 1U << 1,
         relPosValid        = 1U << 2,
         carrSolnFloat      = 1U << 3,
+<<<<<<< HEAD
 
+=======
+>>>>>>> myquadplane
         carrSolnFixed      = 1U << 4,
         isMoving           = 1U << 5,
         refPosMiss         = 1U << 6,
         refObsMiss         = 1U << 7,
+<<<<<<< HEAD
 
+=======
+>>>>>>> myquadplane
         relPosHeadingValid = 1U << 8,
         relPosNormalized   = 1U << 9
     };
@@ -713,7 +726,11 @@ private:
     bool havePvtMsg;
 
     bool        _configure_message_rate(uint8_t msg_class, uint8_t msg_id, uint8_t rate);
+<<<<<<< HEAD
     bool        _configure_valset(ConfigKey key, const void *value);
+=======
+    bool        _configure_valset(ConfigKey key, const uint8_t len, const uint8_t *value);
+>>>>>>> myquadplane
     bool        _configure_valget(ConfigKey key);
     void        _configure_rate(void);
     void        _configure_sbas(bool enable);

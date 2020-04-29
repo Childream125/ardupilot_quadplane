@@ -120,9 +120,12 @@ static const uint32_t flash_memmap[STM32_FLASH_NPAGES] = { KB(32), KB(32), KB(32
 #elif defined(STM32F105_MCUCONF)
 #define STM32_FLASH_NPAGES (BOARD_FLASH_SIZE/2)
 #define STM32_FLASH_FIXED_PAGE_SIZE 2
+<<<<<<< HEAD
 #elif defined(STM32F303_MCUCONF)
 #define STM32_FLASH_NPAGES (BOARD_FLASH_SIZE/2)
 #define STM32_FLASH_FIXED_PAGE_SIZE 2
+=======
+>>>>>>> myquadplane
 #else
 #error "Unsupported processor for flash.c"
 #endif

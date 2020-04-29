@@ -7,7 +7,11 @@
 #include <AP_Math/AP_Math.h>
 #include <GCS_MAVLink/GCS_MAVLink.h>
 #include <AP_Common/Location.h>
+<<<<<<< HEAD
 #include <AP_Compass/AP_Compass.h>
+=======
+
+>>>>>>> myquadplane
 #include "SIM_Buzzer.h"
 #include "SIM_Gripper_EPM.h"
 #include "SIM_Gripper_Servo.h"
@@ -15,7 +19,10 @@
 #include "SIM_Precland.h"
 #include "SIM_Sprayer.h"
 #include "SIM_ToneAlarm.h"
+<<<<<<< HEAD
 #include "SIM_EFI_MegaSquirt.h"
+=======
+>>>>>>> myquadplane
 
 namespace SITL {
 
@@ -191,6 +198,7 @@ public:
     AP_Int8  telem_baudlimit_enable; // enable baudrate limiting on links
     AP_Float flow_noise; // optical flow measurement noise (rad/sec)
     AP_Int8  baro_count; // number of simulated baros to create
+<<<<<<< HEAD
     AP_Int8 gps_hdg_enabled[2]; // enable the output of a NMEA heading HDT sentence or UBLOX RELPOSNED
     AP_Int32 loop_delay; // extra delay to add to every loop
     AP_Float mag_scaling; // scaling factor on first compasses
@@ -204,6 +212,11 @@ public:
     };
     
     AP_Int8  efi_type;
+=======
+    AP_Int8 gps_hdg_enabled; // enable the output of a NMEA heading HDT sentence
+    AP_Int32 loop_delay; // extra delay to add to every loop
+    AP_Float mag_scaling; // scaling factor on first compasses
+>>>>>>> myquadplane
 
     // wind control
     enum WindType {
@@ -359,6 +372,7 @@ public:
         uint8_t num_leds[16];
         uint32_t send_counter;
     } led;
+<<<<<<< HEAD
 
     EFI_MegaSquirt efi_ms;
 
@@ -368,6 +382,8 @@ public:
     AP_Vector3f vicon_glitch;   // glitch in meters in vicon's local NED frame
     AP_Int8 vicon_fail;         // trigger vicon failure
     AP_Int16 vicon_yaw;         // vicon local yaw in degrees
+=======
+>>>>>>> myquadplane
 };
 
 } // namespace SITL

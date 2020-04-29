@@ -6,10 +6,13 @@ extern const AP_HAL::HAL &hal;
 #define AP_PERIPH_LED_BRIGHT_DEFAULT 100
 #endif
 
+<<<<<<< HEAD
 #ifndef HAL_PERIPH_ADSB_BAUD_DEFAULT
 #define HAL_PERIPH_ADSB_BAUD_DEFAULT 57600
 #endif
 
+=======
+>>>>>>> myquadplane
 /*
  *  AP_Periph parameter definitions
  *
@@ -75,8 +78,20 @@ const AP_Param::Info AP_Periph_FW::var_info[] = {
     GOBJECT(airspeed, "ARSP", AP_Airspeed),
 #endif
 
+<<<<<<< HEAD
 #ifdef HAL_PERIPH_ENABLE_RANGEFINDER
     GSCALAR(rangefinder_baud, "RNGFND_BAUDRATE", 115200),
+=======
+#ifdef AP_PERIPH_HAVE_LED
+    GSCALAR(led_brightness, "LED_BRIGHTNESS", AP_PERIPH_LED_BRIGHT_DEFAULT),
+#endif
+
+#ifdef HAL_PERIPH_ENABLE_AIRSPEED
+    // Airspeed driver
+    // @Group: ARSP
+    // @Path: ../../libraries/AP_Airspeed/AP_Airspeed.cpp
+    GOBJECT(airspeed, "ARSP", AP_Airspeed),
+>>>>>>> myquadplane
 #endif
 
 #ifdef HAL_PERIPH_ENABLE_RANGEFINDER
@@ -85,6 +100,7 @@ const AP_Param::Info AP_Periph_FW::var_info[] = {
     // @Path: ../../libraries/AP_RangeFinder/Rangefinder.cpp
     GOBJECT(rangefinder, "RNGFND", RangeFinder),
 #endif
+<<<<<<< HEAD
 
 #ifdef HAL_PERIPH_ENABLE_ADSB
     GSCALAR(adsb_baudrate, "ADSB_BAUDRATE", HAL_PERIPH_ADSB_BAUD_DEFAULT),
@@ -98,6 +114,8 @@ const AP_Param::Info AP_Periph_FW::var_info[] = {
 #ifdef HAL_PERIPH_ENABLE_HWESC
     GSCALAR(esc_number, "ESC_NUMBER", 0),
 #endif
+=======
+>>>>>>> myquadplane
     
     AP_VAREND
 };
