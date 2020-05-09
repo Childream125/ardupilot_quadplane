@@ -1134,11 +1134,13 @@ void AC_PosControl::run_xy_controller(float dt)
 }
 
 // get_lean_angles_to_accel - convert roll, pitch lean angles to lat/lon frame accelerations in cm/s/s
+//将NED坐标系下的期望加速度转换成机体坐标系下的倾斜角度(pitch,roll)
 void AC_PosControl::accel_to_lean_angles(float accel_x_cmss, float accel_y_cmss, float& roll_target, float& pitch_target) const
 {
     float accel_right, accel_forward;
 
     // rotate accelerations into body forward-right frame
+    //将加速度旋转到机体的右前框架中
     // todo: this should probably be based on the desired heading not the current heading
     accel_forward = accel_x_cmss * _ahrs.cos_yaw() + accel_y_cmss * _ahrs.sin_yaw();
     accel_right = -accel_x_cmss * _ahrs.sin_yaw() + accel_y_cmss * _ahrs.cos_yaw();
@@ -1150,6 +1152,7 @@ void AC_PosControl::accel_to_lean_angles(float accel_x_cmss, float accel_y_cmss,
 }
 
 // get_lean_angles_to_accel - convert roll, pitch lean angles to lat/lon frame accelerations in cm/s/s
+//倾斜角转加速度
 void AC_PosControl::lean_angles_to_accel(float& accel_x_cmss, float& accel_y_cmss) const
 {
     // rotate our roll, pitch angles into lat/lon frame

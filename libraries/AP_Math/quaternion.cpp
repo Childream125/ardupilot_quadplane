@@ -191,6 +191,7 @@ void Quaternion::to_axis_angle(Vector3f &v)
     const float l = sqrtf(sq(q2)+sq(q3)+sq(q4));
     v = Vector3f(q2,q3,q4);
     if (!is_zero(l)) {
+        //v代表三个轴角
         v /= l;
         v *= wrap_PI(2.0f * atan2f(l,q1));
     }

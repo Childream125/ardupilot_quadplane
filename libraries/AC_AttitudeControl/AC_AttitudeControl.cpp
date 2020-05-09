@@ -748,10 +748,14 @@ void AC_AttitudeControl::thrust_heading_rotation_angles(Quaternion& att_to_quat,
     att_diff_angle.z = rotation.z;
 
     // Todo: Limit roll an pitch error based on output saturation and maximum error.
+    // 基于输出饱和和最大误差的俯仰误差
 
     // Limit Yaw Error based on maximum acceleration - Update to include output saturation and maximum error.
     // Currently the limit is based on the maximum acceleration using the linear part of the SQRT controller.
     // This should be updated to be based on an angle limit, saturation, or unlimited based on user defined parameters.
+    //根据最大加速度限制偏航误差-更新以包括输出饱和和最大误差。
+    //目前的限制是基于使用SQRT控制器线性部分的最大加速度。
+    //应根据角度限制、饱和度或基于用户定义参数的无限制进行更新。
     if (!is_zero(_p_angle_yaw.kP()) && fabsf(att_diff_angle.z) > AC_ATTITUDE_ACCEL_Y_CONTROLLER_MAX_RADSS / _p_angle_yaw.kP()) {
         att_diff_angle.z = constrain_float(wrap_PI(att_diff_angle.z), -AC_ATTITUDE_ACCEL_Y_CONTROLLER_MAX_RADSS / _p_angle_yaw.kP(), AC_ATTITUDE_ACCEL_Y_CONTROLLER_MAX_RADSS / _p_angle_yaw.kP());
         yaw_vec_correction_quat.from_axis_angle(Vector3f(0.0f, 0.0f, att_diff_angle.z));
@@ -965,6 +969,7 @@ float AC_AttitudeControl::sqrt_controller(float error, float p, float second_ord
     float correction_rate;
     if (is_negative(second_ord_lim) || is_zero(second_ord_lim)) {
         // second order limit is zero or negative.
+        //二阶限制为0或负数，这里指的是 _accel_z_cms
         correction_rate = error * p;
     } else if (is_zero(p)) {
         // P term is zero but we have a second order limit.

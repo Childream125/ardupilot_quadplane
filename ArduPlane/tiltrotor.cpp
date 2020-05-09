@@ -332,6 +332,7 @@ void QuadPlane::tilt_compensate(float *thrust, uint8_t num_motors)
 
 /*
   return true if the rotors are fully tilted forward
+       如果旋翼完全向前倾斜，则返回true
  */
 bool QuadPlane::tiltrotor_fully_fwd(void)
 {
@@ -377,6 +378,7 @@ void QuadPlane::tiltrotor_bicopter(void)
         return;
     }
 
+    //飞机模态
     if (!in_vtol_mode() && tiltrotor_fully_fwd()) {
         SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft,  -SERVO_MAX);
         SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, -SERVO_MAX);

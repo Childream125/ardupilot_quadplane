@@ -130,9 +130,11 @@ public:
     void input_quaternion(Quaternion attitude_desired_quat);
 
     // Command an euler roll and pitch angle and an euler yaw rate with angular velocity feedforward and smoothing
+    //使用角速度前馈和平滑命令滚转角和俯仰角以及偏航角速度
     virtual void input_euler_angle_roll_pitch_euler_rate_yaw(float euler_roll_angle_cd, float euler_pitch_angle_cd, float euler_yaw_rate_cds);
 
     // Command an euler roll, pitch and yaw angle with angular velocity feedforward and smoothing
+    //使用角速度前馈和平滑命令滚转角、俯仰和偏航角
     virtual void input_euler_angle_roll_pitch_yaw(float euler_roll_angle_cd, float euler_pitch_angle_cd, float euler_yaw_angle_cd, bool slew_yaw);
 
     // Command euler yaw rate and pitch angle with roll angle specified in body frame with multicopter style controls
@@ -147,6 +149,7 @@ public:
     void input_euler_rate_roll_pitch_yaw(float euler_roll_rate_cds, float euler_pitch_rate_cds, float euler_yaw_rate_cds);
 
     // Command an angular velocity with angular velocity feedforward and smoothing
+    //使用角速度前馈和平滑命令角速度
     virtual void input_rate_bf_roll_pitch_yaw(float roll_rate_bf_cds, float pitch_rate_bf_cds, float yaw_rate_bf_cds);
 
     // Command an angular velocity with angular velocity feedforward and smoothing
