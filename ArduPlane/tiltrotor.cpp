@@ -4,11 +4,13 @@
   control code for tiltrotors and tiltwings. Enabled by setting
   Q_TILT_MASK to a non-zero value
  */
-
+//倾斜转子和倾斜翼的控制代码。通过设置启用
+//Q_TILT_掩码为非零值
 
 /*
   calculate maximum tilt change as a proportion from 0 to 1 of tilt
  */
+//按倾斜的0到1的比例计算最大倾斜变化
 float QuadPlane::tilt_max_change(bool up)
 {
     float rate;
@@ -37,6 +39,7 @@ float QuadPlane::tilt_max_change(bool up)
 /*
   output a slew limited tiltrotor angle. tilt is from 0 to 1
  */
+//输出回转限制倾转旋翼角度。倾斜度从0到1
 void QuadPlane::tiltrotor_slew(float newtilt)
 {
     float max_change = tilt_max_change(newtilt<tilt.current_tilt);
@@ -52,18 +55,22 @@ void QuadPlane::tiltrotor_slew(float newtilt)
 void QuadPlane::tiltrotor_continuous_update(void)
 {
     // default to inactive
+    //默认电机不转
     tilt.motors_active = false;
 
     // the maximum rate of throttle change
+    //油门最大变化率
     float max_change;
     
     if (!in_vtol_mode() && (!hal.util->get_soft_armed() || !assisted_flight)) {
         // we are in pure fixed wing mode. Move the tiltable motors all the way forward and run them as
         // a forward motor
+        //我们处于纯固定翼模式。将可倾斜电机一直向前移动，并将其作为向前电机运行
+        //代表向前
         tiltrotor_slew(1);
 
         max_change = tilt_max_change(false);
-        
+        //更新油门
         float new_throttle = constrain_float(SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)*0.01, 0, 1);
         if (tilt.current_tilt < 1) {
             tilt.current_throttle = constrain_float(new_throttle,
@@ -94,18 +101,24 @@ void QuadPlane::tiltrotor_continuous_update(void)
     /*
       we are in a VTOL mode. We need to work out how much tilt is
       needed. There are 3 strategies we will use:
+               我们处于垂直起降模式。我们需要弄清楚需要倾斜多少。我们将采用三种策略：
 
       1) in QSTABILIZE or QHOVER the angle will be set to zero. This
          enables these modes to be used as a safe recovery mode.
+                       在QSTABILIZE或QHOVER中，角度将设置为零。这使得这些模式可以用作安全恢复模式。
 
       2) in fixed wing assisted flight or velocity controlled modes we
          will set the angle based on the demanded forward throttle,
          with a maximum tilt given by Q_TILT_MAX. This relies on
          Q_VFWD_GAIN being set
+                       在固定翼辅助飞行或速度控制模式下，我们将根据所需的前油门来设置角度，
+                       最大倾角由Q_TILT_MAX给出。这取决于设置的Q_VFWD_GAIN
 
       3) if we are in TRANSITION_TIMER mode then we are transitioning
          to forward flight and should put the rotors all the way forward
+                       如果我们处于TRANSITION_TIMER，那么我们将过渡到向前飞行，并且应该将转子一直向前
     */
+    //这几种模式下倾角为0
     if (plane.control_mode == &plane.mode_qstabilize ||
         plane.control_mode == &plane.mode_qhover ||
         plane.control_mode == &plane.mode_qautotune) {
@@ -117,12 +130,15 @@ void QuadPlane::tiltrotor_continuous_update(void)
         transition_state >= TRANSITION_TIMER) {
         // we are transitioning to fixed wing - tilt the motors all
         // the way forward
+        //我们正在过渡到固定翼-把马达一直向前倾斜
         tiltrotor_slew(1);
     } else {
         // until we have completed the transition we limit the tilt to
         // Q_TILT_MAX. Anything above 50% throttle gets
         // Q_TILT_MAX. Below 50% throttle we decrease linearly. This
         // relies heavily on Q_VFWD_GAIN being set appropriately.
+        //在完成过渡之前，我们将倾斜度限制在Q_tilt_MAX。任何高于50%的油门都会得到Q_tilt_MAX。
+        //低于50%的油门，我们会线性减小。这在很大程度上依赖于Q-VFWD-u增益的适当设置。
         float settilt = constrain_float(SRV_Channels::get_output_scaled(SRV_Channel::k_throttle) / 50.0f, 0, 1);
         tiltrotor_slew(settilt * tilt.max_angle_deg / 90.0f);
     }
@@ -132,6 +148,7 @@ void QuadPlane::tiltrotor_continuous_update(void)
 /*
   output a slew limited tiltrotor angle. tilt is 0 or 1
  */
+//输出回转限制倾转旋翼角度。倾斜为0或1
 void QuadPlane::tiltrotor_binary_slew(bool forward)
 {
     // The servo output is binary, not slew rate limited
@@ -149,6 +166,12 @@ void QuadPlane::tiltrotor_binary_slew(bool forward)
 /*
   update motor tilt for binary tilt servos
  */
+//更新二进制倾斜伺服的电机倾斜
+/*
+    1 通过对tiltrotor_binary_slew(true)的使用，倾转舵机将会直接倾转到90°，可以看出此时的逻辑切换与前文所述一致
+    2 关于油门会进行固定翼模式下的新映射关系
+    3 倾转完成的电机将会被当做提供前飞动力的电机继续飞行
+ */
 void QuadPlane::tiltrotor_binary_update(void)
 {
     // motors always active
@@ -157,8 +180,12 @@ void QuadPlane::tiltrotor_binary_update(void)
     if (!in_vtol_mode()) {
         // we are in pure fixed wing mode. Move the tiltable motors
         // all the way forward and run them as a forward motor
+        //我们处于纯固定翼模式。将可倾斜电机一直向前移动，并将其作为向前电机运行
+        //这种模式只能控制旋翼向上和向前，不可以处于两者之间的某个角度。
+        //代表向前。
         tiltrotor_binary_slew(true);
 
+        //更新油门大小
         float new_throttle = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)*0.01f;
         if (tilt.current_tilt >= 1) {
             uint8_t mask = is_zero(new_throttle)?0:(uint8_t)tilt.tilt_mask.get();
@@ -166,6 +193,7 @@ void QuadPlane::tiltrotor_binary_update(void)
             motors->output_motor_mask(new_throttle, mask, plane.rudder_dt);
         }
     } else {
+        //旋翼向上
         tiltrotor_binary_slew(false);
     }
 }
@@ -174,6 +202,7 @@ void QuadPlane::tiltrotor_binary_update(void)
 /*
   update motor tilt
  */
+//共有三种倾转模式：TILT_TYPE_BINARY（二进制模式），TILT_TYPE_CONTINUOUS（连续型模式）
 void QuadPlane::tiltrotor_update(void)
 {
     if (tilt.tilt_mask <= 0) {
@@ -220,6 +249,16 @@ void QuadPlane::tiltrotor_update(void)
   when transitioning to fixed wing, and lower throttle on tilted
   motors when transitioning to VTOL
  */
+/*补偿一组电机输出中的倾斜 补偿有两种形式。首先是应用倾斜系数，这是对减少垂直推力的补偿
+倾斜的。这是由set U motor U tilt U factor（）提供的。
+第二种补偿是对所有倾斜的电机使用相同的推力 当倾斜度等于推力时为真。当电机
+大角度倾斜以防止侧倾和偏航控制器引起不稳定。通常，当电机倾斜超过45度。在这个角度，假设
+控制可以通过固定的机翼控制面和偏航来实现用剩余的多翼发动机（如三翼机尾部）控制。
+通过施加等推力，倾斜电机有效地单节距控制马达。注意，我们在转换时使用不同的策略
+与垂直起降飞行相比进入垂直起降。原因是当过渡到固定翼飞行，以获得空速，
+然而，当转换到垂直起降航班时，我们希望倾向于降低前进油门。所以我们加大倾斜马达的油门
+当过渡到固定翼时，倾斜时降低油门转换到垂直起降时的电机
+*/
 void QuadPlane::tilt_compensate_down(float *thrust, uint8_t num_motors)
 {
     float inv_tilt_factor;
@@ -332,6 +371,7 @@ void QuadPlane::tilt_compensate(float *thrust, uint8_t num_motors)
 
 /*
   return true if the rotors are fully tilted forward
+  旋翼向前返回为真
  */
 bool QuadPlane::tiltrotor_fully_fwd(void)
 {
@@ -377,12 +417,16 @@ void QuadPlane::tiltrotor_bicopter(void)
         return;
     }
 
+   //飞机模态
+   //SRV_Channels
     if (!in_vtol_mode() && tiltrotor_fully_fwd()) {
+        //此函数用来缩放
         SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft,  -SERVO_MAX);
         SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, -SERVO_MAX);
         return;
     }
 
+    //将油门值缩放
     float throttle = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
     if (assisted_flight) {
         hold_stabilize(throttle * 0.01f);
@@ -392,6 +436,8 @@ void QuadPlane::tiltrotor_bicopter(void)
     }
 
     // bicopter assumes that trim is up so we scale down so match
+    //bicopter假设修剪向上，所以我们缩小比例，以便匹配
+    //将左右倾转舵机力矩缩放
     float tilt_left = SRV_Channels::get_output_scaled(SRV_Channel::k_tiltMotorLeft);
     float tilt_right = SRV_Channels::get_output_scaled(SRV_Channel::k_tiltMotorRight);
 
@@ -403,14 +449,20 @@ void QuadPlane::tiltrotor_bicopter(void)
     }
 
     // reduce authority of bicopter as motors are tilted forwards
+    //当发动机向前倾斜时，降低双翼机的权限
+    //M_PI_2是什么？
     const float scaling = cosf(tilt.current_tilt * M_PI_2);
+    //在倾转过程中（某个倾转角度）下的左右力矩
     tilt_left  *= scaling;
     tilt_right *= scaling;
 
     // add current tilt and constrain
+    //添加当前倾斜和约束
+    //给左右力矩限幅
     tilt_left  = constrain_float(-(tilt.current_tilt * SERVO_MAX) + tilt_left,  -SERVO_MAX, SERVO_MAX);
     tilt_right = constrain_float(-(tilt.current_tilt * SERVO_MAX) + tilt_right, -SERVO_MAX, SERVO_MAX);
 
+    //set是对输出值进行缩放
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft,  tilt_left);
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, tilt_right);
 }

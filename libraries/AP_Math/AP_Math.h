@@ -140,6 +140,7 @@ float wrap_2PI(const T radian);
 
 /*
  * Constrain a value to be within the range: low and high
+ * 将值限制在范围内：低和高
  */
 template <typename T>
 T constrain_value(const T amt, const T low, const T high);

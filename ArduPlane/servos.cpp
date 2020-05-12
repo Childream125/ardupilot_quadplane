@@ -659,17 +659,23 @@ void Plane::servos_twin_engine_mix(void)
 
   Finally servos_output() is called to push the final PWM values
   for output channels
+   根据当前计算值设置飞控伺服系统（舵机）。此函数通过首先为使用set_servo（）和set_radio_out（）的频道。使用
+ set_radio_out（）用于给定输出的原始脉冲宽度调制值不依赖于任何输出缩放。使用set_servo（）用于
+  需要除垢和混合。最后调用servos_output（）来推送最终的PWM值对于输出通道。
 */
 void Plane::set_servos(void)
 {
     // start with output corked. the cork is released when we run
     // servos_output(), which is run from all code paths in this
     // function
+    //从塞住输出开始。我们跑的时候软木塞松了servos_output（），它从中的所有代码路径运行功能
+    //cork是什么东西？
     SRV_Channels::cork();
     
     // this is to allow the failsafe module to deliberately crash 
     // the plane. Only used in extreme circumstances to meet the
     // OBC rules
+    //这是为了让故障保护模块故意使飞机坠毁。仅在极端情况下使用，以满足OBC规则
 #if ADVANCED_FAILSAFE == ENABLED
     if (afs.should_crash_vehicle()) {
         afs.terminate_vehicle();
@@ -807,6 +813,7 @@ void Plane::set_servos(void)
   run configured output mixer. This takes calculated servo_out values
   for each channel and calculates PWM values, then pushes them to
   hal.rcout
+  运行配置的输出混频器。这将获取计算出的伺服输出值对于每个通道并计算PWM值，然后将其推至hal.rcout
  */
 void Plane::servos_output(void)
 {
@@ -820,6 +827,7 @@ void Plane::servos_output(void)
     quadplane.tiltrotor_bicopter();
 
     // the mixers need pwm to be calculated now
+    //混频器现在需要计算脉宽调制
     SRV_Channels::calc_pwm();
 
     // run vtail and elevon mixers

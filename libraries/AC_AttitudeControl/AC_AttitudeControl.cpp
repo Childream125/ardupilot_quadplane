@@ -148,6 +148,7 @@ const AP_Param::GroupInfo AC_AttitudeControl::var_info[] = {
 };
 
 // Ensure attitude controller have zero errors to relax rate controller output
+//保证姿态控制器零误差放松速率控制器输出
 void AC_AttitudeControl::relax_attitude_controllers()
 {
     // Initialize the attitude variables to the current attitude
@@ -236,6 +237,7 @@ void AC_AttitudeControl::input_quaternion(Quaternion attitude_desired_quat)
 }
 
 // Command an euler roll and pitch angle and an euler yaw rate with angular velocity feedforward and smoothing
+//使用角速度前馈和平滑命令滚转角和俯仰角以及偏航角速度
 void AC_AttitudeControl::input_euler_angle_roll_pitch_euler_rate_yaw(float euler_roll_angle_cd, float euler_pitch_angle_cd, float euler_yaw_rate_cds)
 {
     // Convert from centidegrees on public interface to radians
@@ -345,7 +347,9 @@ void AC_AttitudeControl::input_euler_angle_roll_pitch_yaw(float euler_roll_angle
 }
 
 // Command euler pitch and yaw angles and roll rate (used only by tailsitter quadplanes)
+//指令欧拉俯仰和偏航角以及横滚速度（仅用于倾转旋翼机）
 // Multicopter style controls: roll stick is tailsitter bodyframe yaw in hover
+//多翼式控制：侧倾杆是尾座车身框架在悬停时的偏航
 void AC_AttitudeControl::input_euler_rate_yaw_euler_angle_pitch_bf_roll_m(float euler_yaw_rate_cds, float euler_pitch_cd, float body_roll_cd)
 {
     // Convert from centidegrees on public interface to radians
@@ -403,7 +407,9 @@ void AC_AttitudeControl::input_euler_rate_yaw_euler_angle_pitch_bf_roll_m(float 
 }
 
 // Command euler pitch and yaw angles and roll rate (used only by tailsitter quadplanes)
+//指令欧拉俯仰和偏航角以及横滚速度（仅用于倾转旋翼机）
 // Plane style controls: yaw stick is tailsitter bodyframe yaw in hover
+//飞机风格的控制：偏航杆是尾座车身框架偏航在悬停
 void AC_AttitudeControl::input_euler_rate_yaw_euler_angle_pitch_bf_roll_p(float euler_yaw_rate_cds, float euler_pitch_cd, float body_roll_cd)
 {
     // Convert from centidegrees on public interface to radians
@@ -541,6 +547,7 @@ void AC_AttitudeControl::input_rate_bf_roll_pitch_yaw(float roll_rate_bf_cds, fl
 }
 
 // Command an angular velocity with angular velocity smoothing using rate loops only with no attitude loop stabilization
+//用角速度平滑命令角速度仅使用速率环而不使用姿态环稳定
 void AC_AttitudeControl::input_rate_bf_roll_pitch_yaw_2(float roll_rate_bf_cds, float pitch_rate_bf_cds, float yaw_rate_bf_cds)
 {
     // Convert from centidegrees on public interface to radians

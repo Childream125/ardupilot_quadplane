@@ -118,6 +118,7 @@ public:
     void set_attitude_target_to_current_attitude() { _ahrs.get_quat_body_to_ned(_attitude_target_quat); }
 
     // Sets yaw target to vehicle heading
+    //将偏航目标设置为飞机航向
     void set_yaw_target_to_current_heading() { shift_ef_yaw_target(degrees(_ahrs.yaw - _attitude_target_euler_angle.z) * 100.0f); }
 
     // Shifts earth frame yaw target by yaw_shift_cd. yaw_shift_cd should be in centidegrees and is added to the current target heading
@@ -176,6 +177,8 @@ public:
     // attitude controller's target attitude.
     // **NOTE** Using vector3f*deg(100) is more efficient than deg(vector3f)*100 or deg(vector3d*100) because it gives the
     // same result with the fewest multiplications. Even though it may look like a bug, it is intentional. See issue 4895.
+    //返回321个以摄氏度为单位的固有欧拉角，表示从NED地球框架到姿态控制器目标姿态的旋转。**注**使用vector3f*deg（100）
+    //比deg（vector3f）*100或deg（vector3d*100）更有效，因为它给出的结果与最少的乘法相同。尽管它看起来像个bug，但它是故意的。见第4895期。
     Vector3f get_att_target_euler_cd() const { return _attitude_target_euler_angle * degrees(100.0f); }
 
     // Return the body-to-NED target attitude used by the quadplane-specific attitude control input methods
@@ -191,6 +194,7 @@ public:
     void rate_bf_pitch_target(float rate_cds) { _rate_target_ang_vel.y = radians(rate_cds * 0.01f); }
 
     // Set z-axis angular velocity in centidegrees/s
+    //设置z轴角速度（以摄氏度/秒为单位）
     void rate_bf_yaw_target(float rate_cds) { _rate_target_ang_vel.z = radians(rate_cds * 0.01f); }
 
     // Set x-axis system identification angular velocity in degrees/s

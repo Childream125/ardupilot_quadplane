@@ -10,6 +10,9 @@
 
   Only 4 channels of ranges are defined as those match the input
   channels for R/C sticks
+  控制舵机输出范围，微调和伺服反转。这可选择性地用于提供输入和输出通道范围的分离，以便RCn_MIN、RCn_MAX、RCn_TRIM和RCn_REV仅适用于RC_通道的输入侧
+  它的工作原理是正常运行伺服输出计算，然后根据伺服最小/最大/微调/转速重新映射输出这个对象
+  只有4个范围通道被定义为与输入匹配的通道 R/C棒通道
  */
 #pragma once
 
@@ -30,6 +33,9 @@ class SRV_Channels;
   class SRV_Channel. The class SRV_Channels contains an array of
   SRV_Channel objects. This is done to fit within the AP_Param limit
   of 64 parameters per object.
+  SRV U类信道。SRV_Channels类包含一个数组
+  SRV_通道对象。这样做是为了符合AP_参数限制
+    每个对象64个参数
 */
 class SRV_Channel {
 public:
@@ -108,8 +114,8 @@ public:
         k_tracker_pitch         = 72,            ///< antennatracker pitch
         k_throttleLeft          = 73,
         k_throttleRight         = 74,
-        k_tiltMotorLeft         = 75,            ///< vectored thrust, left tilt
-        k_tiltMotorRight        = 76,            ///< vectored thrust, right tilt
+        k_tiltMotorLeft         = 75,            ///< vectored thrust, left tilt左倾转力矩
+        k_tiltMotorRight        = 76,            ///< vectored thrust, right tilt右倾转力矩
         k_elevon_left           = 77,
         k_elevon_right          = 78,
         k_vtail_left            = 79,
@@ -311,9 +317,11 @@ public:
 
     // set output value for a function channel as a scaled value. This
     // calls calc_pwm() to also set the pwm value
+    //将功能通道的输出值设置为缩放值。这将调用calc_pwm（）来设置pwm值
     static void set_output_scaled(SRV_Channel::Aux_servo_function_t function, int16_t value);
 
     // get scaled output for the given function type.
+    //获取给定函数类型的缩放输出。
     static int16_t get_output_scaled(SRV_Channel::Aux_servo_function_t function);
 
     // get pwm output for the first channel of the given function type.

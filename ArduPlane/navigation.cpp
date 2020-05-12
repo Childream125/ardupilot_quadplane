@@ -1,6 +1,7 @@
 #include "Plane.h"
 
 // set the nav_controller pointer to the right controller
+//将导航控制器指针设置到右侧控制器
 void Plane::set_nav_controller(void)
 {
     switch ((AP_Navigation::ControllerType)g.nav_controller.get()) {

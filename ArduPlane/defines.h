@@ -9,6 +9,7 @@
 #define DEBUG 0
 #define SERVO_MAX 4500  // This value represents 45 degrees and is just an
                         // arbitrary representation of servo max travel.
+                        //该值表示45度，只是伺服最大行程的任意表示。
 
 // failsafe
 // ----------------------

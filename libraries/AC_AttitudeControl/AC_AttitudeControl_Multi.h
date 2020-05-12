@@ -63,6 +63,8 @@ public:
     // set desired throttle vs attitude mixing (actual mix is slewed towards this value over 1~2 seconds)
     //  low values favour pilot/autopilot throttle over attitude control, high values favour attitude control over throttle
     //  has no effect when throttle is above hover throttle
+    //设置所需的油门与姿态混合（实际混合在1~2秒内转向该值）低值有利于飞行员/自动驾驶仪油门高于姿态控制，
+    //高值有利于姿态控制油门高于悬停油门无效
     void set_throttle_mix_min() override { _throttle_rpy_mix_desired = _thr_mix_min; }
     void set_throttle_mix_man() override { _throttle_rpy_mix_desired = _thr_mix_man; }
     void set_throttle_mix_max(float ratio) override;

@@ -38,6 +38,7 @@ void AC_AttitudeControl::control_monitor_update(void)
 
 /*
   log a CRTL message
+    ¼ÇÂ¼CRTLÏûÏ¢
  */
 void AC_AttitudeControl::control_monitor_log(void)
 {

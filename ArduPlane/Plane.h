@@ -210,6 +210,7 @@ private:
     AP_L1_Control L1_controller{ahrs, &TECS_controller};
 
     // Attitude to servo controllers
+    //伺服控制器姿态
     AP_RollController rollController{ahrs, aparm};
     AP_PitchController pitchController{ahrs, aparm};
     AP_YawController yawController{ahrs, aparm};
@@ -511,6 +512,7 @@ private:
         // Altitude threshold to complete a takeoff command in autonomous modes.  Centimeters
         // are we in idle mode? used for balloon launch to stop servo
         // movement until altitude is reached
+        //在自主模式下完成起飞指令的高度阈值。厘米我们处于空闲模式吗？用于气球发射，在到达高度前停止伺服运动
         bool idle_mode;
 
         // are we in VTOL mode in AUTO?
@@ -595,7 +597,9 @@ private:
     uint32_t started_flying_ms;
 
     // Navigation control variables
+    //导航控制变量
     // The instantaneous desired bank angle.  Hundredths of a degree
+    //瞬时所需的倾斜角度。百分之一学位
     int32_t nav_roll_cd;
 
     // The instantaneous desired pitch angle.  Hundredths of a degree

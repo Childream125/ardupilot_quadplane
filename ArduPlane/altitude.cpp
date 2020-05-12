@@ -18,10 +18,12 @@
 /*
   altitude handling routines. These cope with both barometric control
   and terrain following control
+  高度处理程序。这两种方法都能控制气压和地形跟踪控制
  */
 
 /*
   adjust altitude target depending on mode
+    根据模式调整高度目标
  */
 void Plane::adjust_altitude_target()
 {

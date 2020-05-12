@@ -308,6 +308,7 @@ private:
     AP_Int8 guided_mode;
 
     // control ESC throttle calibration
+    //控制电子稳定控制系统节气门校准
     AP_Int8 esc_calibration;
     void run_esc_calibration(void);
 
@@ -420,6 +421,7 @@ private:
     uint32_t last_ctrl_log_ms;
 
     // time of last QTUN log message
+    //上次QTUN日志消息的时间
     uint32_t last_qtun_log_ms;
 
     // types of tilt mechanisms
@@ -436,8 +438,8 @@ private:
         AP_Int16 max_rate_down_dps;
         AP_Int8  max_angle_deg;
         AP_Int8  tilt_type;
-        AP_Float tilt_yaw_angle;
-        float current_tilt;
+        AP_Float tilt_yaw_angle;//这是什么角？
+        float current_tilt;//现在倾转角度？
         float current_throttle;
         bool motors_active:1;
     } tilt;

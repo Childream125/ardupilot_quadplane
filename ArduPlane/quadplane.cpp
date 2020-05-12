@@ -569,6 +569,7 @@ bool QuadPlane::setup(void)
 
     /*
       cope with upgrade from old AP_Motors values for frame_class
+               处理从旧的电机值升级到机架级的问题
      */
     AP_Int8 old_class;
     const AP_Param::ConversionInfo cinfo { Parameters::k_param_quadplane, FRAME_CLASS_OLD_IDX, AP_PARAM_INT8, nullptr };
@@ -678,6 +679,7 @@ bool QuadPlane::setup(void)
     AP_Param::load_object_from_eeprom(motors, motors_var_info);
 
     // create the attitude view used by the VTOL code
+    //创建VTOL代码使用的姿态视图
     ahrs_view = ahrs.create_view(rotation, ahrs_trim_pitch);
     if (ahrs_view == nullptr) {
         goto failed;
@@ -805,23 +807,33 @@ void QuadPlane::init_stabilize(void)
 /*
   ask the multicopter attitude control to match the roll and pitch rates being demanded by the
   fixed wing controller if not in a pure VTOL mode
+     如果不是在纯垂直起降模式下，要求多翼姿态控制与固定翼控制器要求的滚转和俯仰速度相匹配
  */
 void QuadPlane::multicopter_attitude_rate_update(float yaw_rate_cds)
 {
     check_attitude_relax();
 
     // tailsitter-only bodyframe roll control options
+    //仅限尾座车身骨架侧倾控制选项
     if (is_tailsitter()) {
+        //旋翼机模式
         if (tailsitter.input_type == TAILSITTER_INPUT_BF_ROLL_M) {
             // Angle mode attitude control for pitch and body-frame roll, rate control for yaw.
+            //俯仰和机身侧倾的角度模式姿态控制，偏航的速率控制。
             // this version interprets the first argument as yaw rate and the third as roll angle
+            //这个版本将第一个参数解释为偏航角速度，第三个解释为滚转角
             // because it is intended to be used with Q_TAILSIT_INPUT=1 where the roll and yaw sticks
             // act in the tailsitter's body frame (i.e. roll is MC/earth frame yaw and
             // yaw is MC/earth frame roll)
+            //因为它打算与Q_TAILSIT_INPUT=1一起使用，其中侧倾和偏航杆作用于尾座的车身框架（即侧倾为MC/接地框架偏航，偏航为MC/接地框架侧倾）
+            //倾转旋翼机多旋翼模式的控制
             attitude_control->input_euler_rate_yaw_euler_angle_pitch_bf_roll_m(plane.nav_roll_cd,
                                                                                plane.nav_pitch_cd,
                                                                                yaw_rate_cds);
             return;
+            //跟上面相比用了两种不同的控制算法。
+            //倾转旋翼机飞机模式的控制。
+            //固定翼模式。
         } else if (tailsitter.input_type == TAILSITTER_INPUT_BF_ROLL_P) {
             attitude_control->input_euler_rate_yaw_euler_angle_pitch_bf_roll_p(plane.nav_roll_cd,
                                                                                plane.nav_pitch_cd,
@@ -831,6 +843,8 @@ void QuadPlane::multicopter_attitude_rate_update(float yaw_rate_cds)
     }
 
     // normal control modes for VTOL and FW flight
+    //垂直起降和垂直起降飞行的正常控制模式
+    //即旋翼机的控制模式。
     if (in_vtol_mode() || is_tailsitter()) {
         // use euler angle attitude control
         attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(plane.nav_roll_cd,
@@ -838,16 +852,20 @@ void QuadPlane::multicopter_attitude_rate_update(float yaw_rate_cds)
                                                                       yaw_rate_cds);
     } else {
         // use the fixed wing desired rates
+        //使用固定翼所需速率
         float roll_rate = plane.rollController.get_pid_info().target;
         float pitch_rate = plane.pitchController.get_pid_info().target;
+        //速度环稳定？×100是什么意思？
         attitude_control->input_rate_bf_roll_pitch_yaw_2(roll_rate*100.0f, pitch_rate*100.0f, yaw_rate_cds);
     }
 }
 
 // hold in stabilize with given throttle
+//在给定油门的情况下保持稳定
 void QuadPlane::hold_stabilize(float throttle_in)
 {    
     // call attitude controller
+    //调用姿态控制器
     multicopter_attitude_rate_update(get_desired_yaw_rate_cds());
 
     if (throttle_in <= 0) {
@@ -855,6 +873,7 @@ void QuadPlane::hold_stabilize(float throttle_in)
         attitude_control->set_throttle_out(0, true, 0);
         if (!is_tailsitter()) {
             // always stabilize with tailsitters so we can do belly takeoffs
+            //总是和倾转旋翼机保持稳定，这样我们就可以腹部起飞了
             attitude_control->relax_attitude_controllers();
         }
     } else {
@@ -1463,9 +1482,11 @@ bool QuadPlane::assistance_needed(float aspeed)
 
 /*
   update for transition from quadplane to fixed wing mode
+   从四旋翼模式过渡到固定翼模式的更新
  */
 void QuadPlane::update_transition(void)
 {
+    //在这三种模式下，始终被认为是倾转完成的状态（飞机模态），旋翼电机是关闭的
     if (plane.control_mode == &plane.mode_manual ||
         plane.control_mode == &plane.mode_acro ||
         plane.control_mode == &plane.mode_training) {
@@ -1498,12 +1519,14 @@ void QuadPlane::update_transition(void)
     bool have_airspeed = ahrs.airspeed_estimate(&aspeed);
 
     // tailsitters use angle wait, not airspeed wait
+    //尾座式飞行器使用角度等待，而不是空速等待。
     if (is_tailsitter() && transition_state == TRANSITION_AIRSPEED_WAIT) {
         transition_state = TRANSITION_ANGLE_WAIT_FW;
     }
     
     /*
       see if we should provide some assistance
+               看看我们是否应该提供一些帮助
      */
     if (have_airspeed &&
         assistance_needed(aspeed) &&
@@ -1561,8 +1584,9 @@ void QuadPlane::update_transition(void)
         // throttle calculation which is driven by pitch
         plane.TECS_controller.use_synthetic_airspeed();
     }
-    
+    //倾转状态
     switch (transition_state) {
+    //空速等待
     case TRANSITION_AIRSPEED_WAIT: {
         motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
         // we hold in hover until the required airspeed is reached
@@ -1610,11 +1634,14 @@ void QuadPlane::update_transition(void)
         motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
         // after airspeed is reached we degrade throttle over the
         // transition time, but continue to stabilize
+        //达到空速后，我们在过渡时间内降低油门，但继续稳定
+        //transition_low_airspeed_ms达到空速到倾转完成的剩余时间
         const uint32_t transition_timer_ms = now - transition_low_airspeed_ms;
         if (transition_timer_ms > (unsigned)transition_time_ms) {
             transition_state = TRANSITION_DONE;
             transition_start_ms = 0;
             transition_low_airspeed_ms = 0;
+            //地面站上显示倾转完成
             gcs().send_text(MAV_SEVERITY_INFO, "Transition done");
         }
         float trans_time_ms = (float)transition_time_ms.get();
@@ -1638,6 +1665,9 @@ void QuadPlane::update_transition(void)
         // rate request while waiting for transition to
         // complete. Navigation should be controlled by fixed wing
         // control surfaces at this stage
+        //在等待转换完成时，在所需角度和速率请求中将所需偏航设置为当前偏航。
+        //在这个阶段，导航应该由固定的机翼控制面来控制
+        //得到psi和r轴角速度
         attitude_control->set_yaw_target_to_current_heading();
         attitude_control->rate_bf_yaw_target(ahrs.get_gyro().z);
         break;
@@ -1649,6 +1679,7 @@ void QuadPlane::update_transition(void)
         // calculate transition rate in degrees per
         // millisecond. Assume we want to get to the transition angle
         // in half the transition time
+        //以度/毫秒为单位计算转换率。假设我们要在一半的过渡时间内到达过渡角
         float transition_rate = tailsitter.transition_angle / float(transition_time_ms/2);
         uint32_t dt = now - transition_start_ms;
         plane.nav_pitch_cd = constrain_float((-transition_rate * dt)*100, -8500, 0);
@@ -1794,6 +1825,7 @@ void QuadPlane::update(void)
 
   This is a safety check to prevent accidental motor runs on the
   ground, such as if RC fails and QRTL is started
+   这是一项安全检查，以防止电动机在地面上意外运行，例如RC故障和QRTL启动
  */
 void QuadPlane::update_throttle_suppression(void)
 {
@@ -1883,10 +1915,14 @@ void QuadPlane::update_throttle_hover()
 }
 /*
   output motors and do any copter needed
+    输出电机和任何需要的直升机
+
  */
 void QuadPlane::motors_output(bool run_rate_controller)
 {
     if (run_rate_controller) {
+
+        //多旋翼的速率控制器
         attitude_control->rate_controller_run();
     }
 
@@ -1898,31 +1934,40 @@ void QuadPlane::motors_output(bool run_rate_controller)
     if (!hal.util->get_soft_armed() || SRV_Channels::get_emergency_stop()) {
 #endif
         motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::SHUT_DOWN);
+        //给电机发送命令
         motors->output();
         return;
     }
+    //当飞机处于自稳模式时会进行电调校准确认
     if (esc_calibration && AP_Notify::flags.esc_calibration && plane.control_mode == &plane.mode_qstabilize) {
         // output is direct from run_esc_calibration()
+        //输出直接来自run_esc_calibration（）
         return;
     }
 
+    //过渡模式
     if (in_tailsitter_vtol_transition()) {
         /*
           don't run the motor outputs while in tailsitter->vtol
           transition. That is taken care of by the fixed wing
           stabilisation code
+                          在尾座->垂直起降转换时，不要运行电机输出。由固定翼稳定代码处理
+                          即处在过渡模式时运行固定翼代码
          */
         return;
     }
 
     // see if motors should be shut down
+    //看是否需要关闭电机
     update_throttle_suppression();
     
     motors->output();
+    //电机运行
     if (motors->armed() && motors->get_spool_state() != AP_Motors::SpoolState::SHUT_DOWN) {
         const uint32_t now = AP_HAL::millis();
 
         // log RATE at main loop rate
+        //主循环下的日志
         plane.logger.Write_Rate(ahrs_view, *motors, *attitude_control, *pos_control);
 
         // log QTUN at 25 Hz
@@ -1939,6 +1984,7 @@ void QuadPlane::motors_output(bool run_rate_controller)
     }
 
     // remember when motors were last active for throttle suppression
+    //记录上次启动电机抑制油门的时间
     if (motors->get_throttle() > 0.01f || tilt.motors_active) {
         last_motors_active_ms = AP_HAL::millis();
     }
@@ -2110,6 +2156,8 @@ bool QuadPlane::in_vtol_auto(void) const
 /*
   are we in a VTOL mode?
  */
+//垂直起降模式，即四旋翼飞机，电机工作时的飞行模式
+//整个倾转的飞行逻辑，是按照飞行模式来进行逻辑首要判断的
 bool QuadPlane::in_vtol_mode(void) const
 {
     if (!available()) {
@@ -3109,11 +3157,13 @@ float QuadPlane::stopping_distance(void)
 void QuadPlane::update_throttle_thr_mix(void)
 {
     // transition will directly manage the mix
+    //过渡将直接管理混合
     if (in_transition()) {
       return;
     }
 
     // if disarmed or landed prioritise throttle
+    //如果锁定或着陆，优先选择油门
     if(!motors->armed()) {
         attitude_control->set_throttle_mix_min();
         return;
@@ -3121,6 +3171,7 @@ void QuadPlane::update_throttle_thr_mix(void)
 
     if (plane.control_mode == &plane.mode_qstabilize) {
         // manual throttle
+        //手动油门
         if (plane.get_throttle_input() <= 0) {
             attitude_control->set_throttle_mix_min();
         } else {
@@ -3128,26 +3179,34 @@ void QuadPlane::update_throttle_thr_mix(void)
         }
     } else {
         // autopilot controlled throttle
+        //自动驾驶控制油门
 
         // check for aggressive flight requests - requested roll or pitch angle below 15 degrees
+        //检查有无夸张飞行请求-请求的滚转或俯仰角度低于15度
         const Vector3f angle_target = attitude_control->get_att_target_euler_cd();
+        //夸张的请求
         bool large_angle_request = (norm(angle_target.x, angle_target.y) > LAND_CHECK_LARGE_ANGLE_CD);
 
         // check for large external disturbance - angle error over 30 degrees
+        //检查是否存在较大的外部干扰-角度误差超过30度
         const float angle_error = attitude_control->get_att_error_angle_deg();
         bool large_angle_error = (angle_error > LAND_CHECK_ANGLE_ERROR_DEG);
 
         // check for large acceleration - falling or high turbulence
+        //检查是否有大加速度-下降或高湍流
         Vector3f accel_ef = plane.ahrs.get_accel_ef_blended();
         accel_ef.z += GRAVITY_MSS;
         bool accel_moving = (accel_ef.length() > LAND_CHECK_ACCEL_MOVING);
 
         // check for requested decent
+        //检查请求的体面
         bool descent_not_demanded = pos_control->get_desired_velocity().z >= 0.0f;
 
         if ( large_angle_request || large_angle_error || accel_moving || descent_not_demanded) {
+            //处于这种极限不合理的情况，混控油门设为最小值，更多的用在调整姿态
             attitude_control->set_throttle_mix_max(1.0);
         } else {
+            //正常情况下油门设为最大值，不需要太多调整姿态，大部分用在油门。
             attitude_control->set_throttle_mix_min();
         }
     }

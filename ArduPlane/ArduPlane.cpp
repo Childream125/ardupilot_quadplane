@@ -130,6 +130,7 @@ void Plane::loop()
 }
 
 // update AHRS system
+//更新姿态方位参考系统
 void Plane::ahrs_update()
 {
     arming.update_soft_armed();
@@ -427,6 +428,7 @@ void Plane::update_control_mode(void)
 void Plane::update_navigation()
 {
     // wp_distance is in ACTUAL meters, not the *100 meters we get from the GPS
+    //wp_距离以实际米为单位，而不是我们从GPS得到的*100米
     // ------------------------------------------------------------------------
 
     uint16_t radius = 0;

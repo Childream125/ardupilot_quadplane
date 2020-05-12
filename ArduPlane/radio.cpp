@@ -1,6 +1,7 @@
 #include "Plane.h"
 
 //Function that will read the radio data, limit servos and trigger a failsafe
+//用于读取无线电数据、限制伺服和触发故障保护的功能
 // ----------------------------------------------------------------------------
 
 /*
