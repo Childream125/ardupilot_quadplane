@@ -546,9 +546,13 @@ QuadPlane::QuadPlane(AP_AHRS_NavEKF &_ahrs) :
 
 
 // setup default motors for the frame class
+//为框架类设置默认电机
+//上层函数给的值是4，所以这里电机数是4
 void QuadPlane::setup_default_channels(uint8_t num_motors)
 {
     for (uint8_t i=0; i<num_motors; i++) {
+        //这里i=1带入，get_motor_function(1)=34，CH_5+1=5
+        //辅助通道功能开启
         SRV_Channels::set_aux_channel_default(SRV_Channels::get_motor_function(i), CH_5+i);
     }
 }
@@ -607,10 +611,14 @@ bool QuadPlane::setup(void)
       that the objects don't affect the vehicle unless enabled and
       also saves memory when not in use
      */
+    //只有在q_enabled=1的情况下才会启用
     motor_class = (enum AP_Motors::motor_frame_class)frame_class.get();
+    //我现在是Q_FRAM_CLASS=1,所以电机也是4
     switch (motor_class) {
     case AP_Motors::MOTOR_FRAME_QUAD:
+        //选择倾转四旋翼进入channels(4）
         setup_default_channels(4);
+        //跳出switch case
         break;
     case AP_Motors::MOTOR_FRAME_HEXA:
         setup_default_channels(6);
@@ -637,7 +645,8 @@ bool QuadPlane::setup(void)
         setup_default_channels(4);
         break;
     }
-
+//到这里几个电机选择完成
+    //现在没谈到倾转呢，只考虑Q_FRAME_CLASS
     if (tailsitter.motor_mask == 0) {
         // this is a normal quadplane
         switch (motor_class) {
@@ -653,6 +662,7 @@ bool QuadPlane::setup(void)
                 rotation = ROTATION_PITCH_90;
             }
             break;
+            //motor_class为MOTOR_FRAME_QUAD
         default:
             motors = new AP_MotorsMatrix(plane.scheduler.get_loop_rate_hz(), rc_speed);
             motors_var_info = AP_MotorsMatrix::var_info;
@@ -661,6 +671,7 @@ bool QuadPlane::setup(void)
     } else {
         // this is a copter tailsitter with motor layout specified by frame_class and frame_type
         // tilting motors are not supported (tiltrotor control variables are ignored)
+        //这是一个尾座式飞机，其电机布局由frame_class指定，不支持frame_class倾斜电机（忽略倾斜转子控制变量）
         if (tilt.tilt_mask != 0) {
             hal.console->printf("Warning tilting motors not supported, setting tilt_mask to zero\n");
             tilt.tilt_mask.set(0);
@@ -720,15 +731,18 @@ bool QuadPlane::setup(void)
 
     // setup the trim of any motors used by AP_Motors so I/O board
     // failsafe will disable motors
+    //设置AP U电机使用的任何电机的微调，以便I/O板故障保护将禁用电机
     for (uint8_t i=0; i<8; i++) {
         SRV_Channel::Aux_servo_function_t func = SRV_Channels::get_motor_function(i);
         SRV_Channels::set_failsafe_pwm(func, thr_min_pwm);
     }
 
     transition_state = TRANSITION_DONE;
-
+    //下面是倾转相关东西，默认是直升机模式
+    //我们这里tilt_mask=15
     if (tilt.tilt_mask != 0) {
         // setup tilt compensation
+        //设置倾斜补偿
         motors->set_thrust_compensation_callback(FUNCTOR_BIND_MEMBER(&QuadPlane::tilt_compensate, void, float *, uint8_t));
         if (tilt.tilt_type == TILT_TYPE_VECTORED_YAW) {
             // setup tilt servos for vectored yaw
@@ -798,6 +812,7 @@ void QuadPlane::run_esc_calibration(void)
 
 
 // init quadplane stabilize mode 
+//不给油
 void QuadPlane::init_stabilize(void)
 {
     throttle_wait = false;
@@ -834,6 +849,7 @@ void QuadPlane::multicopter_attitude_rate_update(float yaw_rate_cds)
             //跟上面相比用了两种不同的控制算法。
             //倾转旋翼机飞机模式的控制。
             //固定翼模式。
+            //plane.nav_roll_cd和nav_pitch_cd是从qstablize_update计算来的
         } else if (tailsitter.input_type == TAILSITTER_INPUT_BF_ROLL_P) {
             attitude_control->input_euler_rate_yaw_euler_angle_pitch_bf_roll_p(plane.nav_roll_cd,
                                                                                plane.nav_pitch_cd,
@@ -866,7 +882,9 @@ void QuadPlane::hold_stabilize(float throttle_in)
 {    
     // call attitude controller
     //调用姿态控制器
+    //get_desired_yaw_rate_cds()是通过遥控器输入给的杆量转化为速率控制
     multicopter_attitude_rate_update(get_desired_yaw_rate_cds());
+    //通过调用姿态控制器已经算出来了打偏航杆的的一些东西了
 
     if (throttle_in <= 0) {
         motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::GROUND_IDLE);
@@ -878,6 +896,7 @@ void QuadPlane::hold_stabilize(float throttle_in)
         }
     } else {
         motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
+        //自稳模式下给油门让其保持稳定
         attitude_control->set_throttle_out(throttle_in, true, 0);
     }
 }
@@ -1299,6 +1318,7 @@ float QuadPlane::get_pilot_input_yaw_rate_cds(void) const
 float QuadPlane::get_desired_yaw_rate_cds(void)
 {
     float yaw_cds = 0;
+    //此时我们是直升机模式，不进入这个if
     if (assisted_flight) {
         // use bank angle to get desired yaw rate
         yaw_cds += desired_auto_yaw_rate_cds();
@@ -1752,8 +1772,10 @@ void QuadPlane::update(void)
         pos_control->relax_alt_hold_controllers(0);
     }
     
+    //从初始化来的
     if (!in_vtol_mode()) {
         update_transition();
+     //现在是垂直起降模式
     } else {
         const uint32_t now = AP_HAL::millis();
 
@@ -1782,10 +1804,13 @@ void QuadPlane::update(void)
                 transition_state = TRANSITION_ANGLE_WAIT_FW;
                 transition_start_ms = now;
             }
+            //应该进入这个，因为不是tailsitter
         } else {
             /*
               setup the transition state appropriately for next time we go into a non-VTOL mode
             */
+            //为下一次进入非VTOL模式适当设置转换状态
+            //倾转开始时间
             transition_start_ms = 0;
             transition_low_airspeed_ms = 0;
             if (throttle_wait && !plane.is_flying()) {

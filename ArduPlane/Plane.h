@@ -742,6 +742,7 @@ private:
     // INS variables
     // The main loop execution time.  Seconds
     // This is the time between calls to the DCM algorithm and is the Integration time for the gyros.
+    //陀螺仪的积分时间
     float G_Dt = 0.02f;
 
     // loop performance monitoring:

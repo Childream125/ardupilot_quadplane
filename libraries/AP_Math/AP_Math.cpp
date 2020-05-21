@@ -265,6 +265,7 @@ T constrain_value(const T amt, const T low, const T high)
     // the check for NaN as a float prevents propagation of floating point
     // errors through any function that uses constrain_value(). The normal
     // float semantics already handle -Inf and +Inf
+    //将NaN作为浮点进行检查可防止浮点错误通过任何使用constraint_value（）的函数传播。正常的float语义已经处理了-Inf和+Inf
     if (isnan(amt)) {
         AP::internalerror().error(AP_InternalError::error_t::constraining_nan);
         return (low + high) / 2;

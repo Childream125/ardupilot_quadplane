@@ -23,6 +23,7 @@
 /*
   return true when flying a tailsitter
  */
+//这个意思就是将bicopter也称为尾座式的一种
 bool QuadPlane::is_tailsitter(void) const
 {
     return available() 
@@ -38,6 +39,7 @@ bool QuadPlane::tailsitter_active(void)
     if (!is_tailsitter()) {
         return false;
     }
+    //尾座式是垂直起降的一种
     if (in_vtol_mode()) {
         return true;
     }
@@ -51,6 +53,7 @@ bool QuadPlane::tailsitter_active(void)
 /*
   run output for tailsitters
  */
+//感觉是这块的问题
 void QuadPlane::tailsitter_output(void)
 {
     if (!is_tailsitter()) {
@@ -59,22 +62,28 @@ void QuadPlane::tailsitter_output(void)
 
     float tilt_left = 0.0f;
     float tilt_right = 0.0f;
+    //电机数量
     uint16_t mask = tailsitter.motor_mask;
 
     // handle forward flight modes and transition to VTOL modes
+    //在固定翼模式下或从固定翼向直升机转化的情况下才采用的是固定翼的控制器
     if (!tailsitter_active() || in_tailsitter_vtol_transition()) {
         // in forward flight: set motor tilt servos and throttles using FW controller
         if (tailsitter.vectored_forward_gain > 0) {
             // thrust vectoring in fixed wing flight
+            //固定翼模式的推力矢量
             float aileron = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
             float elevator = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
+            //左倾转和右倾转
             tilt_left  = (elevator + aileron) * tailsitter.vectored_forward_gain;
             tilt_right = (elevator - aileron) * tailsitter.vectored_forward_gain;
         }
+        //将这两行代码注释掉，在固定翼模式下实现两个舵机不倾转
         SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft, tilt_left);
         SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, tilt_right);
 
         // get FW controller throttle demand and mask of motors enabled during forward flight
+        //使前飞时的固定翼控制器油门需求和发动机mask启用
         float throttle = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
         if (hal.util->get_soft_armed()) {
             if (in_tailsitter_vtol_transition() && !throttle_wait && is_flying()) {
@@ -83,6 +92,7 @@ void QuadPlane::tailsitter_output(void)
                   hover thrust, center the rudder and set the altitude controller
                   integrator to the same throttle level
                  */
+                //在转换到垂直起降模式期间，将油门设置为悬停推力，将方向舵居中，并将高度控制器积分器设置为相同的油门高度
                 throttle = motors->get_throttle_hover() * 100;
                 SRV_Channels::set_output_scaled(SRV_Channel::k_rudder, 0);
                 pos_control->get_accel_z_pid().set_integrator(throttle*10);
@@ -110,6 +120,8 @@ void QuadPlane::tailsitter_output(void)
     plane.rollController.reset_I();
 
     // pull in copter control outputs
+    //在直升机模式
+    //升降舵方向舵副翼油门都会操控
     SRV_Channels::set_output_scaled(SRV_Channel::k_aileron, (motors->get_yaw())*-SERVO_MAX);
     SRV_Channels::set_output_scaled(SRV_Channel::k_elevator, (motors->get_pitch())*SERVO_MAX);
     SRV_Channels::set_output_scaled(SRV_Channel::k_rudder, (motors->get_roll())*SERVO_MAX);
@@ -122,6 +134,7 @@ void QuadPlane::tailsitter_output(void)
 
     if (tailsitter.vectored_hover_gain > 0) {
         // thrust vectoring VTOL modes
+        //推力矢量垂直起降模式
         tilt_left = SRV_Channels::get_output_scaled(SRV_Channel::k_tiltMotorLeft);
         tilt_right = SRV_Channels::get_output_scaled(SRV_Channel::k_tiltMotorRight);
         /*

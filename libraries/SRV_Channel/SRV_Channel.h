@@ -153,7 +153,8 @@ public:
         k_LED_neopixel2         = 121,
         k_LED_neopixel3         = 122,
         k_LED_neopixel4         = 123,
-        k_nr_aux_servo_functions         ///< This must be the last enum value (only add new values _before_ this one)
+        k_nr_aux_servo_functions         ///< This must be the last enum value (only add new values _before_ this one
+                                          //这必须是最后一个枚举值（仅在此值之前添加新值)
     } Aux_servo_function_t;
 
     // used to get min/max/trim limit value based on reverse
@@ -317,7 +318,7 @@ public:
 
     // set output value for a function channel as a scaled value. This
     // calls calc_pwm() to also set the pwm value
-    //将功能通道的输出值设置为缩放值。这将调用calc_pwm（）来设置pwm值
+    //将功能通道的输出值设置为范围值。这将调用calc_pwm（）来设置pwm值
     static void set_output_scaled(SRV_Channel::Aux_servo_function_t function, int16_t value);
 
     // get scaled output for the given function type.
@@ -422,6 +423,7 @@ public:
     static void update_aux_servo_function(void);
 
     // set default channel for an auxiliary function
+    //设置辅助功能的默认通道
     static bool set_aux_channel_default(SRV_Channel::Aux_servo_function_t function, uint8_t channel);
 
     // find first channel that a function is assigned to
@@ -542,9 +544,11 @@ private:
 
     static struct srv_function {
         // mask of what channels this applies to
+        //这适用于哪些频道的掩码
         SRV_Channel::servo_mask_t channel_mask;
 
         // scaled output for this function
+        //输出范围
         int16_t output_scaled;
     } functions[SRV_Channel::k_nr_aux_servo_functions];
 

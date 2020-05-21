@@ -18,6 +18,7 @@ bool ModeQStabilize::_enter()
 void ModeQStabilize::update()
 {
     // set nav_roll and nav_pitch using sticks
+    //使用操纵杆设置导航滚转和导航俯仰
     int16_t roll_limit = MIN(plane.roll_limit_cd, plane.quadplane.aparm.angle_max);
     float pitch_input = plane.channel_pitch->norm_input();
     // Scale from normalized input [-1,1] to centidegrees
@@ -31,6 +32,7 @@ void ModeQStabilize::update()
         plane.nav_pitch_cd = pitch_input * plane.quadplane.aparm.angle_max;
     } else {
         // pitch is further constrained by LIM_PITCH_MIN/MAX which may impose
+        //俯仰进一步受到LIM_pitch_MIN/MAX的限制
         // tighter (possibly asymmetrical) limits than Q_ANGLE_MAX
         if (pitch_input > 0) {
             plane.nav_pitch_cd = pitch_input * MIN(plane.aparm.pitch_limit_max_cd, plane.quadplane.aparm.angle_max);

@@ -429,6 +429,8 @@ SRV_Channels::move_servo(SRV_Channel::Aux_servo_function_t function,
 /*
   set the default channel an auxiliary output function should be on
  */
+//设置默认通道辅助输出功能应开启
+//function是从34-37，channel从5-8
 bool SRV_Channels::set_aux_channel_default(SRV_Channel::Aux_servo_function_t function, uint8_t channel)
 {
     if (!initialised) {

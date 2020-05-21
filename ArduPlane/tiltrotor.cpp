@@ -4,16 +4,17 @@
   control code for tiltrotors and tiltwings. Enabled by setting
   Q_TILT_MASK to a non-zero value
  */
-//ÇãĞ±×ª×ÓºÍÇãĞ±ÒíµÄ¿ØÖÆ´úÂë¡£Í¨¹ıÉèÖÃÆôÓÃ
-//Q_TILT_ÑÚÂëÎª·ÇÁãÖµ
+//é”Ÿæ–¤æ‹·æ–œè½¬é”Ÿæ¥çŒ´æ‹·é”Ÿæ–¤æ‹·æ–œé”Ÿæ–¤æ‹·é”Ÿä¾¥åŒ¡æ‹·é”Ÿç‹¡è¾¾æ‹·é”Ÿè¯«ã€‚é€šé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
+//Q_TILT_é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸ºé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å€¼
 
 /*
   calculate maximum tilt change as a proportion from 0 to 1 of tilt
  */
-//°´ÇãĞ±µÄ0µ½1µÄ±ÈÀı¼ÆËã×î´óÇãĞ±±ä»¯
+//é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ–œé”Ÿæ–¤æ‹·0é”Ÿæ–¤æ‹·1é”Ÿä¾¥æ†‹æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿå«æ†‹æ‹·æµ ï¿½
 float QuadPlane::tilt_max_change(bool up)
 {
     float rate;
+    //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿé˜¶ï¿½
     if (up || tilt.max_rate_down_dps <= 0) {
         rate = tilt.max_rate_up_dps;
     } else {
@@ -33,19 +34,23 @@ float QuadPlane::tilt_max_change(bool up)
             rate = MAX(rate, 90);
         }
     }
+    //é”Ÿæ–¤æ‹·bicopteré”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¨¡å¼é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç§¸çŒ´æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å€¼ä¸ºé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ç«™é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è½¬é”ŸåŠ«è®¹æ‹·å€¼* plane.G_Dt / 90.0f
     return rate * plane.G_Dt / 90.0f;
 }
 
 /*
   output a slew limited tiltrotor angle. tilt is from 0 to 1
  */
-//Êä³ö»Ø×ªÏŞÖÆÇã×ªĞıÒí½Ç¶È¡£ÇãĞ±¶È´Ó0µ½1
+//é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿé˜¶îæ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿé˜¶îæ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åµŒå–é”Ÿæ–¤æ‹·é”Ÿå«æ†‹æ‹·å´é”Ÿï¿½0é”Ÿæ–¤æ‹·1
 void QuadPlane::tiltrotor_slew(float newtilt)
 {
     float max_change = tilt_max_change(newtilt<tilt.current_tilt);
+    //constrain_floaté”Ÿè§’è®¹æ‹·newtiltä¸€é”Ÿæ–¤æ‹·é”Ÿç«å‡¤æ‹·é”Ÿæ–¤æ‹·é”ŸèŠ‚çŒ´æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¹‹é”Ÿæˆ’ï¼Œé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿå«â˜…æ‹·é”Ÿæ–¤æ‹·é”Ÿå«â˜…æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç«ï½æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
     tilt.current_tilt = constrain_float(newtilt, tilt.current_tilt-max_change, tilt.current_tilt+max_change);
 
     // translate to 0..1000 range and output
+    //è½¬é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·0..1000é”Ÿæ–¤æ‹·å›´é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿï¿½
+    //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åµŒé”Ÿï¿½
     SRV_Channels::set_output_scaled(SRV_Channel::k_motor_tilt, 1000 * tilt.current_tilt);
 }
 
@@ -55,22 +60,22 @@ void QuadPlane::tiltrotor_slew(float newtilt)
 void QuadPlane::tiltrotor_continuous_update(void)
 {
     // default to inactive
-    //Ä¬ÈÏµç»ú²»×ª
+    //é»˜é”Ÿè¾ƒç¢‰æ‹·é”Ÿæ–¤æ‹·é”Ÿé˜¶ï¿½
     tilt.motors_active = false;
 
     // the maximum rate of throttle change
-    //ÓÍÃÅ×î´ó±ä»¯ÂÊ
+    //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæˆ’åŒ–é”Ÿæ–¤æ‹·
     float max_change;
     
     if (!in_vtol_mode() && (!hal.util->get_soft_armed() || !assisted_flight)) {
         // we are in pure fixed wing mode. Move the tiltable motors all the way forward and run them as
         // a forward motor
-        //ÎÒÃÇ´¦ÓÚ´¿¹Ì¶¨ÒíÄ£Ê½¡£½«¿ÉÇãĞ±µç»úÒ»Ö±ÏòÇ°ÒÆ¶¯£¬²¢½«Æä×÷ÎªÏòÇ°µç»úÔËĞĞ
-        //´ú±íÏòÇ°
+        //é”Ÿæ–¤æ‹·é”Ÿè§’è¾¾æ‹·é”ŸèŠ‚è¾¾æ‹·é”Ÿæ•™è®¹æ‹·é”Ÿæ–¤æ‹·æ¨¡å¼é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ–œé”Ÿæ–¤æ‹·é”Ÿæ­æ¢æ†‹æ‹·é”Ÿè§’å¸®æ‹·è´«é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿè½¿îæ‹·é”Ÿè§’å¸®æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
+        //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å‰
         tiltrotor_slew(1);
 
         max_change = tilt_max_change(false);
-        //¸üĞÂÓÍÃÅ
+        //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
         float new_throttle = constrain_float(SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)*0.01, 0, 1);
         if (tilt.current_tilt < 1) {
             tilt.current_throttle = constrain_float(new_throttle,
@@ -92,6 +97,7 @@ void QuadPlane::tiltrotor_continuous_update(void)
     }
 
     // remember the throttle level we're using for VTOL flight
+    //é”Ÿæ–¤æ‹·ä½é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸèŠ‚è¾¾æ‹·ç›´é”Ÿé‡‘é™å‡¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä½¿é”ŸçŸ«ç¢‰æ‹·é”Ÿæ–¤æ‹·é”Ÿè„šé«˜è®¹æ‹·
     float motors_throttle = motors->get_throttle();
     max_change = tilt_max_change(motors_throttle<tilt.current_throttle);
     tilt.current_throttle = constrain_float(motors_throttle,
@@ -101,24 +107,24 @@ void QuadPlane::tiltrotor_continuous_update(void)
     /*
       we are in a VTOL mode. We need to work out how much tilt is
       needed. There are 3 strategies we will use:
-               ÎÒÃÇ´¦ÓÚ´¹Ö±Æğ½µÄ£Ê½¡£ÎÒÃÇĞèÒªÅªÇå³şĞèÒªÇãĞ±¶àÉÙ¡£ÎÒÃÇ½«²ÉÓÃÈıÖÖ²ßÂÔ£º
+               é”Ÿæ–¤æ‹·é”Ÿè§’è¾¾æ‹·é”ŸèŠ‚è¾¾æ‹·ç›´é”Ÿæ–¤æ‹·æ¨¡å¼é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è¦å¼„é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ­îæ‹·é”Ÿå«æ†‹æ‹·é”Ÿæ–¤æ‹·ä½Ÿé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¢™é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¤é”Ÿæ–¤æ‹·è£•é”Ÿï¿½
 
       1) in QSTABILIZE or QHOVER the angle will be set to zero. This
          enables these modes to be used as a safe recovery mode.
-                       ÔÚQSTABILIZE»òQHOVERÖĞ£¬½Ç¶È½«ÉèÖÃÎªÁã¡£ÕâÊ¹µÃÕâĞ©Ä£Ê½¿ÉÒÔÓÃ×÷°²È«»Ö¸´Ä£Ê½¡£
+                       é”Ÿæ–¤æ‹·QSTABILIZEé”Ÿæ–¤æ‹·QHOVERé”Ÿå«ï½æ‹·é”Ÿè§’åº¦æ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸ºé”Ÿå§ã€‚é”Ÿæ–¤æ‹·ä½¿é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·äº›æ¨¡å¼é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å…¨é”Ÿè¡—é©æ‹·æ¨¡å¼é”Ÿæ–¤æ‹·
 
       2) in fixed wing assisted flight or velocity controlled modes we
          will set the angle based on the demanded forward throttle,
          with a maximum tilt given by Q_TILT_MAX. This relies on
          Q_VFWD_GAIN being set
-                       ÔÚ¹Ì¶¨Òí¸¨Öú·ÉĞĞ»òËÙ¶È¿ØÖÆÄ£Ê½ÏÂ£¬ÎÒÃÇ½«¸ù¾İËùĞèµÄÇ°ÓÍÃÅÀ´ÉèÖÃ½Ç¶È£¬
-                       ×î´óÇã½ÇÓÉQ_TILT_MAX¸ø³ö¡£ÕâÈ¡¾öÓÚÉèÖÃµÄQ_VFWD_GAIN
+                       é”ŸèŠ‚å›ºè®¹æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿå«ä¼™æ‹·é”ŸåŠ«åº¦åŒ¡æ‹·é”Ÿæ–¤æ‹·æ¨¡å¼é”Ÿé“°ï½æ‹·é”Ÿæ–¤æ‹·é”Ÿè§’æ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿè§’å¸®æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åª’åµŒé¾‹é”Ÿï¿½
+                       é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·Q_TILT_MAXé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å–é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸçŸ«ç¢‰æ‹·Q_VFWD_GAIN
 
       3) if we are in TRANSITION_TIMER mode then we are transitioning
          to forward flight and should put the rotors all the way forward
-                       Èç¹ûÎÒÃÇ´¦ÓÚTRANSITION_TIMER£¬ÄÇÃ´ÎÒÃÇ½«¹ı¶Éµ½ÏòÇ°·ÉĞĞ£¬²¢ÇÒÓ¦¸Ã½«×ª×ÓÒ»Ö±ÏòÇ°
+                       é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è°´é”Ÿæ–¤æ‹·é”Ÿçµ‹RANSITION_TIMERé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¹ˆé”Ÿæ–¤æ‹·é”Ÿè§’æ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç¼´ç¢‰æ‹·é”Ÿæ–¤æ‹·å‰é”Ÿæ–¤æ‹·é”Ÿå«ï½æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åº”é”ŸçŸ«æ–¤æ‹·è½¬é”Ÿæ–¤æ‹·ä¸€ç›´é”Ÿæ–¤æ‹·å‰
     */
-    //Õâ¼¸ÖÖÄ£Ê½ÏÂÇã½ÇÎª0
+    //é”Ÿè§£å‡ é”Ÿæ–¤æ‹·æ¨¡å¼é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿè½¿ï¿½0
     if (plane.control_mode == &plane.mode_qstabilize ||
         plane.control_mode == &plane.mode_qhover ||
         plane.control_mode == &plane.mode_qautotune) {
@@ -130,15 +136,15 @@ void QuadPlane::tiltrotor_continuous_update(void)
         transition_state >= TRANSITION_TIMER) {
         // we are transitioning to fixed wing - tilt the motors all
         // the way forward
-        //ÎÒÃÇÕıÔÚ¹ı¶Éµ½¹Ì¶¨Òí-°ÑÂí´ïÒ»Ö±ÏòÇ°ÇãĞ±
+        //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸèŠ‚ç™¸æ‹·é”Ÿç¼´ç¢‰æ‹·é”Ÿæ•™è®¹æ‹·é”Ÿæ–¤æ‹·-é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸€ç›´é”Ÿæ–¤æ‹·å‰é”Ÿæ–¤æ‹·æ–œ
         tiltrotor_slew(1);
     } else {
         // until we have completed the transition we limit the tilt to
         // Q_TILT_MAX. Anything above 50% throttle gets
         // Q_TILT_MAX. Below 50% throttle we decrease linearly. This
         // relies heavily on Q_VFWD_GAIN being set appropriately.
-        //ÔÚÍê³É¹ı¶ÉÖ®Ç°£¬ÎÒÃÇ½«ÇãĞ±¶ÈÏŞÖÆÔÚQ_tilt_MAX¡£ÈÎºÎ¸ßÓÚ50%µÄÓÍÃÅ¶¼»áµÃµ½Q_tilt_MAX¡£
-        //µÍÓÚ50%µÄÓÍÃÅ£¬ÎÒÃÇ»áÏßĞÔ¼õĞ¡¡£ÕâÔÚºÜ´ó³Ì¶ÈÉÏÒÀÀµÓÚQ-VFWD-uÔöÒæµÄÊÊµ±ÉèÖÃ¡£
+        //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ™’é”Ÿæ–¤æ‹·é”Ÿè¡—î†å¸®æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¢™é”Ÿæ–¤æ‹·é”Ÿå«æ†‹æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿçµˆ_tilt_MAXé”Ÿæ–¤æ‹·é”Ÿè½¿ä½•é©æ‹·é”Ÿæ–¤æ‹·50%é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿè„šè®¹æ‹·é”Ÿæ–¤æ‹·ç«é”Ÿçµˆ_tilt_MAXé”Ÿæ–¤æ‹·
+        //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·50%é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿè„šï½æ‹·é”Ÿæ–¤æ‹·é”Ÿè§’ä¼™æ‹·é”Ÿæ–¤æ‹·é”Ÿçš†ç¡·æ‹·å°é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸèŠ‚å¾ˆè¾¾æ‹·æ½­é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿçµˆ-VFWD-ué”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å®é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è°©é”Ÿï¿½
         float settilt = constrain_float(SRV_Channels::get_output_scaled(SRV_Channel::k_throttle) / 50.0f, 0, 1);
         tiltrotor_slew(settilt * tilt.max_angle_deg / 90.0f);
     }
@@ -148,13 +154,16 @@ void QuadPlane::tiltrotor_continuous_update(void)
 /*
   output a slew limited tiltrotor angle. tilt is 0 or 1
  */
-//Êä³ö»Ø×ªÏŞÖÆÇã×ªĞıÒí½Ç¶È¡£ÇãĞ±Îª0»ò1
+//é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿé˜¶îæ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿé˜¶îæ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åµŒå–é”Ÿæ–¤æ‹·é”Ÿå«è”½ï¿½0é”Ÿæ–¤æ‹·1
+//slewæ‘†åŠ¨
 void QuadPlane::tiltrotor_binary_slew(bool forward)
 {
     // The servo output is binary, not slew rate limited
+    //é”Ÿè„šå‡¤æ‹·é”Ÿæ–¤æ‹·é”Ÿè½¿îæ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ç–²é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·èŠ‘é”Ÿé˜¶îæ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿï¿½
     SRV_Channels::set_output_scaled(SRV_Channel::k_motor_tilt, forward?1000:0);
 
     // rate limiting current_tilt has the effect of delaying throttle in tiltrotor_binary_update
+    //é”Ÿæ–¤æ‹·tiltrotor_binary_updateé”Ÿå«ï½æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç‹¡ç¢‰æ‹·é”Ÿæ–¤æ‹·_tilté”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ¥ç­¹æ‹·é”Ÿæ–¤æ‹·é”Ÿè„šç¢‰æ‹·æ•ˆé”Ÿæ–¤æ‹·
     float max_change = tilt_max_change(!forward);
     if (forward) {
         tilt.current_tilt = constrain_float(tilt.current_tilt+max_change, 0, 1);
@@ -166,12 +175,8 @@ void QuadPlane::tiltrotor_binary_slew(bool forward)
 /*
   update motor tilt for binary tilt servos
  */
-//¸üĞÂ¶ş½øÖÆÇãĞ±ËÅ·şµÄµç»úÇãĞ±
-/*
-    1 Í¨¹ı¶Ôtiltrotor_binary_slew(true)µÄÊ¹ÓÃ£¬Çã×ª¶æ»ú½«»áÖ±½ÓÇã×ªµ½90¡ã£¬¿ÉÒÔ¿´³ö´ËÊ±µÄÂß¼­ÇĞ»»ÓëÇ°ÎÄËùÊöÒ»ÖÂ
-    2 ¹ØÓÚÓÍÃÅ»á½øĞĞ¹Ì¶¨ÒíÄ£Ê½ÏÂµÄĞÂÓ³Éä¹ØÏµ
-    3 Çã×ªÍê³ÉµÄµç»ú½«»á±»µ±×öÌá¹©Ç°·É¶¯Á¦µÄµç»ú¼ÌĞø·ÉĞĞ
- */
+//äºŒä½å€¾è½¬æ¨¡å¼ï¼Œ0æˆ–1
+
 void QuadPlane::tiltrotor_binary_update(void)
 {
     // motors always active
@@ -180,12 +185,14 @@ void QuadPlane::tiltrotor_binary_update(void)
     if (!in_vtol_mode()) {
         // we are in pure fixed wing mode. Move the tiltable motors
         // all the way forward and run them as a forward motor
-        //ÎÒÃÇ´¦ÓÚ´¿¹Ì¶¨ÒíÄ£Ê½¡£½«¿ÉÇãĞ±µç»úÒ»Ö±ÏòÇ°ÒÆ¶¯£¬²¢½«Æä×÷ÎªÏòÇ°µç»úÔËĞĞ
-        //ÕâÖÖÄ£Ê½Ö»ÄÜ¿ØÖÆĞıÒíÏòÉÏºÍÏòÇ°£¬²»¿ÉÒÔ´¦ÓÚÁ½ÕßÖ®¼äµÄÄ³¸ö½Ç¶È¡£
-        //´ú±íÏòÇ°¡£
-        tiltrotor_binary_slew(true);
+        //æˆ‘ä»¬å¤„äºçº¯å›ºå®šç¿¼æ¨¡å¼ã€‚å°†å¯å€¾æ–œç”µæœºä¸€ç›´å‘å‰ç§»åŠ¨ï¼Œå¹¶å°†å…¶ä½œä¸ºå‘å‰ç”µæœºè¿è¡Œ
+        //äºŒè¿›åˆ¶å€¾è½¬è°ƒç”¨çš„æ˜¯tiltrotor_binary_slewï¼Œç»“æœæ˜¯0æˆ–è€…90åº¦ï¼Œä¸­é—´è§’åº¦æ˜¯ä¸å¯æ§çš„ã€‚
+        //å¦‚æœæˆ‘æƒ³è¦æ§åˆ¶å€¾è½¬æ—¶é—´ï¼Œå¯ä»¥é€‰æ‹©è°ƒç”¨è¿ç»­å‹çš„å€¾è½¬æ–¹å¼ï¼Œ
+        //å³tiltrotor_slewï¼ˆ1ï¼‰ï¼Œè¿™ä¸ªæ—¶å€™å€¾è½¬æ—¶é—´æ˜¯å¯ä»¥æ”¹å˜çš„ï¼Œå› ä¸ºæœ‰å€¾è½¬é€Ÿç‡ï¼Œé€Ÿç‡ä¸ºåœ°é¢ç«™ä¸­è®¾ç½®çš„Q_TILT_RATE_UP
+        //tiltrotor_binary_slew(true);
+        tiltrotor_slew(1);
 
-        //¸üĞÂÓÍÃÅ´óĞ¡
+        //æ›´æ–°æ²¹é—¨
         float new_throttle = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)*0.01f;
         if (tilt.current_tilt >= 1) {
             uint8_t mask = is_zero(new_throttle)?0:(uint8_t)tilt.tilt_mask.get();
@@ -193,8 +200,10 @@ void QuadPlane::tiltrotor_binary_update(void)
             motors->output_motor_mask(new_throttle, mask, plane.rudder_dt);
         }
     } else {
-        //ĞıÒíÏòÉÏ
-        tiltrotor_binary_slew(false);
+        //ç›´å‡æœºæ¨¡æ€ï¼Œå€¾è½¬ä¸º0
+        //è‹¥è¦ä¿®æ”¹å€¾è½¬æ—¶é—´ï¼Œæ”¹æˆtiltrotor_slewï¼ˆ0ï¼‰
+        //tiltrotor_binary_slew(false);
+        tiltrotor_slew(0);
     }
 }
 
@@ -202,7 +211,7 @@ void QuadPlane::tiltrotor_binary_update(void)
 /*
   update motor tilt
  */
-//¹²ÓĞÈıÖÖÇã×ªÄ£Ê½£ºTILT_TYPE_BINARY£¨¶ş½øÖÆÄ£Ê½£©£¬TILT_TYPE_CONTINUOUS£¨Á¬ĞøĞÍÄ£Ê½£©
+//å€¾è½¬çš„å‡ ç§æ¨¡å¼
 void QuadPlane::tiltrotor_update(void)
 {
     if (tilt.tilt_mask <= 0) {
@@ -210,8 +219,11 @@ void QuadPlane::tiltrotor_update(void)
         return;
     }
 
-    if (tilt.tilt_type == TILT_TYPE_BINARY) {
+    if (tilt.tilt_type == TILT_TYPE_BINARY || TILT_TYPE_BICOPTER) {
         tiltrotor_binary_update();
+        //å¦‚æœæ˜¯äºŒè¿›åˆ¶æ¨¡å¼ï¼Œè¿›å…¥äºŒè¿›åˆ¶å€¾è½¬
+        //æœ¬æ–‡è®¾ç½®çš„æ˜¯bicopterï¼Œæ‰€ä»¥æ˜¯è¿ç»­æ€§å€¾è½¬
+        //è‹¥è¦æ”¹æˆäºŒè¿›åˆ¶å€¾è½¬ï¼Œelseåä¹Ÿæ˜¯tiltrotor_binary_update();
     } else {
         tiltrotor_continuous_update();
     }
@@ -249,15 +261,12 @@ void QuadPlane::tiltrotor_update(void)
   when transitioning to fixed wing, and lower throttle on tilted
   motors when transitioning to VTOL
  */
-/*²¹³¥Ò»×éµç»úÊä³öÖĞµÄÇãĞ± ²¹³¥ÓĞÁ½ÖÖĞÎÊ½¡£Ê×ÏÈÊÇÓ¦ÓÃÇãĞ±ÏµÊı£¬ÕâÊÇ¶Ô¼õÉÙ´¹Ö±ÍÆÁ¦µÄ²¹³¥
-ÇãĞ±µÄ¡£ÕâÊÇÓÉset U motor U tilt U factor£¨£©Ìá¹©µÄ¡£
-µÚ¶şÖÖ²¹³¥ÊÇ¶ÔËùÓĞÇãĞ±µÄµç»úÊ¹ÓÃÏàÍ¬µÄÍÆÁ¦ µ±ÇãĞ±¶ÈµÈÓÚÍÆÁ¦Ê±ÎªÕæ¡£µ±µç»ú
-´ó½Ç¶ÈÇãĞ±ÒÔ·ÀÖ¹²àÇãºÍÆ«º½¿ØÖÆÆ÷ÒıÆğ²»ÎÈ¶¨¡£Í¨³££¬µ±µç»úÇãĞ±³¬¹ı45¶È¡£ÔÚÕâ¸ö½Ç¶È£¬¼ÙÉè
-¿ØÖÆ¿ÉÒÔÍ¨¹ı¹Ì¶¨µÄ»úÒí¿ØÖÆÃæºÍÆ«º½À´ÊµÏÖÓÃÊ£ÓàµÄ¶àÒí·¢¶¯»ú£¨ÈçÈıÒí»úÎ²²¿£©¿ØÖÆ¡£
-Í¨¹ıÊ©¼ÓµÈÍÆÁ¦£¬ÇãĞ±µç»úÓĞĞ§µØµ¥½Ú¾à¿ØÖÆÂí´ï¡£×¢Òâ£¬ÎÒÃÇÔÚ×ª»»Ê±Ê¹ÓÃ²»Í¬µÄ²ßÂÔ
-Óë´¹Ö±Æğ½µ·ÉĞĞÏà±È½øÈë´¹Ö±Æğ½µ¡£Ô­ÒòÊÇµ±¹ı¶Éµ½¹Ì¶¨Òí·ÉĞĞ£¬ÒÔ»ñµÃ¿ÕËÙ£¬
-È»¶ø£¬µ±×ª»»µ½´¹Ö±Æğ½µº½°àÊ±£¬ÎÒÃÇÏ£ÍûÇãÏòÓÚ½µµÍÇ°½øÓÍÃÅ¡£ËùÒÔÎÒÃÇ¼Ó´óÇãĞ±Âí´ïµÄÓÍÃÅ
-µ±¹ı¶Éµ½¹Ì¶¨ÒíÊ±£¬ÇãĞ±Ê±½µµÍÓÍÃÅ×ª»»µ½´¹Ö±Æğ½µÊ±µÄµç»ú
+/*è¡¥å¿ä¸€ç»„ç”µæœºè¾“å‡ºä¸­çš„å€¾æ–œè¡¥å¿æœ‰ä¸¤ç§å½¢å¼ã€‚é¦–å…ˆæ˜¯åº”ç”¨å€¾æ–œç³»æ•°ï¼Œè¿™æ˜¯å¯¹å‡å°‘å‚ç›´æ¨åŠ›çš„è¡¥å¿
+å€¾æ–œçš„ã€‚è¿™æ˜¯ç”±set U motor U tilt U factorï¼ˆï¼‰æä¾›çš„ã€‚ç¬¬äºŒç§è¡¥å¿æ˜¯å¯¹æ‰€æœ‰å€¾æ–œçš„ç”µæœºä½¿ç”¨ç›¸åŒçš„æ¨åŠ›å½“å€¾æ–œåº¦ç­‰äºæ¨åŠ›æ—¶ä¸ºçœŸã€‚å½“ç”µæœº
+å¤§è§’åº¦å€¾æ–œä»¥é˜²æ­¢ä¾§å€¾å’Œåèˆªæ§åˆ¶å™¨å¼•èµ·ä¸ç¨³å®šã€‚é€šå¸¸ï¼Œå½“ç”µæœºå€¾æ–œè¶…è¿‡45åº¦ã€‚åœ¨è¿™ä¸ªè§’åº¦ï¼Œå‡è®¾æ§åˆ¶å¯ä»¥é€šè¿‡å›ºå®šçš„æœºç¿¼æ§åˆ¶é¢å’Œåèˆªæ¥å®ç°
+ç”¨å‰©ä½™çš„å¤šç¿¼å‘åŠ¨æœºï¼ˆå¦‚ä¸‰ç¿¼æœºå°¾éƒ¨ï¼‰æ§åˆ¶ã€‚é€šè¿‡æ–½åŠ ç­‰æ¨åŠ›ï¼Œå€¾æ–œç”µæœºæœ‰æ•ˆåœ°å•èŠ‚è·æ§åˆ¶é©¬è¾¾ã€‚æ³¨æ„ï¼Œæˆ‘ä»¬åœ¨è½¬æ¢æ—¶ä½¿ç”¨ä¸åŒçš„ç­–ç•¥
+ä¸å‚ç›´èµ·é™é£è¡Œç›¸æ¯”è¿›å…¥å‚ç›´èµ·é™ã€‚åŸå› æ˜¯å½“è¿‡æ¸¡åˆ°å›ºå®šç¿¼é£è¡Œï¼Œä»¥è·å¾—ç©ºé€Ÿï¼Œç„¶è€Œï¼Œå½“è½¬æ¢åˆ°å‚ç›´èµ·é™èˆªç­æ—¶ï¼Œæˆ‘ä»¬å¸Œæœ›å€¾å‘äº
+é™ä½å‰è¿›æ²¹é—¨ã€‚æ‰€ä»¥æˆ‘ä»¬åŠ å¤§å€¾æ–œé©¬è¾¾çš„æ²¹é—¨å½“è¿‡æ¸¡åˆ°å›ºå®šç¿¼æ—¶ï¼Œå€¾æ–œæ—¶é™ä½æ²¹é—¨è½¬æ¢åˆ°å‚ç›´èµ·é™æ—¶çš„ç”µæœº
 */
 void QuadPlane::tilt_compensate_down(float *thrust, uint8_t num_motors)
 {
@@ -371,10 +380,11 @@ void QuadPlane::tilt_compensate(float *thrust, uint8_t num_motors)
 
 /*
   return true if the rotors are fully tilted forward
-  ĞıÒíÏòÇ°·µ»ØÎªÕæ
+     çº¯å›ºå®šç¿¼æ¨¡å¼
  */
 bool QuadPlane::tiltrotor_fully_fwd(void)
 {
+    //tilt_maskä»£è¡¨å€¾è½¬èˆµæœºçš„æ•°é‡
     if (tilt.tilt_mask <= 0) {
         return false;
     }
@@ -417,17 +427,24 @@ void QuadPlane::tiltrotor_bicopter(void)
         return;
     }
 
-   //·É»úÄ£Ì¬
+   //é”Ÿç¼´ä¼™æ‹·æ¨¡æ€
    //SRV_Channels
     if (!in_vtol_mode() && tiltrotor_fully_fwd()) {
-        //´Ëº¯ÊıÓÃÀ´Ëõ·Å
+        //çº¯å›ºå®šç¿¼æ¨¡å¼
+        //å·¦å³ä¸åº”è¯¥å€¾è½¬ï¼Œæ‰€ä»¥åº”è¯¥æ³¨é‡Šæ‰
+        //è¿™ä¸ªå‡½æ•°çš„æ„ä¹‰å°±æ˜¯å°†å€¾è½¬èˆµæœºçš„èŒƒå›´è®¾ç½®ä¸º-45åº¦
+        //functions[75].output_scaled = -4500,SRV_Channel::have_pwm_mask &= ~functions[75].channel_mask;
+        //åŸæ¥75å’Œ76æ˜¯å€¾è½¬èˆµæœºï¼Œå°†å…¶é™åˆ¶ä¸º45åº¦ï¼Œå˜ä¸ºçŸ¢é‡èˆµæœºã€‚
         SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft,  -SERVO_MAX);
         SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, -SERVO_MAX);
+        //å¦‚æœæ˜¯çº¯å›ºå®šç¿¼æ¨¡å¼ï¼Œåˆ°è¿™é‡Œå°±é€€å‡ºäº†
+        //returnä»£è¡¨ä»è¿™é‡Œé€€å‡ºï¼Œå·²éªŒè¯ã€‚
         return;
     }
 
-    //½«ÓÍÃÅÖµËõ·Å
+    //è·³å‡ºæ¥è¯´æ˜ç°åœ¨æ˜¯ç›´å‡æœºæ¨¡å¼
     float throttle = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
+    //ç›´å‡æœºæ¨¡å¼
     if (assisted_flight) {
         hold_stabilize(throttle * 0.01f);
         motors_output(true);
@@ -436,8 +453,9 @@ void QuadPlane::tiltrotor_bicopter(void)
     }
 
     // bicopter assumes that trim is up so we scale down so match
-    //bicopter¼ÙÉèĞŞ¼ôÏòÉÏ£¬ËùÒÔÎÒÃÇËõĞ¡±ÈÀı£¬ÒÔ±ãÆ¥Åä
-    //½«×óÓÒÇã×ª¶æ»úÁ¦¾ØËõ·Å
+    //åŒé€‰æ‹©æœºå‡è®¾å¹³è¡¡æ—¶å‘ä¸Šï¼Œæ‰€ä»¥æˆ‘ä»¬ç¼©å°æ¯”ä¾‹ï¼Œä»¥ä¾¿åŒ¹é…
+    //ç°åœ¨æ˜¯ä¸çŸ¥é“å€¾è½¬å¤šå°‘ï¼Œä¸‹é¢ç®—çš„åªæ˜¯ä¸€ä¸ªåˆæ­¥å€¼ï¼Œåé¢è¿˜è¦è¿›ä¸€æ­¥è®¡ç®—
+    //get_output_scaledè¿™ä¸ªå‡½æ•°æ²¡å¤ªçœ‹æ‡‚ï¼Œå§‘ä¸”è®¤ä¸ºå·²ç»çŸ¥é“
     float tilt_left = SRV_Channels::get_output_scaled(SRV_Channel::k_tiltMotorLeft);
     float tilt_right = SRV_Channels::get_output_scaled(SRV_Channel::k_tiltMotorRight);
 
@@ -449,20 +467,19 @@ void QuadPlane::tiltrotor_bicopter(void)
     }
 
     // reduce authority of bicopter as motors are tilted forwards
-    //µ±·¢¶¯»úÏòÇ°ÇãĞ±Ê±£¬½µµÍË«Òí»úµÄÈ¨ÏŞ
-    //M_PI_2ÊÇÊ²Ã´£¿
+    //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å‰é”Ÿæ–¤æ‹·æ–œæ—¶é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åŒé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æƒé”Ÿæ–¤æ‹·
+    //M_PI_2é”Ÿæ–¤æ‹·ä»€ä¹ˆé”Ÿæ–¤æ‹·
     const float scaling = cosf(tilt.current_tilt * M_PI_2);
-    //ÔÚÇã×ª¹ı³ÌÖĞ£¨Ä³¸öÇã×ª½Ç¶È£©ÏÂµÄ×óÓÒÁ¦¾Ø
+    //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è½¬é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿå«ï½æ‹·æŸé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è½¬é”Ÿè§’åº¦ï½æ‹·é”Ÿé“°ç¢‰æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
     tilt_left  *= scaling;
     tilt_right *= scaling;
 
     // add current tilt and constrain
-    //Ìí¼Óµ±Ç°ÇãĞ±ºÍÔ¼Êø
-    //¸ø×óÓÒÁ¦¾ØÏŞ·ù
+    //æ·»åŠ å½“å‰å€¾æ–œå’Œçº¦æŸ
     tilt_left  = constrain_float(-(tilt.current_tilt * SERVO_MAX) + tilt_left,  -SERVO_MAX, SERVO_MAX);
     tilt_right = constrain_float(-(tilt.current_tilt * SERVO_MAX) + tilt_right, -SERVO_MAX, SERVO_MAX);
 
-    //setÊÇ¶ÔÊä³öÖµ½øĞĞËõ·Å
+    //è¾“å‡ºå€¼ä¸ºtilt_leftä½•ï¼Œtilt_right
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft,  tilt_left);
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, tilt_right);
 }

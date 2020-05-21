@@ -140,6 +140,7 @@ bool Plane::suppress_throttle(void)
   function values. This mixer operates purely on scaled values,
   allowing the user to trim and limit individual servos using the
   SERVOn_* parameters
+  //使用指定伺服功能值设置elevon和vtail通道的混频器。该混频器仅根据标度值运行，允许用户使用伺服参数修剪和限制单个伺服
  */
 void Plane::channel_function_mixer(SRV_Channel::Aux_servo_function_t func1_in, SRV_Channel::Aux_servo_function_t func2_in,
                                    SRV_Channel::Aux_servo_function_t func1_out, SRV_Channel::Aux_servo_function_t func2_out)
@@ -147,6 +148,7 @@ void Plane::channel_function_mixer(SRV_Channel::Aux_servo_function_t func1_in, S
     // the order is setup so that non-reversed servos go "up", and
     // func1 is the "left" channel. Users can adjust with channel
     // reversal as needed
+    //顺序设置为非反向伺服“向上”，而func1是“左”通道。用户可以根据需要使用通道反转进行调整
     float in1 = SRV_Channels::get_output_scaled(func1_in);
     float in2 = SRV_Channels::get_output_scaled(func2_in);
 
@@ -592,13 +594,16 @@ void Plane::set_landing_gear(void)
   apply vtail and elevon mixers
   the rewrites radio_out for the corresponding channels
  */
+//应用vtail和elevon混频器为相应的频道重写无线电输出
 void Plane::servo_output_mixers(void)
 {
     // mix elevons and vtail channels
+    //升降舵副翼和方向舵混控
     channel_function_mixer(SRV_Channel::k_aileron, SRV_Channel::k_elevator, SRV_Channel::k_elevon_left, SRV_Channel::k_elevon_right);
     channel_function_mixer(SRV_Channel::k_rudder,  SRV_Channel::k_elevator, SRV_Channel::k_vtail_right, SRV_Channel::k_vtail_left);
 
     // implement differential spoilers
+    //机具差速器扰流板
     dspoiler_update();
 }
 
@@ -827,7 +832,7 @@ void Plane::servos_output(void)
     quadplane.tiltrotor_bicopter();
 
     // the mixers need pwm to be calculated now
-    //混频器现在需要计算脉宽调制
+    //计算pwm值
     SRV_Channels::calc_pwm();
 
     // run vtail and elevon mixers

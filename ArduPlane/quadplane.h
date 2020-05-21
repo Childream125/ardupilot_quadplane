@@ -373,6 +373,7 @@ private:
     bool throttle_wait:1;
 
     // true when quad is assisting a fixed wing mode
+    //直升机时返回1
     bool assisted_flight:1;
 
     // true when in angle assist
