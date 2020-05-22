@@ -1730,7 +1730,7 @@ void QuadPlane::update_transition(void)
 /*
   update motor output for quadplane
  */
-void QuadPlane::update(void)
+void QuadPlane::(void)
 {
     if (!setup()) {
         return;

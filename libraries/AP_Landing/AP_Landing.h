@@ -87,6 +87,7 @@ public:
     int32_t get_target_airspeed_cm(void);
 
     // accessor functions for the params and states
+    //参数和状态的访问器函数
     static const struct AP_Param::GroupInfo var_info[];
     
     int16_t get_pitch_cd(void) const { return pitch_cd; }

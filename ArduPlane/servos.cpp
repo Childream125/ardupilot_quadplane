@@ -738,12 +738,13 @@ void Plane::set_servos(void)
     // setup landing gear output
     set_landing_gear();
 #endif
-    
+    //我们现在是q_stablize模式，将进入in_vtol_mode()
     if (auto_throttle_mode ||
         quadplane.in_assisted_flight() ||
         quadplane.in_vtol_mode()) {
         /* only do throttle slew limiting in modes where throttle
          *  control is automatic */
+        //只有当油门摆动限制模式油门控制是自动的
         throttle_slew_limit(SRV_Channel::k_throttle);
     }
 
@@ -763,6 +764,7 @@ void Plane::set_servos(void)
             break;
 
         case AP_Arming::Required::YES_MIN_PWM:
+            //在空中飞时应该用这个
         default:
             int8_t min_throttle = MAX(aparm.throttle_min.get(),0);
             SRV_Channels::set_output_scaled(SRV_Channel::k_throttle, min_throttle);

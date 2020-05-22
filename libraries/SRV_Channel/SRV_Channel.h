@@ -46,6 +46,7 @@ public:
 
     static const struct AP_Param::GroupInfo var_info[];
 
+    //枚举了所有pwm通道，实现了单个SRV_Channel的从信号的输入到输出的计算，并且附加了对通道数值的类型和限幅操作；
     typedef enum
     {
         k_none                  = 0,            ///< disabled
@@ -166,23 +167,29 @@ public:
     };
 
     // set the output value as a pwm value
+    //设置当前通道pwm值
     void set_output_pwm(uint16_t pwm);
 
     // get the output value as a pwm value
+    //获取当前通道的pwm值
     uint16_t get_output_pwm(void) const { return output_pwm; }
 
     // set angular range of scaled output
+    //设置在转换为PWM信号时，最大输入角度
     void set_angle(int16_t angle);
 
     // set range of scaled output. Low is always zero
+    //设置在转换为PWM信号时，最大输入范围
     void set_range(uint16_t high);
 
     // return true if the channel is reversed
+    //返回通道是否反相
     bool get_reversed(void) const {
         return reversed?true:false;
     }
 
     // set MIN/MAX parameters
+    //设置通道的PWM最大最小值
     void set_output_min(uint16_t pwm) {
         servo_min.set(pwm);
     }
@@ -191,6 +198,7 @@ public:
     }
 
     // get MIN/MAX/TRIM parameters
+    //获取通道的PWM最大最小值
     uint16_t get_output_min(void) const {
         return servo_min;
     }
@@ -257,15 +265,19 @@ private:
     uint16_t high_out;
 
     // convert a 0..range_max to a pwm
+    //将pwm转换为范围
     uint16_t pwm_from_range(int16_t scaled_value) const;
 
     // convert a -angle_max..angle_max to a pwm
+    //将pwm值转换为角度
     uint16_t pwm_from_angle(int16_t scaled_value) const;
 
     // convert a scaled output to a pwm value
+    //输入output_scaled[范围、角度]转换为PWM并set_output_pwm()
     void calc_pwm(int16_t output_scaled);
 
     // output value based on function
+    //调用hal.rcout直接输出PWM
     void output_ch(void);
 
     // setup output type and range based on function
@@ -318,11 +330,11 @@ public:
 
     // set output value for a function channel as a scaled value. This
     // calls calc_pwm() to also set the pwm value
-    //将功能通道的输出值设置为范围值。这将调用calc_pwm（）来设置pwm值
+    //设置输出值范围
     static void set_output_scaled(SRV_Channel::Aux_servo_function_t function, int16_t value);
 
     // get scaled output for the given function type.
-    //获取给定函数类型的缩放输出。
+    //获得输出值范围
     static int16_t get_output_scaled(SRV_Channel::Aux_servo_function_t function);
 
     // get pwm output for the first channel of the given function type.
