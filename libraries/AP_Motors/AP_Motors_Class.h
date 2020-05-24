@@ -123,10 +123,10 @@ public:
     // spool states
     enum class SpoolState : uint8_t {
         SHUT_DOWN = 0,                      // all motors stop
-        GROUND_IDLE = 1,                    // all motors at ground idle
-        SPOOLING_UP = 2,                       // increasing maximum throttle while stabilizing
-        THROTTLE_UNLIMITED = 3,             // throttle is no longer constrained by start up procedure
-        SPOOLING_DOWN = 4,                     // decreasing maximum throttle while stabilizing
+        GROUND_IDLE = 1,                    // all motors at ground idle 所有电机处于地面怠速
+        SPOOLING_UP = 2,                       // increasing maximum throttle while stabilizing 稳定时增加最大油门
+        THROTTLE_UNLIMITED = 3,             // throttle is no longer constrained by start up procedure 油门不再受启动程序的限制
+        SPOOLING_DOWN = 4,                     // decreasing maximum throttle while stabilizing 稳定时减小最大油门
     };
 
     // get_spool_state - get current spool state

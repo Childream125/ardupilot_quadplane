@@ -53,7 +53,7 @@ bool QuadPlane::tailsitter_active(void)
 /*
   run output for tailsitters
  */
-//感觉是这块的问题
+//bicopter这块在第一步就退出了，不输出任何东西
 void QuadPlane::tailsitter_output(void)
 {
     if (!is_tailsitter()) {

@@ -292,6 +292,7 @@ void Plane::dspoiler_update(void)
   Idle mode is used during balloon launch to keep servos still, apart
   from occasional wiggle to prevent freezing up
  */
+//怠速模式设置舵机
 void Plane::set_servos_idle(void)
 {
     int16_t servo_value;
@@ -324,6 +325,7 @@ void Plane::set_servos_idle(void)
 /*
   pass through channels in manual mode
  */
+//这个单纯的在手动模式下，所以用不到。
 void Plane::set_servos_manual_passthrough(void)
 {
     SRV_Channels::set_output_scaled(SRV_Channel::k_aileron, channel_roll->get_control_in_zero_dz());
@@ -385,6 +387,7 @@ void Plane::throttle_watt_limiter(int8_t &min_throttle, int8_t &max_throttle)
 /*
   setup output channels all non-manual modes
  */
+//设置输出通道所有非手动模式
 void Plane::set_servos_controlled(void)
 {
     if (flight_stage == AP_Vehicle::FixedWing::FLIGHT_LAND) {
@@ -728,6 +731,7 @@ void Plane::set_servos(void)
     if (control_mode == &mode_manual) {
         set_servos_manual_passthrough();
     } else {
+        //我们不属于手动模式，所以进入这个
         set_servos_controlled();
     }
 
@@ -798,6 +802,7 @@ void Plane::set_servos(void)
             SRV_Channels::set_output_scaled(SRV_Channel::k_aileron, 0);
             SRV_Channels::set_output_scaled(SRV_Channel::k_elevator, 0);
             SRV_Channels::set_output_scaled(SRV_Channel::k_rudder, 0);
+            //猜测进入这个
         } else if (landing.get_then_servos_neutral() == 2) {
             SRV_Channels::set_output_limit(SRV_Channel::k_aileron, SRV_Channel::SRV_CHANNEL_LIMIT_ZERO_PWM);
             SRV_Channels::set_output_limit(SRV_Channel::k_elevator, SRV_Channel::SRV_CHANNEL_LIMIT_ZERO_PWM);

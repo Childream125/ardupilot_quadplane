@@ -114,6 +114,7 @@ protected:
     void                update_lift_max_from_batt_voltage();
 
     // return gain scheduling gain based on voltage and air density
+    //基于电压和空气密度的返回增益调度增益
     float               get_compensation_gain() const;
 
     // convert actuator output (0~1) range to pwm range

@@ -24,9 +24,11 @@ public:
     void set_update_rate( uint16_t speed_hz ) override;
 
     // spin a motor at the pwm value specified
+    //将力矩转换为pwm值
     void output_test_seq(uint8_t motor_seq, int16_t pwm) override;
 
     // output_to_motors - sends output to named servos
+    //输出到电机-将输出发送到指定舵机
     void output_to_motors() override;
 
     // get_motor_mask - returns a bitmask of which outputs are being used for motors or servos (1 means being used)

@@ -31,29 +31,36 @@ extern const AP_HAL::HAL& hal;
 void AP_MotorsTailsitter::init(motor_frame_class frame_class, motor_frame_type frame_type)
 {
     // setup default motor and servo mappings
+    //设置默认电机和舵机映射，地面站上给的
     uint8_t chan;
 
     // right throttle defaults to servo output 1
+    //右油门默认为舵机输出输出1
     SRV_Channels::set_aux_channel_default(SRV_Channel::k_throttleRight, CH_1);
     if (SRV_Channels::find_channel(SRV_Channel::k_throttleRight, chan)) {
+        //有右油门电机
         motor_enabled[chan] = true;
     }
 
     // left throttle defaults to servo output 2
     SRV_Channels::set_aux_channel_default(SRV_Channel::k_throttleLeft, CH_2);
     if (SRV_Channels::find_channel(SRV_Channel::k_throttleLeft, chan)) {
+        //有左油门电机
         motor_enabled[chan] = true;
     }
 
     // right servo defaults to servo output 3
+    //右舵机默认为舵机输出3
     SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorRight, CH_3);
     SRV_Channels::set_angle(SRV_Channel::k_tiltMotorRight, SERVO_OUTPUT_RANGE);
 
     // left servo defaults to servo output 4
+    //左舵机默认为舵机输出4
     SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorLeft, CH_4);
     SRV_Channels::set_angle(SRV_Channel::k_tiltMotorLeft, SERVO_OUTPUT_RANGE);
 
     // record successful initialisation if what we setup was the desired frame_class
+    //如果我们设置的是所需的机架构型，则记录成功的初始化
     _flags.initialised_ok = (frame_class == MOTOR_FRAME_TAILSITTER);
 }
 
@@ -81,7 +88,7 @@ void AP_MotorsTailsitter::output_to_motors()
     if (!_flags.initialised_ok) {
         return;
     }
-
+//下面是两个电机在地面，怠速以及飞行的pwm值
     switch (_spool_state) {
         case SpoolState::SHUT_DOWN:
             SRV_Channels::set_output_pwm(SRV_Channel::k_throttleLeft, get_pwm_output_min());
@@ -95,19 +102,24 @@ void AP_MotorsTailsitter::output_to_motors()
         case SpoolState::SPOOLING_UP:
         case SpoolState::THROTTLE_UNLIMITED:
         case SpoolState::SPOOLING_DOWN:
+            //设置两个电机的pwm值
             SRV_Channels::set_output_pwm(SRV_Channel::k_throttleLeft, output_to_pwm(thrust_to_actuator(_thrust_left)));
             SRV_Channels::set_output_pwm(SRV_Channel::k_throttleRight, output_to_pwm(thrust_to_actuator(_thrust_right)));
             break;
     }
 
     // Always output to tilt servos
+    //倾转舵机总是有输出
+    //_tilt_left和bicopter下得到的 tilt_left有没有什么关系？
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft, _tilt_left*SERVO_OUTPUT_RANGE);
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, _tilt_right*SERVO_OUTPUT_RANGE);
 
 }
 
 // get_motor_mask - returns a bitmask of which outputs are being used for motors (1 means being used)
+//get_motor_mask-返回一个位掩码，其输出用于电机（1表示正在使用）
 //  this can be used to ensure other pwm outputs (i.e. for servos) do not conflict
+//这可用于确保其他的pwm值（即舵机）不发生冲突
 uint16_t AP_MotorsTailsitter::get_motor_mask()
 {
     uint32_t motor_mask = 0;
@@ -133,10 +145,13 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   yaw_thrust;                 // yaw thrust input value, +/- 1.0
     float   throttle_thrust;            // throttle thrust input value, 0.0 - 1.0
     float   thrust_max;                 // highest motor value
-    float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
+    float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy 飞行员期望的油门和油门推力的差别
 
     // apply voltage and air pressure compensation
+    //施加电压和气压补偿
     const float compensation_gain = get_compensation_gain();
+    //_代表姿态控制器算出来的值
+    //这些力矩是我需要的值，也就是我要输入的值
     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
     pitch_thrust = (_pitch_in + _pitch_in_ff) * compensation_gain;
     yaw_thrust = (_yaw_in + _yaw_in_ff) * compensation_gain;
@@ -153,6 +168,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     }
 
     // calculate left and right throttle outputs
+    //尾座式可能有三个油门输出，左右，中间， throttle_thrust可能指中间的
     _thrust_left  = throttle_thrust + roll_thrust * 0.5f;
     _thrust_right = throttle_thrust - roll_thrust * 0.5f;
 
@@ -179,8 +195,11 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
 }
 
 // output_test_seq - spin a motor at the pwm value specified
+//以指定pwm值旋转电机
 //  motor_seq is the motor's sequence number from 1 to the number of motors on the frame
+//motor_seq是电机的序列号，从1到机架上的电机数量
 //  pwm value is an actual pwm value that will be output, normally in the range of 1000 ~ 2000
+//pwm值是实际输出的pwm值，通常在1000~2000之间
 void AP_MotorsTailsitter::output_test_seq(uint8_t motor_seq, int16_t pwm)
 {
     // exit immediately if not armed

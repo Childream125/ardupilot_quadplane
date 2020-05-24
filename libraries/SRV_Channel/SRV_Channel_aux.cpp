@@ -25,6 +25,7 @@
 extern const AP_HAL::HAL& hal;
 
 /// map a function to a servo channel and output it
+//将函数映射到伺服通道并将其输出
 void SRV_Channel::output_ch(void)
 {
     int8_t passthrough_from = -1;
@@ -216,6 +217,7 @@ void SRV_Channels::enable_by_mask(uint16_t mask)
 /*
   set radio_out for all channels matching the given function type
  */
+//为与给定功能类型匹配的所有通道设置接收机输出
 void SRV_Channels::set_output_pwm(SRV_Channel::Aux_servo_function_t function, uint16_t value)
 {
     if (!function_assigned(function)) {
@@ -224,6 +226,7 @@ void SRV_Channels::set_output_pwm(SRV_Channel::Aux_servo_function_t function, ui
     for (uint8_t i = 0; i < NUM_SERVO_CHANNELS; i++) {
         if (channels[i].function.get() == function) {
             channels[i].set_output_pwm(value);
+            //将pwm信号输出给舵机
             channels[i].output_ch();
         }
     }
