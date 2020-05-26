@@ -435,6 +435,7 @@ void QuadPlane::tiltrotor_bicopter(void)
         //这个函数的意义就是将倾转舵机的范围设置为-45度
         //functions[75].output_scaled = -4500,SRV_Channel::have_pwm_mask &= ~functions[75].channel_mask;
         //原来75和76是倾转舵机，将其限制为45度，变为矢量舵机。
+        //Ser设0
         SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft,  -SERVO_MAX);
         SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, -SERVO_MAX);
         //如果是纯固定翼模式，到这里就退出了
@@ -480,6 +481,7 @@ void QuadPlane::tiltrotor_bicopter(void)
     tilt_right = constrain_float(-(tilt.current_tilt * SERVO_MAX) + tilt_right, -SERVO_MAX, SERVO_MAX);
 
     //输出值为tilt_left何，tilt_right
+   //不注释
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft,  tilt_left);
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, tilt_right);
 }

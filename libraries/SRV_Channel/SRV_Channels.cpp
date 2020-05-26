@@ -208,6 +208,7 @@ void SRV_Channels::setup_failsafe_trim_all_non_motors(void)
 void SRV_Channels::calc_pwm(void)
 {
     //计算每个舵机的pwm值，感觉会调用bicopter计算的值
+    //有16个舵机通道
     for (uint8_t i=0; i<NUM_SERVO_CHANNELS; i++) {
         channels[i].calc_pwm(functions[channels[i].function].output_scaled);
     }

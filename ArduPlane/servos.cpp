@@ -829,13 +829,18 @@ void Plane::set_servos(void)
  */
 void Plane::servos_output(void)
 {
+    //和硬件抽象层有关
     SRV_Channels::cork();
 
     // support twin-engine aircraft
+    //计算左右油门
     servos_twin_engine_mix();
 
     // cope with tailsitters and bicopters
+    //第一步就退出了，相当于没进第一个函数
     quadplane.tailsitter_output();
+    //进入这个
+    //计算左右矢量舵机
     quadplane.tiltrotor_bicopter();
 
     // the mixers need pwm to be calculated now
@@ -843,17 +848,21 @@ void Plane::servos_output(void)
     SRV_Channels::calc_pwm();
 
     // run vtail and elevon mixers
+    //将升降舵和副翼混合，将升降舵和方向舵混合
+    //输出结果是get_output_scaled(vtail和elevon)
+    //这应该是是三角翼混控和v尾混控，针对的应该是尾座式飞机，我们的bicopter应该没有这个。
     servo_output_mixers();
 
     // support MANUAL_RCMASK
     if (g2.manual_rc_mask.get() != 0 && control_mode == &mode_manual) {
         SRV_Channels::copy_radio_in_out_mask(uint16_t(g2.manual_rc_mask.get()));
     }
-
+    //计算vtail和elevon的pwm值
     SRV_Channels::calc_pwm();
 
+    //将所有通道的pwm值整合到一起
     SRV_Channels::output_ch_all();
-
+    //将pwm值推倒硬件抽象层
     SRV_Channels::push();
 
     if (g2.servo_channels.auto_trim_enabled()) {

@@ -200,6 +200,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
 //motor_seq是电机的序列号，从1到机架上的电机数量
 //  pwm value is an actual pwm value that will be output, normally in the range of 1000 ~ 2000
 //pwm值是实际输出的pwm值，通常在1000~2000之间
+//这个是地面站测试电机用的
 void AP_MotorsTailsitter::output_test_seq(uint8_t motor_seq, int16_t pwm)
 {
     // exit immediately if not armed

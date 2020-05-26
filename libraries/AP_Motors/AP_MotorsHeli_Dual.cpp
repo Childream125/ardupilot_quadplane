@@ -374,6 +374,7 @@ void AP_MotorsHeli_Dual::calculate_scalars()
 }
 
 // get_swashplate - calculate movement of each swashplate based on configuration
+//获取旋转斜盘-根据配置计算每个旋转斜盘的移动
 float AP_MotorsHeli_Dual::get_swashplate (int8_t swash_num, int8_t swash_axis, float pitch_input, float roll_input, float yaw_input, float coll_input)
 {
     float swash_tilt = 0.0f;

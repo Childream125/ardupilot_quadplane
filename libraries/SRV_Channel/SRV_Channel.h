@@ -159,6 +159,7 @@ public:
     } Aux_servo_function_t;
 
     // used to get min/max/trim limit value based on reverse
+    //用于获取基于反向的最小/最大/微调限制值
     enum LimitValue {
         SRV_CHANNEL_LIMIT_TRIM,
         SRV_CHANNEL_LIMIT_MIN,

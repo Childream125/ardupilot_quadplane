@@ -409,6 +409,7 @@ int16_t AP_MotorsMulticopter::output_to_pwm(float actuator)
 }
 
 // converts desired thrust to linearized actuator output in a range of 0~1
+//在0~1范围内将期望推力转换为线性执行器输出
 float AP_MotorsMulticopter::thrust_to_actuator(float thrust_in)
 {
     thrust_in = constrain_float(thrust_in, 0.0f, 1.0f);
