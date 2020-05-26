@@ -46,12 +46,15 @@ public:
 
 
     // set_update_rate - set update rate to motors
+    //设置更新率-将更新率设置为电机
     void set_update_rate( uint16_t speed_hz ) override;
 
     // output_test_seq - spin a motor at the pwm value specified
+    //输出_test_seq-以指定的脉宽调制值旋转电机
     virtual void output_test_seq(uint8_t motor_seq, int16_t pwm) override;
 
     // output_to_motors - sends values out to the motors
+    //输出到电机-将值发送到电机
     void output_to_motors() override;
 
     // set_rpm - for rotor speed governor
