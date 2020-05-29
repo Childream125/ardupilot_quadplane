@@ -103,6 +103,8 @@ void AP_MotorsTailsitter::output_to_motors()
         case SpoolState::THROTTLE_UNLIMITED:
         case SpoolState::SPOOLING_DOWN:
             //设置两个电机的pwm值
+            //算出了对应通道的pwm值
+            //说白了这个函数就是将pwm值和通道对应上
             SRV_Channels::set_output_pwm(SRV_Channel::k_throttleLeft, output_to_pwm(thrust_to_actuator(_thrust_left)));
             SRV_Channels::set_output_pwm(SRV_Channel::k_throttleRight, output_to_pwm(thrust_to_actuator(_thrust_right)));
             break;
@@ -111,8 +113,14 @@ void AP_MotorsTailsitter::output_to_motors()
     // Always output to tilt servos
     //倾转舵机总是有输出
     //_tilt_left和bicopter下得到的 tilt_left有没有什么关系？
-    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft, _tilt_left*SERVO_OUTPUT_RANGE);
-    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, _tilt_right*SERVO_OUTPUT_RANGE);
+    // 加上/2,修改分配的大小
+    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft, _tilt_left*SERVO_OUTPUT_RANGE/2);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, _tilt_right*SERVO_OUTPUT_RANGE/2);
+
+
+    //增加两个通道
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor1, _tilt_left*SERVO_OUTPUT_RANGE/2);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor2, _tilt_right*SERVO_OUTPUT_RANGE/2);
 
 }
 
