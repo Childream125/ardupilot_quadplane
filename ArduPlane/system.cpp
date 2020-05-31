@@ -24,6 +24,7 @@ void Plane::init_ardupilot()
     serial_manager.init_console();
 
     hal.console->printf("\n\nInit %s"
+
                         "\n\nFree RAM: %u\n",
                         AP::fwversion().fw_string,
                         (unsigned)hal.util->available_memory());

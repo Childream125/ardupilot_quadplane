@@ -313,12 +313,13 @@ AP_SerialManager::AP_SerialManager()
 }
 
 // init_console - initialise console at default baud rate
+//初始化控制台-以默认波特率初始化控制台
 void AP_SerialManager::init_console()
 {
     // initialise console immediately at default size and baud
 #if SERIALMANAGER_NUM_PORTS > 0
     state[0].uart = hal.uartA;  // serial0, uartA, always console
-    state[0].uart->begin(AP_SERIALMANAGER_CONSOLE_BAUD,
+    state[0].uart->begin(AP_SERIALMANAGER_CONSOLE_BAUD, ////波特率115200
                          AP_SERIALMANAGER_CONSOLE_BUFSIZE_RX,
                          AP_SERIALMANAGER_CONSOLE_BUFSIZE_TX);
 #endif
