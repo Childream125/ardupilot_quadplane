@@ -273,6 +273,8 @@ private:
     //将pwm值转换为角度
     uint16_t pwm_from_angle(int16_t scaled_value) const;
 
+    uint16_t pwm_from_angle_bicopter(int16_t scaled_value) const;
+
     // convert a scaled output to a pwm value
     //输入output_scaled[范围、角度]转换为PWM并set_output_pwm()
     void calc_pwm(int16_t output_scaled);

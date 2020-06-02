@@ -107,6 +107,20 @@ uint16_t SRV_Channel::pwm_from_angle(int16_t scaled_value) const
     }
 }
 
+//bicopter下角度转pwm值
+uint16_t SRV_Channel::pwm_from_angle_bicopter(int16_t scaled_value) const
+{
+    if (reversed) {
+        scaled_value = -scaled_value;
+    }
+    scaled_value = constrain_int16(scaled_value, -high_out, high_out);
+    if (scaled_value > 0) {
+        return servo_min + ((int32_t)scaled_value * (int32_t)(servo_max - servo_min)) / (int32_t)high_out;
+    } else {
+        return servo_min - (-(int32_t)scaled_value * (int32_t)(servo_max - servo_min)) / (int32_t)high_out;
+    }
+}
+
 void SRV_Channel::calc_pwm(int16_t output_scaled)
 {
     if (have_pwm_mask & (1U<<ch_num)) {
@@ -120,7 +134,8 @@ void SRV_Channel::calc_pwm(int16_t output_scaled)
 
     uint16_t pwm;
     if (type_angle) {
-        pwm = pwm_from_angle(output_scaled);
+        //pwm = pwm_from_angle(output_scaled);
+        pwm = pwm_from_angle_bicopter(output_scaled);
     } else {
         pwm = pwm_from_range(output_scaled);
     }

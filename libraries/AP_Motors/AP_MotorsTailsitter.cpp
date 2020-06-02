@@ -32,15 +32,18 @@ void AP_MotorsTailsitter::init(motor_frame_class frame_class, motor_frame_type f
 {
     // setup default motor and servo mappings
     //设置默认电机和舵机映射，地面站上给的
+
     uint8_t chan;
 
     // right throttle defaults to servo output 1
     //右油门默认为舵机输出输出1
+    //现在只是普通的左电机和右电机
     SRV_Channels::set_aux_channel_default(SRV_Channel::k_throttleRight, CH_1);
     if (SRV_Channels::find_channel(SRV_Channel::k_throttleRight, chan)) {
         //有右油门电机
         motor_enabled[chan] = true;
     }
+
 
     // left throttle defaults to servo output 2
     SRV_Channels::set_aux_channel_default(SRV_Channel::k_throttleLeft, CH_2);
@@ -48,6 +51,7 @@ void AP_MotorsTailsitter::init(motor_frame_class frame_class, motor_frame_type f
         //有左油门电机
         motor_enabled[chan] = true;
     }
+    /*
 
     // right servo defaults to servo output 3
     //右舵机默认为舵机输出3
@@ -58,6 +62,26 @@ void AP_MotorsTailsitter::init(motor_frame_class frame_class, motor_frame_type f
     //左舵机默认为舵机输出4
     SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorLeft, CH_4);
     SRV_Channels::set_angle(SRV_Channel::k_tiltMotorLeft, SERVO_OUTPUT_RANGE);
+    */
+
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_motor1, CH_3);
+    SRV_Channels::set_angle(SRV_Channel::k_motor1, SERVO_OUTPUT_RANGE);
+
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_motor2, CH_4);
+    SRV_Channels::set_angle(SRV_Channel::k_motor2, SERVO_OUTPUT_RANGE);
+
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_motor3, CH_5);
+    SRV_Channels::set_angle(SRV_Channel::k_motor3, SERVO_OUTPUT_RANGE);
+
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_motor4, CH_6);
+    SRV_Channels::set_angle(SRV_Channel::k_motor4, SERVO_OUTPUT_RANGE);
+
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_motor5, CH_7);
+    SRV_Channels::set_angle(SRV_Channel::k_motor5, SERVO_OUTPUT_RANGE);
+
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_motor6, CH_8);
+    SRV_Channels::set_angle(SRV_Channel::k_motor6, SERVO_OUTPUT_RANGE);
+
 
     // record successful initialisation if what we setup was the desired frame_class
     //如果我们设置的是所需的机架构型，则记录成功的初始化
@@ -88,7 +112,9 @@ void AP_MotorsTailsitter::output_to_motors()
     if (!_flags.initialised_ok) {
         return;
     }
+
 //下面是两个电机在地面，怠速以及飞行的pwm值
+//应该加两个电机
     switch (_spool_state) {
         case SpoolState::SHUT_DOWN:
             SRV_Channels::set_output_pwm(SRV_Channel::k_throttleLeft, get_pwm_output_min());
@@ -102,32 +128,48 @@ void AP_MotorsTailsitter::output_to_motors()
         case SpoolState::SPOOLING_UP:
         case SpoolState::THROTTLE_UNLIMITED:
         case SpoolState::SPOOLING_DOWN:
-            //设置两个电机的pwm值
-            //算出了对应通道的pwm值
-            //说白了这个函数就是将pwm值和通道对应上
-            SRV_Channels::set_output_pwm(SRV_Channel::k_throttleLeft, output_to_pwm(thrust_to_actuator(_thrust_left)));
-            SRV_Channels::set_output_pwm(SRV_Channel::k_throttleRight, output_to_pwm(thrust_to_actuator(_thrust_right)));
+
+            //原始函数
+            //SRV_Channels::set_output_pwm(SRV_Channel::k_throttleLeft, output_to_pwm(thrust_to_actuator(_thrust_left)));
+            //SRV_Channels::set_output_pwm(SRV_Channel::k_throttleRight, output_to_pwm(thrust_to_actuator(_thrust_right)));
+
+            //新函数
+            //这两个电机不提供油门功能，所以将其设置为怠速情况下的转速
+            set_actuator_with_slew(_actuator[1], actuator_spin_up_to_ground_idle());
+            SRV_Channels::set_output_pwm(SRV_Channel::k_throttleLeft, output_to_pwm(actuator_spin_up_to_ground_idle()));
+            SRV_Channels::set_output_pwm(SRV_Channel::k_throttleRight, output_to_pwm(actuator_spin_up_to_ground_idle()));
             break;
     }
-
     // Always output to tilt servos
-    //倾转舵机总是有输出
-    //_tilt_left和bicopter下得到的 tilt_left有没有什么关系？
-    // 加上/2,修改分配的大小
-    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft, _tilt_left*SERVO_OUTPUT_RANGE/2);
-    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, _tilt_right*SERVO_OUTPUT_RANGE/2);
 
+    //SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft, _tilt_left*SERVO_OUTPUT_RANGE);
+    //SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, _tilt_right*SERVO_OUTPUT_RANGE);
 
-    //增加两个通道
-    SRV_Channels::set_output_scaled(SRV_Channel::k_motor1, _tilt_left*SERVO_OUTPUT_RANGE/2);
-    SRV_Channels::set_output_scaled(SRV_Channel::k_motor2, _tilt_right*SERVO_OUTPUT_RANGE/2);
+    //这六个包括了全部操纵，俯仰，偏航，滚转，油门跟以前不一样，前面俯仰偏航耦合，但是和滚转与油门是解耦的，但是现在都是耦合的。
+
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor1, _left1*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor2, _left2*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor3, _left3*SERVO_OUTPUT_RANGE);
+
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor4, _right1*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor5, _right2*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor6, _right3*SERVO_OUTPUT_RANGE);
+
+    /*
+
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor1, (_left1+thrust_to_actuator(_left1))*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor2, (_left2+thrust_to_actuator(_left2))*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor3, (_left3+thrust_to_actuator(_left3))*SERVO_OUTPUT_RANGE);
+
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor4, (_right1+thrust_to_actuator(_right1))*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor5, (_right2+thrust_to_actuator(_right2))*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_motor6, (_right3+thrust_to_actuator(_right3))*SERVO_OUTPUT_RANGE);
+    */
 
 }
 
 // get_motor_mask - returns a bitmask of which outputs are being used for motors (1 means being used)
-//get_motor_mask-返回一个位掩码，其输出用于电机（1表示正在使用）
 //  this can be used to ensure other pwm outputs (i.e. for servos) do not conflict
-//这可用于确保其他的pwm值（即舵机）不发生冲突
 uint16_t AP_MotorsTailsitter::get_motor_mask()
 {
     uint32_t motor_mask = 0;
@@ -156,10 +198,10 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy 飞行员期望的油门和油门推力的差别
 
     // apply voltage and air pressure compensation
-    //施加电压和气压补偿
     const float compensation_gain = get_compensation_gain();
     //_代表姿态控制器算出来的值
     //这些力矩是我需要的值，也就是我要输入的值
+    //_roll_in等都是-1..1 油门是0..1
     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
     pitch_thrust = (_pitch_in + _pitch_in_ff) * compensation_gain;
     yaw_thrust = (_yaw_in + _yaw_in_ff) * compensation_gain;
@@ -176,7 +218,6 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     }
 
     // calculate left and right throttle outputs
-    //尾座式可能有三个油门输出，左右，中间， throttle_thrust可能指中间的
     _thrust_left  = throttle_thrust + roll_thrust * 0.5f;
     _thrust_right = throttle_thrust - roll_thrust * 0.5f;
 
@@ -190,6 +231,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     }
 
     // Add adjustment to reduce average throttle
+    //左右油门和总油门都限制在0-1之间
     _thrust_left  = constrain_float(_thrust_left  + thr_adj, 0.0f, 1.0f);
     _thrust_right = constrain_float(_thrust_right + thr_adj, 0.0f, 1.0f);
     _throttle = throttle_thrust + thr_adj;
@@ -197,8 +239,36 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     _throttle_out = _throttle / compensation_gain;
 
     // thrust vectoring
+    //左右倾转都限制在-1-1之间
+    //不明白这块为什么就变成了在（-1,1）之间了
     _tilt_left  = pitch_thrust - yaw_thrust;
     _tilt_right = pitch_thrust + yaw_thrust;
+
+    //重新分配
+    //左边
+    //应该限制在0..1
+    _left1 = _thrust_left + _tilt_left;
+    _left2 = _thrust_left - _tilt_left * 0.5f;
+    _left3 = _thrust_left - _tilt_left * 0.5f;
+
+
+    //右边
+    _right1 = _thrust_right + _tilt_right;
+    _right2 = _thrust_right - _tilt_right *0.5f;
+    _right3 = _thrust_right - _tilt_right *0.5f;
+
+    //接下来应该对这六个值进行限幅，限制在0..1之间
+    //因为初始情况下，6个舵机的行程是最小的，这时候总矩最小
+    //解释下这个限幅函数，不确定用这个限幅函数是否合理
+
+    _left1=constrain_float(_left1, 0.0f, 1.0f);
+    _left2=constrain_float(_left2, 0.0f, 1.0f);
+    _left3=constrain_float(_left3, 0.0f, 1.0f);
+
+    _right1=constrain_float(_right1, 0.0f, 1.0f);
+    _right2=constrain_float(_right2, 0.0f, 1.0f);
+    _right3=constrain_float(_right3, 0.0f, 1.0f);
+
 
 }
 
@@ -207,8 +277,6 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
 //  motor_seq is the motor's sequence number from 1 to the number of motors on the frame
 //motor_seq是电机的序列号，从1到机架上的电机数量
 //  pwm value is an actual pwm value that will be output, normally in the range of 1000 ~ 2000
-//pwm值是实际输出的pwm值，通常在1000~2000之间
-//这个是地面站测试电机用的
 void AP_MotorsTailsitter::output_test_seq(uint8_t motor_seq, int16_t pwm)
 {
     // exit immediately if not armed
@@ -218,6 +286,8 @@ void AP_MotorsTailsitter::output_test_seq(uint8_t motor_seq, int16_t pwm)
 
     // output to motors and servos
     switch (motor_seq) {
+    /*
+                    原始代码
         case 1:
             // right throttle
             SRV_Channels::set_output_pwm(SRV_Channel::k_throttleRight, pwm);
@@ -237,5 +307,38 @@ void AP_MotorsTailsitter::output_test_seq(uint8_t motor_seq, int16_t pwm)
         default:
             // do nothing
             break;
+       */
+    //修改代码
+    case 1:
+            //motor1
+            SRV_Channels::set_output_pwm(SRV_Channel::k_motor1, pwm);
+            break;
+            case 2:
+            //motor2
+            SRV_Channels::set_output_pwm(SRV_Channel::k_motor2, pwm);
+            break;
+            case 3:
+            //motor3
+            SRV_Channels::set_output_pwm(SRV_Channel::k_motor3, pwm);
+            break;
+            case 4:
+            //motor4
+            SRV_Channels::set_output_pwm(SRV_Channel::k_motor4, pwm);
+            break;
+
+            case 5:
+            //motor5
+            SRV_Channels::set_output_pwm(SRV_Channel::k_motor5, pwm);
+            break;
+
+            case 6:
+            //motor6
+            SRV_Channels::set_output_pwm(SRV_Channel::k_motor6, pwm);
+            break;
+
+            default:
+            // do nothing
+            break;
+
     }
 }

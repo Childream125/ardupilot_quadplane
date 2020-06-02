@@ -185,7 +185,7 @@ protected:
 
     // battery voltage, current and air pressure compensation variables
     LowPassFilterFloat  _batt_voltage_filt;     // filtered battery voltage expressed as a percentage (0 ~ 1.0) of batt_voltage_max
-    float               _lift_max;              // maximum lift ratio from battery voltage
+    float               _lift_max;              // maximum lift ratio from battery voltage 蓄电池电压的最大升力比
     float               _throttle_limit;        // ratio of throttle limit between hover and maximum
     float               _throttle_thrust_max;   // the maximum allowed throttle thrust 0.0 to 1.0 in the range throttle_min to throttle_max
     float               _disarm_safe_timer;     // Timer for the esc when transitioning between zero pwm to minimum

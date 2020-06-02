@@ -45,4 +45,10 @@ protected:
     float _tilt_right;  // -1..1
     float _thrust_left;  // 0..1
     float _thrust_right;  // 0..1
+    float _left1;        //-1..2
+    float _left2;        //-0.5..1.5
+    float _left3;        //-0.5..1.5
+    float _right1;       //-1..2
+    float _right2;       //-0.5..1.5
+    float _right3;       //-0.5..1.5
 };
