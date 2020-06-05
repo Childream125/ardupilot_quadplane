@@ -841,6 +841,7 @@ void Plane::servos_output(void)
     quadplane.tailsitter_output();
     //进入这个
     //计算左右矢量舵机
+    //固定翼模式下左右舵机还会转？
     quadplane.tiltrotor_bicopter();
 
     // the mixers need pwm to be calculated now

@@ -57,6 +57,7 @@ void QuadPlane::tiltrotor_slew(float newtilt)
 /*
   update motor tilt for continuous tilt servos
  */
+//连续性模式倾转和你选的飞行模式有关
 void QuadPlane::tiltrotor_continuous_update(void)
 {
     // default to inactive

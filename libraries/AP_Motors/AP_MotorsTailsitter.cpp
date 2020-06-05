@@ -247,15 +247,15 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     //重新分配
     //左边
     //应该限制在0..1
-    _left1 = _thrust_left + _tilt_left;
-    _left2 = _thrust_left - _tilt_left * 0.5f;
-    _left3 = _thrust_left - _tilt_left * 0.5f;
+    _left3 = _thrust_left + _tilt_left * 0.3f;
+    _left2 = _thrust_left - _tilt_left * 0.3f;
+    _left1 = _thrust_left - yaw_thrust * 0.3f;
 
 
     //右边
-    _right1 = _thrust_right + _tilt_right;
-    _right2 = _thrust_right - _tilt_right *0.5f;
-    _right3 = _thrust_right - _tilt_right *0.5f;
+    _right3 = _thrust_right + _tilt_right * 0.3f;
+    _right2 = _thrust_right - _tilt_right * 0.3f;
+    _right1 = _thrust_right + yaw_thrust * 0.3f;
 
     //接下来应该对这六个值进行限幅，限制在0..1之间
     //因为初始情况下，6个舵机的行程是最小的，这时候总矩最小

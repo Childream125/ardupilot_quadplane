@@ -1773,6 +1773,7 @@ void QuadPlane::update(void)
     }
     
     //从初始化来的
+    //直升机模式已经完成，现在切换飞行模式
     if (!in_vtol_mode()) {
         update_transition();
      //现在是垂直起降模式
