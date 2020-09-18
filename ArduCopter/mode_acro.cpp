@@ -181,5 +181,14 @@ void ModeAcro::get_pilot_desired_angle_rates(int16_t roll_in, int16_t pitch_in, 
     roll_out = rate_bf_request.x;
     pitch_out = rate_bf_request.y;
     yaw_out = rate_bf_request.z;
+
+    static uint8_t num= 0;
+    num++;
+    if(num>=100)
+    {
+        hal.uartE->printf("roll_out=%f,pitch_out=%f\r\n",roll_out,pitch_out);
+        num=0;
+    }
+
 }
 #endif
