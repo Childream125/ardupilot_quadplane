@@ -91,6 +91,10 @@ public:
         return pos_control->get_desired_velocity();
     }
 
+    void set_arco(uint8_t num){arco_mode = num;}
+    //void printf_arco();
+    AP_Int8 arco_mode;
+
 protected:
 
     // navigation support functions

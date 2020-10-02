@@ -470,6 +470,8 @@ void Copter::one_hz_loop()
 #endif
 
     AP_Notify::flags.flying = !ap.land_complete;
+    gcs_acro_select();
+
 }
 
 // called at 50hz
@@ -588,6 +590,17 @@ void Copter::update_altitude()
 
     if (should_log(MASK_LOG_CTUN)) {
         Log_Write_Control_Tuning();
+    }
+}
+
+void Copter:: gcs_acro_select(void)
+{
+    if(control_mode == Mode::Number::ACRO)
+    {
+        if(copter.mode_acro.arco_mode == 0)
+            gcs().send_text(MAV_SEVERITY_CRITICAL,"attitude acro");
+    else
+            gcs().send_text(MAV_SEVERITY_CRITICAL,"rate acro");
     }
 }
 

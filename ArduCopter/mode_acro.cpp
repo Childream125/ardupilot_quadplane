@@ -59,8 +59,14 @@ void ModeAcro::run()
     }
 
     // run attitude controller
-    //attitude_control->input_rate_bf_roll_pitch_yaw(target_roll, target_pitch, target_yaw);
-    attitude_control->input_rate_bf_roll_pitch_yaw4(target_roll,target_pitch,target_yaw);
+    if(arco_mode == 0)
+    {
+        //hal.uartE->printf("mode0\r\n");
+        attitude_control->input_rate_bf_roll_pitch_yaw(target_roll, target_pitch, target_yaw);
+    }else{
+        //hal.uartE->printf("mode1\r\n");
+        attitude_control->input_rate_bf_roll_pitch_yaw4(target_roll,target_pitch,target_yaw);
+    }
 
     // output pilot's throttle without angle boost
     attitude_control->set_throttle_out(get_pilot_desired_throttle(),
