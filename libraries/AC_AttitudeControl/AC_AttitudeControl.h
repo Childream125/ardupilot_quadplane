@@ -155,6 +155,8 @@ public:
     // Command an angular velocity with angular velocity smoothing using rate loops only with integrated rate error stabilization
     void input_rate_bf_roll_pitch_yaw_3(float roll_rate_bf_cds, float pitch_rate_bf_cds, float yaw_rate_bf_cds);
 
+    void input_rate_bf_roll_pitch_yaw4(float roll_rate_bf_cds, float pitch_rate_bf_cds, float yaw_rate_bf_cds);
+
     // Command an angular step (i.e change) in body frame angle
     virtual void input_angle_step_bf_roll_pitch_yaw(float roll_angle_step_bf_cd, float pitch_angle_step_bf_cd, float yaw_angle_step_bf_cd);
 
@@ -331,6 +333,10 @@ public:
     // User settable parameters
     static const struct AP_Param::GroupInfo var_info[];
 
+    float get_rollrate(float rollrate) { _rate_target_ang_vel.x = rollrate; return _rate_target_ang_vel.x; }
+    float get_pitchrate(float pitchrate) { _rate_target_ang_vel.y = pitchrate; return _rate_target_ang_vel.y; }
+    float get_yawrate(float yawrate) { _rate_target_ang_vel.z = yawrate; return _rate_target_ang_vel.z; }
+
 protected:
 
     // Update rate_target_ang_vel using attitude_error_rot_vec_rad
@@ -391,6 +397,7 @@ protected:
 
     // This represents a quaternion rotation in NED frame to the target (setpoint)
     // attitude used in the attitude controller.
+    //这表示NED坐标系中的四元数旋转到姿态控制器中使用的目标（设定点）姿态
     Quaternion          _attitude_target_quat;
 
     // This represents the angular velocity of the target (setpoint) attitude used in

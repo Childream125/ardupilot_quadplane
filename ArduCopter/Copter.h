@@ -236,6 +236,7 @@ public:
     friend class ModeThrow;
     friend class ModeZigZag;
     friend class ModeAutorotate;
+    friend class ModeAcro_Rate;
 
     Copter(void);
 
@@ -786,6 +787,7 @@ private:
     void Log_Write_Performance();
     void Log_Write_Attitude();
     void Log_Write_EKF_POS();
+    void Log_Write_Tar_Ang();
     void Log_Write_MotBatt();
     void Log_Write_Event(Log_Event id);
     void Log_Write_Data(uint8_t id, int32_t value);
@@ -996,6 +998,9 @@ private:
 #if MODE_AUTOROTATE_ENABLED == ENABLED
     ModeAutorotate mode_autorotate;
 #endif
+
+    ModeAcro_Rate mode_acro_rate;
+
 
     // mode.cpp
     Mode *mode_from_mode_num(const Mode::Number mode);

@@ -36,6 +36,7 @@ public:
         ZIGZAG    =    24,  // ZIGZAG mode is able to fly in a zigzag manner with predefined point A and point B
         SYSTEMID  =    25,  // System ID mode produces automated system identification signals in the controllers
         AUTOROTATE =   26,  // Autonomous autorotation
+        ARCO_RATE  =   27,
     };
 
     // constructor
@@ -106,6 +107,8 @@ protected:
     void land_run_horizontal_control();
     void land_run_vertical_control(bool pause_descent = false);
 
+    //void Log_Write_Ang(float tar_rollrate,float tar_pitchrate,float tar_yawrate);
+
     // return expected input throttle setting to hover:
     virtual float throttle_hover() const;
 
@@ -129,6 +132,7 @@ protected:
     AP_AHRS &ahrs;
     AC_AttitudeControl_t *&attitude_control;
     MOTOR_CLASS *&motors;
+    //ModeAcro *&modearco;
     RC_Channel *&channel_roll;
     RC_Channel *&channel_pitch;
     RC_Channel *&channel_throttle;
@@ -263,6 +267,9 @@ public:
     bool has_manual_throttle() const override { return true; }
     bool allows_arming(bool from_gcs) const override { return true; };
     bool is_autopilot() const override { return false; }
+    float get_rollrate(){return angrate.x;}
+    float get_pitchrate(){return angrate.y;}
+    float get_yawrate(){return angrate.z;}
 
 protected:
 
@@ -274,6 +281,7 @@ protected:
     float throttle_hover() const override;
 
 private:
+    Vector3f angrate;
 
 };
 #endif
@@ -294,6 +302,49 @@ private:
 };
 #endif
 
+//#if MODE_ACRO_RATE_ENABLED == ENABLED
+class ModeAcro_Rate : public Mode {
+
+public:
+    // inherit constructor
+    using Mode::Mode;
+
+    virtual void run() override;
+
+    bool requires_GPS() const override { return false; }
+    bool has_manual_throttle() const override { return true; }
+    bool allows_arming(bool from_gcs) const override { return true; };
+    bool is_autopilot() const override { return false; }
+
+protected:
+
+    const char *name() const override { return "ACRO"; }
+    const char *name4() const override { return "ACRO"; }
+
+    void get_pilot_desired_angle_rates(int16_t roll_in, int16_t pitch_in, int16_t yaw_in, float &roll_out, float &pitch_out, float &yaw_out);
+
+    float throttle_hover() const override;
+
+private:
+
+};
+//#endif
+
+#if FRAME_CONFIG == HELI_FRAME
+class ModeAcro_Heli : public ModeAcro {
+
+public:
+    // inherit constructor
+    using ModeAcro::Mode;
+
+    bool init(bool ignore_checks) override;
+    void run() override;
+    void virtual_flybar( float &roll_out, float &pitch_out, float &yaw_out, float pitch_leak, float roll_leak);
+
+protected:
+private:
+};
+#endif
 
 class ModeAltHold : public Mode {
 

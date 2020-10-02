@@ -338,6 +338,7 @@ void Copter::fourhundred_hz_logging()
     if (should_log(MASK_LOG_ATTITUDE_FAST) && !copter.flightmode->logs_attitude()) {
         Log_Write_Attitude();
     }
+    Log_Write_Tar_Ang();
 }
 
 // ten_hz_logging_loop

@@ -171,6 +171,10 @@ Mode *Copter::mode_from_mode_num(const Mode::Number mode)
             break;
 #endif
 
+        case Mode::Number::ARCO_RATE:
+            ret = &mode_acro_rate;
+            break;
+
         default:
             break;
     }
@@ -808,3 +812,5 @@ uint16_t Mode::get_pilot_speed_dn()
 {
     return copter.get_pilot_speed_dn();
 }
+
+

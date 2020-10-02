@@ -92,6 +92,29 @@ void Copter::Log_Write_EKF_POS()
     logger.Write_POS();
 }
 
+struct PACKED log_TarAng {
+    //头和时间是必要的
+    LOG_PACKET_HEADER;
+    uint64_t time_us;
+    float    rollrate;
+    float    pitchrate;
+    float    yawrate;
+};
+
+// 记录arco模式目标角速率
+void Copter::Log_Write_Tar_Ang()
+{
+    struct log_TarAng pkt = {
+            LOG_PACKET_HEADER_INIT(LOG_TARANG_MSG),
+            time_us         : AP_HAL::micros64(),
+            rollrate        :(float) mode_acro.get_rollrate(),
+            pitchrate       :(float) mode_acro.get_pitchrate(),
+            yawrate         :(float) mode_acro.get_yawrate(),
+    };
+    logger.WriteBlock(&pkt, sizeof(pkt));
+
+}
+
 struct PACKED log_MotBatt {
     LOG_PACKET_HEADER;
     uint64_t time_us;
@@ -465,6 +488,10 @@ const struct LogStructure Copter::log_structure[] = {
       "CTUN", "Qffffffefffhhf", "TimeUS,ThI,ABst,ThO,ThH,DAlt,Alt,BAlt,DSAlt,SAlt,TAlt,DCRt,CRt,N", "s----mmmmmmnnz", "F----00B000BB-" },
     { LOG_MOTBATT_MSG, sizeof(log_MotBatt),
       "MOTB", "Qffff",  "TimeUS,LiftMax,BatVolt,BatRes,ThLimit", "s-vw-", "F-00-" },
+
+      { LOG_TARANG_MSG, sizeof(log_TarAng),
+            "TAG", "Qfff",  "TimeUS,RollRate,PitchRate,YawRate", "skkk", "F???" },
+
     { LOG_DATA_INT16_MSG, sizeof(log_Data_Int16t),         
       "D16",   "QBh",         "TimeUS,Id,Value", "s--", "F--" },
     { LOG_DATA_UINT16_MSG, sizeof(log_Data_UInt16t),         

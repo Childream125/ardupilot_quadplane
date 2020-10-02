@@ -153,6 +153,14 @@ void AP_MotorsMatrix::output_armed_stabilizing()
     throttle_thrust = get_throttle() * compensation_gain;
     throttle_avg_max = _throttle_avg_max * compensation_gain;
 
+    static uint8_t num= 0;
+    num++;
+    if(num>=100)
+    {
+        hal.uartE->printf("roll=%f,pitch=%f,yaw=%f\r\n",_roll_in,_pitch_in,_yaw_in);
+        num=0;
+    }
+
     // If thrust boost is active then do not limit maximum thrust
     throttle_thrust_max = _thrust_boost_ratio + (1.0f - _thrust_boost_ratio) * _throttle_thrust_max * compensation_gain;
 

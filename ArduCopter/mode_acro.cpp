@@ -12,7 +12,15 @@ void ModeAcro::run()
 {
     // convert the input to the desired body frame rate
     float target_roll, target_pitch, target_yaw;
-    get_pilot_desired_angle_rates(channel_roll->get_control_in(), channel_pitch->get_control_in(), channel_yaw->get_control_in(), target_roll, target_pitch, target_yaw);
+    get_pilot_desired_angle_rates(channel_roll->get_control_in(), channel_pitch->get_control_in(), channel_yaw->get_control_in(), target_roll, target_pitch, target_yaw);\
+
+    angrate.x = target_roll/100;
+    angrate.y = target_pitch/100;
+    angrate.z = target_yaw/100;
+    //get_rollrate(target_roll);
+    //get_pitchrate(target_pitch);
+    //angrate.z = get_yawrate(target_yaw);
+
 
     if (!motors->armed()) {
         // Motors should be Stopped
@@ -51,7 +59,8 @@ void ModeAcro::run()
     }
 
     // run attitude controller
-    attitude_control->input_rate_bf_roll_pitch_yaw(target_roll, target_pitch, target_yaw);
+    //attitude_control->input_rate_bf_roll_pitch_yaw(target_roll, target_pitch, target_yaw);
+    attitude_control->input_rate_bf_roll_pitch_yaw4(target_roll,target_pitch,target_yaw);
 
     // output pilot's throttle without angle boost
     attitude_control->set_throttle_out(get_pilot_desired_throttle(),
@@ -182,13 +191,27 @@ void ModeAcro::get_pilot_desired_angle_rates(int16_t roll_in, int16_t pitch_in, 
     pitch_out = rate_bf_request.y;
     yaw_out = rate_bf_request.z;
 
+   //roll_out  = roll_out/100/57.3;
+    //pitch_out = pitch_out/100/57.3;
+    //yaw_out   = yaw_out/100/57.3;
+
+
+    //float a = attitude_control->get_rollrate(roll_out);
+    //float b = attitude_control->get_pitchrate(pitch_out);
+    //float c = attitude_control->get_rollrate(yaw_out);
+
+
+
+    /*
     static uint8_t num= 0;
     num++;
     if(num>=100)
     {
-        hal.uartE->printf("roll_out=%f,pitch_out=%f\r\n",roll_out,pitch_out);
+        hal.uartE->printf("roll_out=%f,pitch_out=%f,yaw_out=%f\r\n",a,b,c);
         num=0;
     }
+    */
+
 
 }
 #endif

@@ -513,6 +513,16 @@ void AC_AttitudeControl::input_rate_bf_roll_pitch_yaw(float roll_rate_bf_cds, fl
 
     // calculate the attitude target euler angles
     _attitude_target_quat.to_euler(_attitude_target_euler_angle.x, _attitude_target_euler_angle.y, _attitude_target_euler_angle.z);
+    /*
+    static uint8_t num= 0;
+    num++;
+    if(num>=100)
+    {
+        hal.uartE->printf("x=%f,y=%f,z=%f\r\n",_attitude_target_euler_angle.x,_attitude_target_euler_angle.y,_attitude_target_euler_angle.z);
+        num=0;
+    }
+    */
+
 
     if (_rate_bf_ff_enabled) {
         // Compute acceleration-limited body frame rates
@@ -528,6 +538,7 @@ void AC_AttitudeControl::input_rate_bf_roll_pitch_yaw(float roll_rate_bf_cds, fl
         // When feedforward is not enabled, the quaternion is calculated and is input into the target and the feedforward rate is zeroed.
         Quaternion attitude_target_update_quat;
         attitude_target_update_quat.from_axis_angle(Vector3f(roll_rate_rads * _dt, pitch_rate_rads * _dt, yaw_rate_rads * _dt));
+        //这两个相乘代表什么意思不确定？
         _attitude_target_quat = _attitude_target_quat * attitude_target_update_quat;
         _attitude_target_quat.normalize();
 
@@ -654,6 +665,7 @@ void AC_AttitudeControl::attitude_controller_run_quat()
     thrust_heading_rotation_angles(_attitude_target_quat, attitude_vehicle_quat, attitude_error_vector, _thrust_error_angle);
 
     // Compute the angular velocity target from the attitude error
+    //由姿态误差计算期望角速率
     _rate_target_ang_vel = update_ang_vel_target_from_att_error(attitude_error_vector);
 
     // Add feedforward term that attempts to ensure that roll and pitch errors rotate with the body frame rather than the reference frame.
@@ -684,6 +696,16 @@ void AC_AttitudeControl::attitude_controller_run_quat()
         _rate_target_ang_vel.z += desired_ang_vel_quat.q4;
     }
 
+    /*
+    static uint8_t num= 0;
+    num++;
+    if(num>=100)
+    {
+        hal.uartE->printf("roll_rate=%f,pitch_rate=%f,yaw_rate = %f\r\n",_rate_target_ang_vel.x,_rate_target_ang_vel.y,_rate_target_ang_vel.z);
+        num=0;
+    }
+    */
+
     if (_rate_bf_ff_enabled) {
         // rotate target and normalize
         Quaternion attitude_target_update_quat;
@@ -712,6 +734,7 @@ void AC_AttitudeControl::thrust_heading_rotation_angles(Quaternion& att_to_quat,
     Vector3f att_from_thrust_vec = att_from_rot_matrix * Vector3f(0.0f, 0.0f, 1.0f);
 
     // the dot product is used to calculate the current lean angle for use of external functions
+    //点积用于计算当前倾斜角，以便使用外部函数
     _thrust_angle = acosf(constrain_float(Vector3f(0.0f,0.0f,1.0f) * att_from_thrust_vec,-1.0f,1.0f));
 
     // the cross product of the desired and target thrust vector defines the rotation vector
@@ -733,6 +756,8 @@ void AC_AttitudeControl::thrust_heading_rotation_angles(Quaternion& att_to_quat,
 
     // Rotate thrust_vec_correction_quat to the att_from frame
     thrust_vec_correction_quat = att_from_quat.inverse() * thrust_vec_correction_quat * att_from_quat;
+
+    //hal.uartE->printf("quat=%f\r\n",thrust_vec_correction_quat);
 
     // calculate the remaining rotation required after thrust vector is rotated transformed to the att_from frame
     Quaternion yaw_vec_correction_quat = thrust_vec_correction_quat.inverse() * att_from_quat.inverse() * att_to_quat;
@@ -1115,4 +1140,13 @@ bool AC_AttitudeControl::pre_arm_checks(const char *param_prefix,
         }
     }
     return true;
+}
+
+//直接反馈角速率
+void AC_AttitudeControl::input_rate_bf_roll_pitch_yaw4(float roll_rate_bf_cds, float pitch_rate_bf_cds, float yaw_rate_bf_cds)
+{
+    _rate_target_ang_vel.x = radians(roll_rate_bf_cds * 0.01f);
+    _rate_target_ang_vel.y = radians(pitch_rate_bf_cds * 0.01f);
+    _rate_target_ang_vel.z = radians(yaw_rate_bf_cds * 0.01f);
+
 }
