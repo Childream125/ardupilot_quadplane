@@ -97,8 +97,8 @@ private:
     const uint32_t sequence_failsafe_gps_glitching = DEFINE_COLOUR_SEQUENCE_FAILSAFE(BLUE);
     const uint32_t sequence_failsafe_radio_or_battery = DEFINE_COLOUR_SEQUENCE_FAILSAFE(OFF);
 
-    const uint32_t sequence_armed = DEFINE_COLOUR_SEQUENCE_SOLID(GREEN);
-    const uint32_t sequence_armed_nogps = DEFINE_COLOUR_SEQUENCE_SOLID(BLUE);
+    const uint32_t sequence_armed = DEFINE_COLOUR_SEQUENCE_SOLID(GREEN); //³£ÂÌ
+    const uint32_t sequence_armed_nogps = DEFINE_COLOUR_SEQUENCE_SOLID(BLUE); //³£À¶
     const uint32_t sequence_prearm_failing = DEFINE_COLOUR_SEQUENCE(YELLOW,YELLOW,OFF,OFF,YELLOW,YELLOW,OFF,OFF,OFF,OFF);
     const uint32_t sequence_disarmed_good_dgps = DEFINE_COLOUR_SEQUENCE_ALTERNATE(GREEN,OFF);
     const uint32_t sequence_disarmed_good_gps = DEFINE_COLOUR_SEQUENCE_SLOW(GREEN);
@@ -112,5 +112,6 @@ private:
         traffic_light = 3,
     };
     rgb_source_t rgb_source() const;
+    int l_j = 0;
 
 };

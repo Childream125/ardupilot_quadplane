@@ -101,6 +101,7 @@ public:
         bool waiting_for_throw;   // true when copter is in THROW mode and waiting to detect the user hand launch
         bool powering_off;        // true when the vehicle is powering off
         bool video_recording;     // true when the vehicle is recording video
+        bool led_test;
     };
 
     /// notify_events_type - bitmask of active events.
@@ -164,6 +165,8 @@ public:
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
     HAL_Semaphore sf_window_mutex;
 #endif
+
+    void set_led_test(uint8_t num){flags.led_test = num;}
 
 private:
 

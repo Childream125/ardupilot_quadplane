@@ -592,6 +592,20 @@ void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const aux_sw
                     break;
                 }
             break;
+       case AUX_FUNC::LED:
+                    // arm or disarm the vehicle
+            switch (ch_flag) {
+              case HIGH:
+                  copter.notify.set_led_test(0);
+                    break;
+              case MIDDLE:
+                        // nothing
+                    break;
+              case LOW:
+                  copter.notify.set_led_test(1);
+                    break;
+               }
+                break;
 
     default:
         RC_Channel::do_aux_function(ch_option, ch_flag);

@@ -117,6 +117,7 @@ uint32_t RGBLed::get_colour_sequence(void) const
     // radio and battery failsafe patter: flash yellow
     // gps failsafe pattern : flashing yellow and blue
     // ekf_bad pattern : flashing yellow and red
+    //无线电和电池故障保护模式：闪烁黄色gps故障保护模式：闪烁黄色和蓝色ekf_错误模式：闪烁黄色和红色
     if (AP_Notify::flags.failsafe_radio ||
         AP_Notify::flags.failsafe_gcs ||
         AP_Notify::flags.failsafe_battery ||
@@ -139,14 +140,24 @@ uint32_t RGBLed::get_colour_sequence(void) const
     }
 
     // solid green or blue if armed
-    if (AP_Notify::flags.armed) {
-        // solid green if armed with GPS 3d lock
-        if (AP_Notify::flags.gps_status >= AP_GPS::GPS_OK_FIX_3D) {
-            return sequence_armed;
-        }
-        // solid blue if armed with no GPS lock
-        return sequence_armed_nogps;
-    }
+    //实心绿色或蓝色（若解锁）
+    //if(AP_Notify::flags.led_test)
+    //{
+        //hal.uartE->printf("test\r\n");
+        //if (AP_Notify::flags.armed) {
+            //改为解锁后绿灯常亮
+           // return sequence_armed;
+        //}
+    //}else{
+        //hal.uartE->printf("normal\r\n");
+        if (AP_Notify::flags.armed) {
+            // solid green if armed with GPS 3d lock
+            if (AP_Notify::flags.gps_status >= AP_GPS::GPS_OK_FIX_3D) {
+                return sequence_armed;
+            }
+            // solid blue if armed with no GPS lock
+            return sequence_armed_nogps;
+       }
 
     // double flash yellow if failing pre-arm checks
     if (!AP_Notify::flags.pre_arm_check) {
@@ -195,19 +206,50 @@ void RGBLed::update()
 
     switch (rgb_source()) {
     case mavlink:
+        //hal.uartE->printf("mavlink\r\n");
         update_override();
         return; // note this is a return not a break!
     case standard:
+        //正常情况下进入这个case
+        //hal.uartE->printf("standard\r\n");
         current_colour_sequence = get_colour_sequence();
         break;
     case obc:
+        //hal.uartE->printf("obc\r\n");
         current_colour_sequence = get_colour_sequence_obc();
         break;
     case traffic_light:
+        //hal.uartE->printf("traffic_light\r\n");
         current_colour_sequence = get_colour_sequence_traffic_light();
         break;
     }
+    if(AP_Notify::flags.led_test){
+        hal.uartE->printf("test\r\n");
+    const uint8_t brightness = get_brightness();
+        if(l_j==0){
+            hal.uartE->printf("0\r\n");
+            _red_des = brightness;
+            _blue_des = _led_off;
+            _green_des = _led_off;
+            l_j = 1;
+        }else if(l_j ==1)
+        {
+            hal.uartE->printf("1\r\n");
+            _red_des = _led_off;
+            _blue_des = brightness;
+            _green_des = _led_off;
+            l_j = 2;
+        }else if(l_j == 2)
+        {
+            hal.uartE->printf("2\r\n");
+            _red_des = _led_off;
+            _blue_des = _led_off;
+            _green_des = brightness;
+            l_j = 0;
+        }
 
+    }else{
+        hal.uartE->printf("norm\r\n");
     const uint8_t brightness = get_brightness();
 
     uint8_t step = (AP_HAL::millis()/100) % 10;
@@ -220,9 +262,11 @@ void RGBLed::update()
 
     const uint8_t colour = (current_colour_sequence >> (step*3)) & 7;
 
+    //决定三种颜色的亮度
     _red_des = (colour & RED) ? brightness : 0;
     _green_des = (colour & GREEN) ? brightness : 0;
     _blue_des = (colour & BLUE) ? brightness : 0;
+    }
 
     set_rgb(_red_des, _green_des, _blue_des);
 }
@@ -282,3 +326,4 @@ void RGBLed::update_override(void)
         _set_rgb(0, 0, 0);
     }
 }
+
