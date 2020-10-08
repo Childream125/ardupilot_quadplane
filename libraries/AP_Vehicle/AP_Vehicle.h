@@ -28,6 +28,7 @@
 #include <AP_GPS/AP_GPS.h>
 #include <AP_Logger/AP_Logger.h>
 #include <AP_Notify/AP_Notify.h>                    // Notify library
+#include <AP_MyLed/AP_MyLed.h>
 #include <AP_Param/AP_Param.h>
 #include <AP_Relay/AP_Relay.h>                      // APM relay
 #include <AP_RSSI/AP_RSSI.h>                        // RSSI Library
@@ -135,6 +136,7 @@ protected:
     // notification object for LEDs, buzzers etc (parameter set to
     // false disables external leds)
     AP_Notify notify;
+    AP_MyLed myled;
 
 private:
 

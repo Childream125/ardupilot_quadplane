@@ -76,6 +76,7 @@ void Copter::init_ardupilot()
 
     // initialise notify system
     notify.init();
+    //myled.init();
     notify_flight_mode();
 
     // initialise battery monitor

@@ -21,38 +21,30 @@
 
 #include <AP_HAL/AP_HAL.h>
 #include "NotifyDevice.h"
+#include "RGBLed.h"
 
-class RGBLed: public NotifyDevice {
+class MyLed: public NotifyDevice {
 public:
-    RGBLed(uint8_t led_off, uint8_t led_bright, uint8_t led_medium, uint8_t led_dim);
+    MyLed(uint8_t led_off, uint8_t led_bright, uint8_t led_medium, uint8_t led_dim);
 
     // init - initialised the LED
     virtual bool init(void) override;
-
-    // set_rgb - set color as a combination of red, green and blue levels from 0 ~ 15
-    virtual void set_rgb(uint8_t red, uint8_t green, uint8_t blue);
 
     // update - updates led according to timed_updated.  Should be
     // called at 50Hz
     virtual void update() override;
 
-    // handle LED control, only used when LED_OVERRIDE=1
-    virtual void handle_led_control(const mavlink_message_t &msg) override;
+    // set_rgb - set color as a combination of red, green and blue levels from 0 ~ 15
+    virtual void set_rgb(uint8_t red, uint8_t green, uint8_t blue);
 
-    void test_led(void);
-
-    //MyLed myled;
-
+    
 protected:
-    // methods implemented in hardware specific classes
+
     virtual bool hw_init(void) = 0;
     virtual bool hw_set_rgb(uint8_t red, uint8_t green, uint8_t blue) = 0;
 
-    // set_rgb - set color as a combination of red, green and blue levels from 0 ~ 15
     virtual void _set_rgb(uint8_t red, uint8_t green, uint8_t blue);
 
-    void update_override();
-    
     // meta-data common to all hw devices
     uint8_t _red_des, _green_des, _blue_des;     // color requested by timed update
     uint8_t _red_curr, _green_curr, _blue_curr;  // current colours displayed by the led
@@ -68,12 +60,6 @@ protected:
     } _led_override;
     
 private:
-    void update_colours();
-    uint32_t get_colour_sequence() const;
-    uint32_t get_colour_sequence_obc() const;
-    uint32_t get_colour_sequence_traffic_light() const;
-
-    uint8_t get_brightness(void) const;
 
 #define DEFINE_COLOUR_SEQUENCE(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)  \
     ((S0) << (0*3) | (S1) << (1*3) | (S2) << (2*3) | (S3) << (3*3) | (S4) << (4*3) | (S5) << (5*3) | (S6) << (6*3) | (S7) << (7*3) | (S8) << (8*3) | (S9) << (9*3))
@@ -107,16 +93,6 @@ private:
     const uint32_t sequence_disarmed_good_dgps = DEFINE_COLOUR_SEQUENCE_ALTERNATE(GREEN,OFF);
     const uint32_t sequence_disarmed_good_gps = DEFINE_COLOUR_SEQUENCE_SLOW(GREEN);
     const uint32_t sequence_disarmed_bad_gps = DEFINE_COLOUR_SEQUENCE_SLOW(BLUE);
-
-    uint8_t last_step;
-    enum rgb_source_t {
-        standard = 0,
-        mavlink = 1,
-        obc = 2,
-        traffic_light = 3,
-    };
-    rgb_source_t rgb_source() const;
     int l_j = 0;
-};
 
-//RGBLed rgbled;
+};

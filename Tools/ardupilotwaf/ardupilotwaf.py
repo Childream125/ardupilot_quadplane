@@ -38,6 +38,7 @@ COMMON_VEHICLE_DEPENDENT_LIBRARIES = [
     'AP_NavEKF2',
     'AP_NavEKF3',
     'AP_Notify',
+    'AP_MyLed',
     'AP_OpticalFlow',
     'AP_Param',
     'AP_Rally',

@@ -18,7 +18,7 @@
 #include <AP_Param/AP_Param.h>
 #include <GCS_MAVLink/GCS_MAVLink.h>
 
-#include "NotifyDevice.h"
+#include "LEDDevice.h"
 
 // Device parameters values
 #define RGB_LED_OFF     0
@@ -36,20 +36,20 @@
 #define DISPLAY_SH1106  2
 #define DISPLAY_SITL 10
 
-class AP_Notify
+class AP_MyLed
 {
     friend class RGBLed;            // RGBLed needs access to notify parameters
     friend class Display;           // Display needs access to notify parameters
     //friend class MyLed;
 public:
-    AP_Notify();
+    AP_MyLed();
 
     /* Do not allow copies */
-    AP_Notify(const AP_Notify &other) = delete;
-    AP_Notify &operator=(const AP_Notify&) = delete;
+    AP_MyLed(const AP_MyLed &other) = delete;
+    AP_MyLed &operator=(const AP_MyLed&) = delete;
 
     // get singleton instance
-    static AP_Notify *get_singleton(void) {
+    static AP_MyLed *get_singleton(void) {
         return _singleton;
     }
     
@@ -171,10 +171,10 @@ public:
 
 private:
 
-    static AP_Notify *_singleton;
-    //AP_Notify mynotify;
+    static AP_MyLed *_singleton;
+    //AP_MyLed mynotify;
 
-    void add_backend_helper(NotifyDevice *backend);
+    void add_backend_helper(LEDDevice *backend);
 
     // add all backends
     void add_backends(void);
@@ -195,10 +195,10 @@ private:
     uint32_t _send_text_updated_millis; // last time text changed
     char _flight_mode_str[5];
 
-    static NotifyDevice* _devices[];
+    static LEDDevice* _devices[];
     static uint8_t _num_devices;
 };
 
 namespace AP {
-    AP_Notify &notify();
+    AP_MyLed &myled();
 };

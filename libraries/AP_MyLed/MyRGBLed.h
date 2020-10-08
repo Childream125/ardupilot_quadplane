@@ -20,11 +20,11 @@
 #pragma once
 
 #include <AP_HAL/AP_HAL.h>
-#include "NotifyDevice.h"
+#include "LEDDevice.h"
 
-class RGBLed: public NotifyDevice {
+class MyRGBLed: public LEDDevice {
 public:
-    RGBLed(uint8_t led_off, uint8_t led_bright, uint8_t led_medium, uint8_t led_dim);
+    MyRGBLed(uint8_t led_off, uint8_t led_bright, uint8_t led_medium, uint8_t led_dim);
 
     // init - initialised the LED
     virtual bool init(void) override;
@@ -37,9 +37,7 @@ public:
     virtual void update() override;
 
     // handle LED control, only used when LED_OVERRIDE=1
-    virtual void handle_led_control(const mavlink_message_t &msg) override;
-
-    void test_led(void);
+    //virtual void handle_led_control(const mavlink_message_t &msg) override;
 
     //MyLed myled;
 
@@ -51,7 +49,7 @@ protected:
     // set_rgb - set color as a combination of red, green and blue levels from 0 ~ 15
     virtual void _set_rgb(uint8_t red, uint8_t green, uint8_t blue);
 
-    void update_override();
+    //void update_override();
     
     // meta-data common to all hw devices
     uint8_t _red_des, _green_des, _blue_des;     // color requested by timed update
@@ -68,12 +66,12 @@ protected:
     } _led_override;
     
 private:
-    void update_colours();
-    uint32_t get_colour_sequence() const;
-    uint32_t get_colour_sequence_obc() const;
-    uint32_t get_colour_sequence_traffic_light() const;
+    //void update_colours();
+    //uint32_t get_colour_sequence() const;
+    //uint32_t get_colour_sequence_obc() const;
+    //uint32_t get_colour_sequence_traffic_light() const;
 
-    uint8_t get_brightness(void) const;
+   // uint8_t get_brightness(void) const;
 
 #define DEFINE_COLOUR_SEQUENCE(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9)  \
     ((S0) << (0*3) | (S1) << (1*3) | (S2) << (2*3) | (S3) << (3*3) | (S4) << (4*3) | (S5) << (5*3) | (S6) << (6*3) | (S7) << (7*3) | (S8) << (8*3) | (S9) << (9*3))
@@ -115,8 +113,8 @@ private:
         obc = 2,
         traffic_light = 3,
     };
-    rgb_source_t rgb_source() const;
+    //rgb_source_t rgb_source() const;
     int l_j = 0;
 };
 
-//RGBLed rgbled;
+//MyRGBLed MyRGBLed;

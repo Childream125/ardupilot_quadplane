@@ -138,18 +138,6 @@ uint32_t RGBLed::get_colour_sequence(void) const
         // all off for radio or battery failsafe
         return sequence_failsafe_radio_or_battery;
     }
-
-    // solid green or blue if armed
-    //实心绿色或蓝色（若解锁）
-    //if(AP_Notify::flags.led_test)
-    //{
-        //hal.uartE->printf("test\r\n");
-        //if (AP_Notify::flags.armed) {
-            //改为解锁后绿灯常亮
-           // return sequence_armed;
-        //}
-    //}else{
-        //hal.uartE->printf("normal\r\n");
         if (AP_Notify::flags.armed) {
             // solid green if armed with GPS 3d lock
             if (AP_Notify::flags.gps_status >= AP_GPS::GPS_OK_FIX_3D) {
@@ -224,32 +212,9 @@ void RGBLed::update()
         break;
     }
     if(AP_Notify::flags.led_test){
-        hal.uartE->printf("test\r\n");
-    const uint8_t brightness = get_brightness();
-        if(l_j==0){
-            hal.uartE->printf("0\r\n");
-            _red_des = brightness;
-            _blue_des = _led_off;
-            _green_des = _led_off;
-            l_j = 1;
-        }else if(l_j ==1)
-        {
-            hal.uartE->printf("1\r\n");
-            _red_des = _led_off;
-            _blue_des = brightness;
-            _green_des = _led_off;
-            l_j = 2;
-        }else if(l_j == 2)
-        {
-            hal.uartE->printf("2\r\n");
-            _red_des = _led_off;
-            _blue_des = _led_off;
-            _green_des = brightness;
-            l_j = 0;
-        }
-
+        test_led();
     }else{
-        hal.uartE->printf("norm\r\n");
+
     const uint8_t brightness = get_brightness();
 
     uint8_t step = (AP_HAL::millis()/100) % 10;
